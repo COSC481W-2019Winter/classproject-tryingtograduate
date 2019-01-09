@@ -21,6 +21,6 @@ staff groups within that account with whom they wish to communicate.
 Roles:				           
 Marketing -To be determined,
 Project Management -Kristal Bledsoe,
-Design -Kristal Bledsoe,
-Engineering -To be determined,
+Design -Kristal Bledsoe, Tyler Boyd,
+Engineering -Tyler Boyd,
 Support-To be determined
