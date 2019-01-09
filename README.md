@@ -6,7 +6,7 @@ Tyler Boyd,
 Josh Peck,
 Kristal Bledsoe,
 Bfoley693,
-hankerdm
+Mike Hankerd
 
 Mission Statement:
 To develop technology that will streamline the alert delivery system for small businesses.
@@ -19,8 +19,8 @@ Our team intends to solve this problem by developing a web-based app that will a
 staff groups within that account with whom they wish to communicate.
 
 Roles:				           
-Marketing -To be determined,
+Marketing - Mike Hankerd, 
 Project Management -Kristal Bledsoe,
 Design -Kristal Bledsoe, Tyler Boyd,
-Engineering -Tyler Boyd,
+Engineering -Tyler Boyd, Mike Hankerd, 
 Support-To be determined
