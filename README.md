@@ -2,10 +2,10 @@
 classproject-tryingtograduate created by GitHub Classroom
 
 Members:
-Tyler Boyd
-Josh Peck
-Kristal Bledsoe
-Bfoley693
+Tyler Boyd,
+Josh Peck,
+Kristal Bledsoe,
+Bfoley693,
 hankerdm
 
 Mission Statement:
