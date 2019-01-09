@@ -19,8 +19,8 @@ Our team intends to solve this problem by developing a web-based app that will a
 staff groups within that account with whom they wish to communicate.
 
 Roles:				           
-Marketing -To be determined
-Project Management -Kristal Bledsoe
-Design -Kristal Bledsoe
-Engineering -To be determined
+Marketing -To be determined,
+Project Management -Kristal Bledsoe,
+Design -Kristal Bledsoe,
+Engineering -To be determined,
 Support-To be determined
