@@ -18,9 +18,9 @@ alert message containing information such as, office schedule changes, inclement
 Our team intends to solve this problem by developing a web-based app that will allow a user to sign up for an account and create 
 staff groups within that account with whom they wish to communicate.
 
-Roles:				                   Team Member:
-Marketing -----------------------To be determined
-Project Management --------------Kristal Bledsoe
-Design --------------------------Kristal Bledsoe
-Engineering ---------------------To be determined
-Support--------------------------To be determined
+Roles:				           
+Marketing -To be determined
+Project Management -Kristal Bledsoe
+Design -Kristal Bledsoe
+Engineering -To be determined
+Support-To be determined
