@@ -22,5 +22,5 @@ Roles:
 Marketing - Mike Hankerd, 
 Project Management -Kristal Bledsoe,
 Design -Kristal Bledsoe, Tyler Boyd,
-Engineering -Tyler Boyd, Mike Hankerd, 
-Support-To be determined
+Engineering -Tyler Boyd, Mike Hankerd, Josh Peck 
+Support-Josh Peck
