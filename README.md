@@ -29,4 +29,4 @@ Engineering -Tyler Boyd, Mike Hankerd, Josh Peck
 
 Support-Josh Peck, Benjamin Foley
 
-Sign here: Tyler Boyd, 
+Sign here: Tyler Boyd, Mike Hankerd
