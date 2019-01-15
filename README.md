@@ -20,7 +20,13 @@ staff groups within that account with whom they wish to communicate.
 
 Roles:				           
 Marketing -Mike Hankerd, 
+
 Project Management -Kristal Bledsoe,
+
 Design -Kristal Bledsoe, Tyler Boyd, Benjamin Foley
+
 Engineering -Tyler Boyd, Mike Hankerd, Josh Peck 
+
 Support -Josh Peck, Benjamin Foley
+
+Sign here: Tyler Boyd, Mike Hankerd, Josh Peck
