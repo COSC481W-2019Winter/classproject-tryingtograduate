@@ -4,7 +4,7 @@
   - Must be accessible on all desktop web browsers
   -	Email addresses must be in a valid email format
   -	All text font should be tentatively Arial Rounded MT Bold
-  -	Font size should vary between heading and comments: 24 and 14 pt.
+  -	Font size should vary between heading and comments: 24 and 14 pt. (tentatively)
 ### **Homepage/Sign in:**
   -	Main Page will have our title, 2 textboxes for Username and Password, Sign-In Button, Sign-Up Button, Forgot Password Button centered on the screen. 
   -	Text box fields cannot be empty.
