@@ -20,7 +20,7 @@
   -	A dropdown menu to select Groups from an ordered list, is on the top left of the text box
   -	The top right of the text box is a button to go to the Groups Page.
   -	Bottom left of the text box is the Send button
-    -	Sends the message to group selected, If no group is selected displa an error message
+    -	Sends the message to group selected, If no group is selected, display an error message
     -	Displays a confirmation Pop-Up if message was sent
   -	Bottom right is a logout button, sends user back to Sign-in Screen
 ### **Groups Page:**
