@@ -4,17 +4,27 @@
 ### **Overall:**
   - Must be accessible on all desktop web browsers
   -	Email addresses must be in a valid email format
-  -	All text font should be tentatively Arial Rounded MT Bold
-  -	Font size should vary between heading and comments: 24 and 14 pt. (tentatively)
+  - Website Asethetics
+	- All text font should be tentatively Arial Rounded MT Bold
+	- Font size should vary between heading and comments: 24 and 14 pt
+	- Background color will be green
+	- Text will be white and black
+	- Buttons will be green with darker shadow
+	- Buttons will have rounded edges
 ### **Homepage/Sign in:**
-  -	Main Page will have our title, 2 textboxes for Username and Password, Sign-In Button, Sign-Up Button, Forgot Password Button centered on the screen. 
-  -	Text box fields cannot be empty.
-  -	Forgot Password button sends a randomly Generated password to a desired email Address
+  -	Homepage will display the company name (logo?) at top center.
+  - "Sign-In" Button displayed below two text boxes for username and password.
+  - "Sign-Up" Button displayed below five texboxes for name, email, phone, password, and confirm password. 
+  - "Forgot Password" hyperlink below "Sign-In" button. 
 ### **Sign-Up:**
-  -	Requires First Name, Last Name, Email Address, Password, Confirm Password
-  -	Optional Phone number
-  -	Every text Box must be filled, none can be blank (Except Phone Number)
-  -	Sign-up button, runs verification method and takes user to their main page.
+  -	Form: Name, Email Address, Phone, Password, Confirm Password
+	- Required fields are Name, Email Address, Password, Confirm Password
+	- Optional field: Phone number
+  -	Sign-up button, runs verification method and takes user to their message dashboard.
+### **Sign-In:** 
+  - Form: Username (email address) and Password
+	-All fields are required
+  - Forgot Password hyperlink will allow the user to enter a registered eamil address to receive the forgotten password.
 ### **User Main page:**
   -	Welcome, %firstName% %lastName% Displayed across top of page.
   -	A large text box for a message to be written is in the center of the Screen. 
