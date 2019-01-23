@@ -51,12 +51,12 @@
   	-By clicking this button, the user will be prompted to create a group name.
 	-Once a group name has been established, the user can add recipiants to the group by highlighting a group and clicking the "Edit Group" button.
   - The "Edit Group" button will be located in the top right corner of the page.
-  	-Cliking this button will present the user with a form to be completed for each contact to be added to the group.
-		-Requested: Name, Email, textable number
-		-Required: Name, Email OR texable number (only one needs to be provided)
-		-After the required information has been completed, the user will click the "Add" button at the bottom of the form.
-	-Once a recipiant has been added to the group, the user will get a pop up window asking if them what they what they want to do next.
-		-They can click "Done" to exit the window or "New" to add another recipiant to the group.
+  	- Cliking this button will present the user with a form to be completed for each contact to be added to the group.
+		- Requested: Name, Email, textable number
+		- Required: Name, Email OR texable number (only one needs to be provided)
+		- After the required information has been completed, the user will click the "Add" button at the bottom of the form.
+	- Once a recipiant has been added to the group, the user will get a pop up window asking if them what they what they want to do next.
+		- They can click "Done" to exit the window or "New" to add another recipiant to the group.
   - Along with the "Edit Group" and "Create Group" buttons, a "Delete Group" button will also be available.  
-	-This option will appear at the bottom of the alphabetical group list once at least one group has been selected.
+	- This option will appear at the bottom of the alphabetical group list once at least one group has been selected.
   - Once the desired changes have been made on the Groups Page, the user can navigate back to the message dashboard by clicking the "Return to Dashboard" button located in the center of the page beneath the group list.
