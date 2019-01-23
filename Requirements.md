@@ -45,18 +45,18 @@
   - Parallel to the "Send" and "Cancel" buttons will be another button labled "Sign-Out".
   - This button routes the user back to the alert system homepage.
 ### **Groups Page:**
-  - Displays a list of groups in alphabetical Order
-  - One Group can be selected, allowing an edit button and a delete button to become clickable
-  - Add Group button (Top left) goes to a blank Edit Group page.
-### **Edit Group Page:**
-  - Allows user to Edit (or create) group name within a text box in the top left.
-  - Center of Screen is an Alphabetical list of Group members by last name
-  - Clicking on a member shifts the list down
-    	- Shows all member fields as editable text boxes: First name, Last Name, Email Address, Phone number
-  -	Top right is a button that allows you to add a member
-    -	Adding a member Creates a default Member: “Johnny Appleseed”
-    -	Default Member can then be clicked on and edited.
-  -	Save button is on the bottom right
-  -	Exit button is next to save button
-    -	If group was not saved before clicking exit, Prompt user to save, or exit without Saving.
-
+  - Upon entering the Groups Page, the user will be presented with a list of their established groups in alphabetical order.
+  - If no groups have created, a message stating "You have no active groups." will be displayed.
+  - A button labeled "Create Group" will be listed at the top left corner of the webpage.
+  	-By clicking this button, the user will be prompted to create a group name.
+	-Once a group name has been established, the user can add recipiants to the group by highlighting a group and clicking the "Edit Group" button.
+  - The "Edit Group" button will be located in the top right corner of the page.
+  	-Cliking this button will present the user with a form to be completed for each contact to be added to the group.
+		-Requested: Name, Email, textable number
+		-Required: Name, Email OR texable number (only one needs to be provided)
+		-After the required information has been completed, the user will click the "Add" button at the bottom of the form.
+	-Once a recipiant has been added to the group, the user will get a pop up window asking if them what they what they want to do next.
+		-They can click "Done" to exit the window or "New" to add another recipiant to the group.
+  - Along with the "Edit Group" and "Create Group" buttons, a "Delete Group" button will also be available.  
+	-This option will appear at the bottom of the alphabetical group list once at least one group has been selected.
+  - Once the desired changes have been made on the Groups Page, the user can navigate back to the message dashboard by clicking the "Return to Dashboard" button located in the center of the page beneath the group list.
