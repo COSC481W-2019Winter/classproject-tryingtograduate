@@ -1,6 +1,8 @@
 ## **Requirements:** 
 ---
 ![alt text](BasicFlow.PNG)
+
+---
 ### **Overall:**
   - Must be accessible on all desktop web browsers
   -	Email addresses must be in a valid email format
