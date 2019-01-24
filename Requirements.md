@@ -11,6 +11,7 @@
 	- Text will be white and black
 	- Buttons will be green with darker shadow
 	- Buttons will have rounded edges
+  - All text entry fields should be validated for correct format.
 ### **Homepage/Sign in:**
   - Homepage will display the company name at top center.
   - "Sign-In" Button displayed below two text boxes for username and password.
@@ -35,8 +36,8 @@
   - Above the top right corner of the message texbox is another dropdown menu where receipient group(s) can be selected from an ordered list.
   - Beneath the text box, in the bottom left corner of the page will be a button labled "Send". 
   	- This button will submit the written/chosen message to everyone in the selected group.
-	- The message will be sent by way of text or email depending on the information stored in the group.
-	- If at this point, a group has not been selected, a pop up will appear asking the user to select a recipiant.
+	- The message will be sent by way of text or email depending on the information stored for each recipient.
+	- If at this point, a group has not been selected, a pop up will appear asking the user to select a recipient group.
   - Just below the text box, to the right will be a button labled "Cancel".
   	-clicking this button will clear all message contents and groups selected.
   - Once the message has been verified and sent, the user will be shown a pop up message confirming the message status
