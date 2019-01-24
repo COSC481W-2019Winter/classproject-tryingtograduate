@@ -15,13 +15,16 @@
 ### **Homepage/Sign in:**
   - Homepage will display the company name at top center.
   - "Sign-In" Button displayed below two text boxes for username and password.
-  - "Sign-Up" Button displayed below five texboxes for name, email, phone, password, and confirm password. 
+  - "Sign-Up" Button displayed below six texboxes for name, email, phone, password, confirm password, and verification code
+  	- email textbox has a "verify email" hyperlink next to it to send the verification email and complete sign up.
   - "Forgot Password" hyperlink below "Sign-In" button. 
 ### **Sign-Up:**
   -	Form: Name, Email Address, Phone, Password, Confirm Password
 	- Required fields are Name, Email Address, Password, Confirm Password
 	- Optional field: Phone number
   -	Sign-up button, runs verification method and takes user to their message dashboard.
+  	- Provided email is parsed for proper format.
+	- Verification email with 4 digit code is sent to complete sign up.
 ### **Sign-In:** 
   - Form: Username (email address) and Password
 	-All fields are required
