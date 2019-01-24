@@ -49,12 +49,17 @@
   - If no groups have created, a message stating "You have no active groups." will be displayed.
   - A button labeled "Create Group" will be listed at the top left corner of the webpage.
   	-By clicking this button, the user will be prompted to create a group name.
-	-Once a group name has been established, the user can add recipiants to the group by highlighting a group and clicking the "Edit Group" button.
+	-Once a group name has been established, the user can add recipiants to the group by highlighting a group and clicking the "Edit 	  Group" button
   - The "Edit Group" button will be located in the top right corner of the page.
-  	- Cliking this button will present the user with a form to be completed for each contact to be added to the group.
+  	- Clicking this button will present the user with a form to be completed for each contact to be added to the group.
 		- Requested: Name, Email, textable number
-		- Required: Name, Email OR texable number (only one needs to be provided)
+		- Required: Name, Email OR textable number (only one needs to be provided)
 		- After the required information has been completed, the user will click the "Add" button at the bottom of the form.
+	- Underneath this form will be a button labeled "Upload File"
+		- Clicking this button will prompt the user to upload a .csv file containing the user info they want to add
+			- This info will be parsed and added to the database that stores the Group data
+		- The prompt will contain the message, "Please upload a .csv file with the information in the following format: Name, 
+		  Email, Phone Number"
 	- Once a recipiant has been added to the group, the user will get a pop up window asking if them what they what they want to do next.
 		- They can click "Done" to exit the window or "New" to add another recipiant to the group.
   - Along with the "Edit Group" and "Create Group" buttons, a "Delete Group" button will also be available.  
