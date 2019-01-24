@@ -58,6 +58,7 @@
   	- Cliking this button will present the user with a form to be completed for each contact to be added to the group.
 		- Requested: Name, Email, textable number
 		- Required: Name, Email OR texable number (only one needs to be provided)
+		- If a texable number is provided, it may be necessary fo the user to select the mobile carrier providing the cell service.
 		- After the required information has been completed, the user will click the "Add" button at the bottom of the form.
 	- Once a recipiant has been added to the group, the user will get a pop up window asking if them what they what they want to do next.
 		- They can click "Done" to exit the window or "New" to add another recipiant to the group.
