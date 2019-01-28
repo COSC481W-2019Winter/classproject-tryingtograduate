@@ -1,7 +1,6 @@
 ## **Requirements:** 
 ---
-![alt text](BasicFlow1.PNG)
-
+![alt text](BasicFlow3.PNG)
 ---
 ### **Overall:**
   - Must be accessible on all desktop HTML5 web browsers
