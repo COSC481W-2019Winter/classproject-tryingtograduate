@@ -26,6 +26,7 @@
 	- Optional field: Phone number
   - Sign-up requires verification method to complete.
   	- Provided email is parsed for proper format.
+	- User clicks the "Get Code" hyperlink once email is entered.
 	- Verification email with 4 digit code is sent to email provided.
 	- User enters verification code in provided field.
   - "Sign-Up" Button is made available only after verification code is entered
