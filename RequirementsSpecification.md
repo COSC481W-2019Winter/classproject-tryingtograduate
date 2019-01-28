@@ -7,6 +7,7 @@
 ---
 ![alt text](BasicFlow3.PNG)
 ---
+### **Note:** all requirements listed are mandatory unless explicitly labeled as desirable.
 ### **Overall:**
   - Must be accessible on all desktop HTML5 web browsers
   -	Email addresses must be in a valid email format
