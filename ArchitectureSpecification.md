@@ -2,11 +2,11 @@
 This document lists the components that our team feels that the project requires from an Architectural Standpoint. It contains mostly object classes that will be used in our database to ensure that a User can manage the Contacts that he/she wants to have in a group. An important note for reading this document, a "User" would be someone that has created an account on our site and is using our product, a "Contact" is someone that the User has created and added to a group to send messages to. 
 
 ### Person Object
-This object is a superset of field necessary to represent both users and contacts. It will used to represent user accounts that sign up for Carrier Pigeon and all contacts that a user creates. This object will mainly be used for storing the data of each contact and each user. A user can edit a Contacts Person object throught the Edit Groups page.
+This object is a superset of fields necessary to represent both users and contacts. It will used to represent user accounts that sign up for Carrier Pigeon and all contacts that a user creates. This object will mainly be used for storing the data of each contact and each user. A user can edit a Contact's Person object through the Edit Groups page.
 - firstName – string
 - lastName – string
 - emailAddress – string
-- VerifyCode – int
+- verifyCode – int
 - verifyCodeExp – date
 - password – String (Hash to Store)
 - phoneNumber – (Optional) string
@@ -16,14 +16,14 @@ This object is a superset of field necessary to represent both users and contact
 - ownerId – int 
 
 ### Group Object
-This object represents all fields necassary to represent groups created by all users. They will be sorted by a group owner, which references a User's uniqueID. Each group will also be named, given a unique groupID, and a list of all Persons in that group. This Component will mainly be accessed on the Edit groups page, along with when a message is sent.
+This object contains all fields necassary to represent groups created by all users. They will be sorted by a group owner, which references a User's uniqueID. Each group will also be named, given a unique groupID, and a list of all Persons in that group. This Component will mainly be accessed on the Edit Groups page, as well as when a message is sent.
 - groupId – int
 - groupName – string
 - groupOwner (Person.uniqueId) – int
 - members ([ ] Persons.uniqueId) – int
 
 ### Carrier Object
-This is a small component, but necessary for sending SMS messages to phone numbers. This class will take a Carrier name and convert it to a proper email address domain. This component will be used strictly when assigning a phone number an "email address"
+This is a small component, but necessary for sending SMS messages to phone numbers. This class will take a Carrier name and convert it to a proper email address domain. This component will be used strictly when assigning a phone number an "email address".
 - Email address – string
 - Name – string
 - carrierId – int
@@ -37,13 +37,13 @@ This will be used to store message templates for a user to select at a future ti
 - lastSent – date
 
 ### MessageBody Object
-This is the object that actually stores the message. Using 2 strings for storage one for the subject and one for the body, the database will use the messageID as a unique identifier. 
+This is the object that actually stores the message. Using two strings for storage, one for the subject and one for the body, the database will use the messageID as a unique identifier. 
 - subject – string
 - content – string
 - messageId – string (same as message in header)
 
 ### Message Object
-This object is used for assembling a complete smtp message for generating smtp requests
+This object is used for assembling a complete smtp message for generating smtp requests.
 - from – string
 - to – string[ ]
 - subject – string
