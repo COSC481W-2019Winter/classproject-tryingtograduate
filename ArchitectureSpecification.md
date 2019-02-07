@@ -80,3 +80,8 @@ This object contains a list of contacts. This list will be editable by the User 
 ### Components
 #### MessageQueueService
 This component is responsible for assembling queued messages from the backend database identified by the messageId that has been placed in the queue.  The component is a backend process that will run (wake) periodically to process messages in the memory resident queue. Once the message is assembled the component will resolve the groupId(s) and generate the requisite smtp messages prompting the smtp server to send the messages. Once the smtp messages have been generated and passed to the smtp server, the MessageQueueService will remove the message Id from the queue update the lastSent date in the messageHeader in the backend database, send a summary message to the message originator (Person.emailAddress referenced by MessageHeader.senderId) and begin processing the next queued message. 
+
+![alt text](MessageSvs.PNG)
+
+![alt text](InteractionsA.PNG)
+![alt text](InteractionsB.PNG)
