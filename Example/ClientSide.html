@@ -1,0 +1,64 @@
+<!--
+Kristal Bledsoe
+http://db2.emich.edu/~kbledsoe3/041117/AJAXPHP.html
+COSC 436
+Assignment 04/11/2017 HTML/JAVASCRIPT/AJAX (Client-Side)
+WINTER 2017
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+	function showTable(str) {
+		if (str == "") {
+			document.getElementById("txtHint").innerHTML = "";
+			return;
+		} else { 
+			if (window.XMLHttpRequest) {
+				// code for IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp = new XMLHttpRequest();
+			} else {
+				// code for IE6, IE5
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange = function() {
+			var output = document.getElementById ("output");
+				//Switch statement to output readyState changes as they occur
+				switch (this.readyState) {
+				case 0:
+					output.innerHTML += "0: The httpRequest object is not initialized.<br/>";
+					break;
+				case 1:
+					output.innerHTML += "1: Waiting for the send method.<br/>";
+					break;
+				case 2:
+					output.innerHTML += "2: The send method has been called, but no content is available yet.<br/>";
+					break;
+				case 3:
+					output.innerHTML += "3: Partial data has been received, but content is not available yet.<br/>";
+					break;
+				case 4:
+					//checks final result and prints responseText if ok
+					if (this.readyState == 4 && this.status == 200) {
+					output.innerHTML += "4: All data has been received.<br/><br/>" + this.responseText + "<br/>";
+					}
+					break;
+				};
+			};         
+			xmlhttp.open("GET","gettable.php?q="+str,true);
+			xmlhttp.send();
+		} 
+	}
+	</script>
+</head>
+	<body>
+		<form>
+			<select name="tables" onchange="showTable(this.value)">
+			  <option value="">Select a Table:</option>
+			  <option value="1">CauseOfDeath</option>
+			</select>
+		</form>
+		<br>
+		<div id="output"></div>
+	</body>
+</html>
