@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Carrier Pigeon</title>
+		<link rel="stylesheet" type="text/css" href="messageStyle.css">
+	</head>
+		
+	<body>
+		<p>Welcome ("userName")</p>
+		</br>
+		<h1 id = "Company" style = "text-align: center" >Message Dashboard</h1>
+		<button id = "topRight" class = "button button0" onclick = "window.location.href ='Groups.html'" >
+		Edit Groups</button>
+		</br>
+		<div id = "wrapper">
+			<div class="navbar">
+				<div class="dropdown">
+					<button class="dropbtn">Select Message </button>
+					<div class="dropdown-content">
+						<a href="#">Office Closed</a>
+						<a href="#">Staff Meeting</a>
+						<a href="#">Weather Alert</a>
+					</div>
+				</div>
+			</div>
+			<div class="navbar">
+			<a href="#news">Save Message</a>
+			</div>
+			<div class="navbar">
+				<div class="dropdown">
+					<button class="dropbtn">Select Group</button>
+					<div class="dropdown-content">
+						<a href="#">Managers</a>
+						<a href="#">Contractors</a>
+						<a href="#">All Staff</a>
+					</div>
+				</div> 
+			</div>
+		</div>
+		</br></br></br>
+		<textarea id = "message" class = "center">Type message here...</textarea>
+		</br></br>
+		<table class = "center">
+		<td>
+			<tr><td><button class = "button buttonA" onclick = "window.location.href ='MessageDashboard.html'" >
+			Send</button></td>
+			<td><button class = "button buttonB" onclick = "window.location.href ='Homepage.html'" >
+			Sign-Out</button></td>
+			<td><button class = "button buttonC" onclick = "window.location.href = 'MessageDashboard.html'">
+			Cancel</button></td>
+		</td>
+		</table>
+	</body>
+</html>
