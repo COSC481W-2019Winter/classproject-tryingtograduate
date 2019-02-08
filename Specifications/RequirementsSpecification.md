@@ -14,9 +14,9 @@
   - Website Asethetics
 	- All text font should be tentatively Arial Rounded MT Bold
 	- Font size should vary between heading and comments: 24 and 14 pt
-	- Background color will be green
+	- Background color will be blue/logo
 	- Text will be white and black
-	- Buttons will be green with darker shadow
+	- Buttons will be blue with darker shadow
 	- Buttons will have rounded edges
   - All required text entry fields should be validated for correct format.
 ### **Homepage/Sign in:**
