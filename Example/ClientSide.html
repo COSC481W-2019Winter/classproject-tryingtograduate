@@ -13,7 +13,7 @@ WINTER 2017
 		if (str == "") {
 			document.getElementById("txtHint").innerHTML = "";
 			return;
-		} else { 
+		} else {
 			if (window.XMLHttpRequest) {
 				// code for IE7+, Firefox, Chrome, Opera, Safari
 				xmlhttp = new XMLHttpRequest();
@@ -44,10 +44,10 @@ WINTER 2017
 					}
 					break;
 				};
-			};         
+			};
 			xmlhttp.open("GET","gettable.php?q="+str,true);
 			xmlhttp.send();
-		} 
+		}
 	}
 	</script>
 </head>
