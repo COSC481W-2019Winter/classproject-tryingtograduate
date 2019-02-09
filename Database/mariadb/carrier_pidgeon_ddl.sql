@@ -2,6 +2,8 @@ drop database if exists carrier_pidgeon;
 create database carrier_pidgeon;
 use carrier_pidgeon;
 
+drop table if exists Message;
+drop table if exists Group_JT;
 drop table if exists Groups;
 drop table if exists Person;
 drop table if exists Carrier;
