@@ -2,13 +2,58 @@
 <html>
 	<head>
 		<title>Carrier Pigeon</title>
-		<link rel="stylesheet" type="text/css" href="messageStyle.css">	
+		<link rel="stylesheet" type="text/css" href="groupStyle.css">
+        <link rel="stylesheet" type="text/css" href="homeStyle.css">
+        <!--Taken from w3schools-->
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $( function() {
+                $( "#groupList" ).accordion({
+                    collapsible: true,
+                    heightStyle: "content"
+                });
+            } );
+        </script>
 	</head>
 		
 	<body>
+        
 		</br></br>
 		<h1 id = "Company" style = "text-align: center" >Manage Groups</h1>
-		</br></br></br></br>
-		<h1 style = "text-align: center" >This page is a work in progress...</h1>
+		</br>
+        <div id="all">
+            <button class="button" id="addGroup">Add Group</button>
+            <button class="button" id="editGroup">Edit Group</button>
+            <div id="groupList">
+                <h4 class="accordionG">Test Group 1</h4>
+                <div class="panel">
+                    <button class="accordionP">Person1</button>
+                    <button class="accordionP">Person2</button>
+                    <button class="accordionP">Person3</button>
+                </div>
+                <h4 class="accordionG">TEST Group 2</h4>
+                <div class="panel">
+                    <button class="accordionP">Person4</button>
+                    <button class="accordionP">Person5</button>
+                    <button class="accordionP">Person6</button>
+                </div>
+
+                <h4 class="accordionG">TEST Group 3</h4>
+                <div class="panel">
+                    <button class="accordionP">Person7</button>
+                    <button class="accordionP">Person8</button>
+                    <button class="accordionP">Person9</button>
+                    <button class="accordionP">Person10</button>
+                    <button class="accordionP">Person11</button>
+                    <button class="accordionP">Person12</button>
+                    <button class="accordionP">Person13</button>
+                    <button class="accordionP">Person14</button>
+                    <button class="accordionP">Person15</button>          
+                </div>
+            </div>
+            <button class="button" id="exit" onclick = "window.location.href = 'MessageDashboard.html'">Exit to Main</button>
+            <button class="button" id="save">Save</button>
+        </div>
 	</body>
 </html>
