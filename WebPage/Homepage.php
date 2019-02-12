@@ -113,7 +113,7 @@
 			}
 	}
 	//Testing to see if the submit button has been pressed referenced by name
-	if(isset($_POST['signUp']))	
+	if(isset($_POST['SignUp']))	
 	{
 		//Test to see if the email entered already exists in the table
 		$query = mysqli_query($conn, "SELECT emailAddress FROM Person WHERE emailAddress = '$eMail';");
