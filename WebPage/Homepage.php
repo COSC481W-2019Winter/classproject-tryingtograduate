@@ -101,7 +101,7 @@
 			isUser boolean,
 			ownerId int,
 			FOREIGN KEY (carrierId) REFERENCES Carrier (carrierId)
-			)");
+			);");
 		//show status
 		if ($run == TRUE)
 			{
