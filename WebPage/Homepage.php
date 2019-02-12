@@ -77,7 +77,7 @@
 	{
 		echo "Connection Successful!!!!!";
 		//output variables to make sure they are being stored properly
-		echo $fName, $lName, $eMail, $password, $phoneNum;
+		echo "$fName, $lName, $eMail, $password, $phoneNum";
 		//output is successful
 	}
 	//************************************************************************
