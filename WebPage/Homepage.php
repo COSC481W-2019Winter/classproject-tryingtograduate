@@ -25,7 +25,7 @@
 			<td id = "outter2">
 				<div id = "SU">
 					<h3 class="center" style="text-align: center">Sign-Up:</h3>
-					<form id = "Sign-Up" action = "" method = "post">
+					<form id = "Sign-Up" action = "post-method.php" method = "post">
 						<label><br>First Name:</br></label>
 						<input id = "fname" type="text" name="fname" placeholder = "First Name" />
 						<label><br>Last Name:</br></label>
@@ -101,7 +101,7 @@
 			isUser boolean,
 			ownerId int,
 			FOREIGN KEY (carrierId) REFERENCES Carrier (carrierId)
-			);");
+			)");
 		//show status
 		if ($run == TRUE)
 			{
