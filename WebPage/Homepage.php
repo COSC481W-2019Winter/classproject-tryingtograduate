@@ -125,8 +125,9 @@
 		//if username and password combination exists
 		if ($query->num_rows != 0) 
 		{
+			//routs the user to the Message Dashboard if username and password match
 			echo '<script language="javascript">';
-			echo 'alert("Welcome to Carrier Pigeon!!")';
+			echo 'window.location.href ="MessageDashboard.html"' ;
 			echo '</script>';
 		}
 		else
@@ -136,8 +137,6 @@
 			echo '</script>';
 		}
 	}	
-	
-	
 	//Close connection
 	$conn->close();
 ?>
