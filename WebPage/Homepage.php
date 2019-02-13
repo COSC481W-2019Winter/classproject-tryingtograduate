@@ -7,8 +7,6 @@
 	<script></script>
 	</head>
 
-	
-	
 	<body>
 		<h1 id = "Company" style = "text-align: center" > Carrier Pigeon </h1>
 		<table id = "tables" class = "center" CELLPADDING="30" CELLSPACING="30">
@@ -88,9 +86,11 @@
 		//Test to see if the email entered already exists in the table
 		$query = mysqli_query($conn, "SELECT emailAddress FROM Person WHERE emailAddress = '$eMail';");
 		
-		if ($query->num_rows != 0) //if username exists
+		if ($query->num_rows != 0) //if eamil exists
 		{
-			echo "Email already registered";
+			echo '<script language="javascript">';
+			echo 'alert("Email already registered.")';
+			echo '</script>';
 		}
 		else //if email does not exist
 		{
