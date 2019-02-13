@@ -7,19 +7,21 @@
 	<script></script>
 	</head>
 
+	
+	
 	<body>
 		<h1 id = "Company" style = "text-align: center" > Carrier Pigeon </h1>
 		<table id = "tables" class = "center" CELLPADDING="30" CELLSPACING="30">
 			<td id = "outter1">
 				<div id = "SI">
 					<h3 style="text-align: center">Sign-In:</h3>
-					<form id = "Sign-In">
+					<form id = "Sign-In" action = "" method = "post">
 						<label><br>Username:</br></label>
-						<input id = "username" type="text" name="username" placeholder = "Username" />
+						<input id = "usernameEmail" type="text" name="usernameEmail" placeholder = "Someone@domain.com" />
 						<label><br>Password:</br></label>
-						<input id = "password" type="password" name="passwordEst" placeholder = "Password"/>
+						<input id = "passwordEst" type="password" name="passwordEst" placeholder = "Password"/>
+						<input class = "button button1" type = "submit" name = "SignIn" value = "Sign-In" >
 					</form>
-					<button class = "button button1" name = "signIn" onclick="signIn();" >Sign-In</button>
 				</div>
 			</td>
 
@@ -59,12 +61,15 @@
 	$db_name   = "Wi2017_436_kbledsoe3"; //Database name
 	
 	//Variables created to reference input textboxes, reference html by name 
-	//$username = $_POST['username'];
+	//SignUp Variables
 	$fName = $_POST['fname'];
 	$lName = $_POST['lname'];
 	$eMail = $_POST['email'];
 	$password = $_POST['passwordNew'];
 	$phoneNum = $_POST['phone'];
+	//SignIn Variables
+	$username = $_POST['usernameEmail'];
+	$passWordEst = $_POST['passwordEst'];
 	
 	// Create connection
 	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
@@ -80,17 +85,17 @@
 		//output variables to make sure they are being stored properly
 	}
 	
-	//Testing to see if the submit button has been pressed referenced by name
+	//Testing to see if the SignUp button has been pressed referenced by html name
 	if(isset($_POST['SignUp']))	
 	{
 		//Test to see if the email entered already exists in the table
 		$query = mysqli_query($conn, "SELECT emailAddress FROM Person WHERE emailAddress = '$eMail';");
 		
-		if ($query->num_rows != 0) //if eamil exists
+		if ($query->num_rows != 0) //if username exists
 		{
 			echo '<script language="javascript">';
-			echo 'alert("Email already registered.")';
-			echo '</script>';
+				echo 'alert("Email already registered.")';
+				echo '</script>';
 		}
 		else //if email does not exist
 		{
@@ -111,6 +116,28 @@
 			}
 		}
 	}
+	//Testing to see if the SignIn button has been pressed referenced by html name
+	if(isset($_POST['SignIn']))	
+	{
+		//Test to see if the email entered for the username exists in Person table
+		$query = mysqli_query($conn, "SELECT emailAddress, passwordHash FROM Person 
+		WHERE emailAddress = '$username' AND passwordHash = '$passWordEst';");
+		//if username and password combination exists
+		if ($query->num_rows != 0) 
+		{
+			echo '<script language="javascript">';
+			echo 'alert("Welcome to Carrier Pigeon!!")';
+			echo '</script>';
+		}
+		else
+		{
+			echo '<script language="javascript">';
+			echo 'alert("User not found.")';
+			echo '</script>';
+		}
+	}	
+	
+	
 	//Close connection
 	$conn->close();
 ?>
