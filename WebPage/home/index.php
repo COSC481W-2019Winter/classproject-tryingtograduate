@@ -126,7 +126,7 @@
 		{
 			//routs the user to the Message Dashboard if username and password match
 			echo '<script language="javascript">';
-			echo 'window.location.href ="https://db2.emich.edu/~kbledsoe3/COSC481/dashboard"' ;
+			echo 'window.location.href ="../dashboard"' ;
 			echo '</script>';
 		}
 		else
