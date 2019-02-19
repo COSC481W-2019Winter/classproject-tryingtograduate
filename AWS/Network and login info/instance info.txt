@@ -1,0 +1,8 @@
+EC2 - t2.small
+Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type
+1 CPU, 2 GiB Memory, 8GiB storage
+Apache Web Server with PHP installed
+
+RDS - db.t2.small
+Instance Class	vCPU1	Memory3 (GiB)
+db.t2.small	  1	   2
