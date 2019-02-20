@@ -26,6 +26,23 @@
 			echo 'window.location.href ="MessageDashboard.html"' ;
 			echo '</script>';
 		}
+
+  //Code that needs to be added during weeks of 02/22/19 - 03/07/19
+
+  //Need to create variable for message user typed in <textarea>
+  //Implement the use of innerHTML on MessageDashboard then pass variable to PHP
+  /*function evaluateInput(){
+				var searchArea = document.getElementById("display").value;
+				var global = document.getElementById("global").innerHTML;
+				return input;
+			}*/
+
+  //Need to create code in html MessageDashboard for pop up to add name and subject line for message
+
+  //Need to create PHP for onchange event for dropdown (group and/or message)
+
+  //Need to create PHP for "cancel button"    
+
 	//Close connection
 	$conn->close();
 ?>
