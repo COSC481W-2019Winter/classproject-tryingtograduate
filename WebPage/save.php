@@ -41,7 +41,9 @@
 
   //Need to create PHP for onchange event for dropdown (group and/or message)
 
-  //Need to create PHP for "cancel button"    
+  //Need to create PHP for "cancel button"
+
+  //Need to create a seperate PHP for send/submit   
 
 	//Close connection
 	$conn->close();
