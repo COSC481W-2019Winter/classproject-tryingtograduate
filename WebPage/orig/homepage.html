@@ -3,34 +3,35 @@
 	<head>
 		<title>Carrier Pigeon</title>
 		<link rel="stylesheet" type="text/css" href="homeStyle.css">
+	<script></script>
 	</head>
 
 	<body>
 		<h1 id = "Company" style = "text-align: center" > Carrier Pigeon </h1>
-
 		<table id = "tables" class = "center" CELLPADDING="30" CELLSPACING="30">
-
 			<td id = "outter1">
 				<div id = "SI">
 					<h3 style="text-align: center">Sign-In:</h3>
-					<form id = "Sign-In">
+					<form id = "Sign-In" action = "signIn.php" method = "post">
 						<label><br>Username:</br></label>
-						<input id = "username" type="text" name="username" placeholder = "Username" />
+						<input id = "usernameEmail" type="text" name="usernameEmail" placeholder = "Someone@domain.com" />
 						<label><br>Password:</br></label>
-						<input id = "password" type="password" name="password" placeholder = "Password"/>
+						<input id = "passwordEst" type="password" name="passwordEst" placeholder = "Password"/>
+						<input class = "button button1" type = "submit" name = "SignIn" value = "Sign-In" >
 					</form>
-					<button class = "button button1" onclick="signIn();" >Sign-In</button>
 				</div>
 			</td>
 
 			<td id = "outter2">
 				<div id = "SU">
 					<h3 class="center" style="text-align: center">Sign-Up:</h3>
-					<form id = "Sign-Up">
-						<label><br>Name:</br></label>
-						<input id = "name" type="text" name="name" placeholder = "Your Name" />
+					<form id = "Sign-Up" action = "signUp.php" method = "post">
+						<label><br>First Name:</br></label>
+						<input id = "fname" type="text" name="fname" placeholder = "First Name" />
+						<label><br>Last Name:</br></label>
+						<input id = "lname" type="text" name="lname" placeholder = "Last Name" />
 						<label><br>Email:</br></label>
-						<input id = "emial" type="text" name="email" placeholder = "somename@domain.com" />
+						<input id = "email" type="text" name="email" placeholder = "somename@domain.com" />
 						<label><br>Code:</br></label>
 						<input id = "code" type="text" class = "resizedTextbox" name="code" placeholder = "####"/>
 						<button class = "getCode" onclick="emailcode.html" >Get Code</button>
@@ -40,11 +41,10 @@
 						<input id = "passwordNewCfm" type="password" name="passwordNewCnf" placeholder ="Password" />
 						<label><br>Phone:</br></label>
 						<input id = "phone" type="text" name="phone" placeholder = "###-###-####"/>
+						<input class = "button button2" type = "submit" name = "SignUp" value = "Sign-Up" >
 					</form>
-					<button class = "button button2" onclick="signUp();" >Sign-Up</button>
 				</div>
 			</td>
-
 		</table>
 		</br></br>
 	</body>
