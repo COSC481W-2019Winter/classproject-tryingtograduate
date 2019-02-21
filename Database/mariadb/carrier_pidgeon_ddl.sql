@@ -2,6 +2,7 @@ drop database if exists carrier_pidgeon;
 create database carrier_pidgeon;
 use carrier_pidgeon;
 
+drop table if exists Queue;
 drop table if exists Message;
 drop table if exists Group_JT;
 drop table if exists Groups;
@@ -44,8 +45,10 @@ create table Group_JT
   primary_key int not null auto_increment primary key,
   groupOwnerId int not null,
   groupId int not null,
+  contactId int not null,
   foreign key (groupOwnerId) references Person (uniqueId),
-  foreign key (groupId) references Groups (groupId)
+  foreign key (groupId) references Groups (groupId),
+  foreign key (contactId) references Person (uniqueId)
 );
 
 create table Message
@@ -59,4 +62,10 @@ create table Message
   templateName varchar(80),
   foreign key (ownerId) references Person (uniqueId),
   foreign key (groupId) references Groups (groupId)
+);
+
+create table Queue
+(
+  taskNum int not null auto_increment primary key,
+  messageId int not null
 );
