@@ -25,18 +25,38 @@
         <div id="all">
 						<select id="glist">
 							<option value="0">Select Group</option>
-							<option value="1">Audi</option>
-							<option value="2">BMW</option>
-							<option value="3">Citroen</option>
-							<option value="4">Ford</option>
-							<option value="5">Honda</option>
-							<option value="6">Jaguar</option>
-							<option value="7">Land Rover</option>
-							<option value="8">Mercedes</option>
-							<option value="9">Mini</option>
-							<option value="10">Nissan</option>
-							<option value="11">Toyota</option>
-							<option value="12">Volvo</option>
+
+							<?php
+								//Variables created to access the database on Wi2017_436_kbledsoe3
+							  $servername = "localhost";
+								$db_username = "kbledsoe3";     //Username for MySQL
+								$db_password = "1784793b4a";     //Password for MySQL
+								$db_name   = "Wi2017_436_kbledsoe3"; //Database name
+
+								//Variables created to reference input textboxes, reference html by name
+								//SignUp Variables
+								$UserId = 123456;
+
+
+								// Create connection
+								$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+
+								$sql = "SELECT groupId, groupName FROM Groups WHERE ownerId = $UserId";
+								$result = $conn->query($sql);
+
+								if ($result->num_rows > 0) {
+								    // output data of each row
+								    while($row = $result->fetch_assoc()) {
+								        echo "<option value=\"" .$row["groupId"]. "\">".$row[groupName]"</option>";
+								    }
+								} else {
+								    echo "<option value=\"0\">You have no groups</option>";
+								}
+
+
+								$conn->close();
+							?>
+
 						</select>
             <button class="button" id="addGroup" onclick="newGroupFunc()">Add Group</button>
             <button class="button" id="editGroup">Edit Group</button>
