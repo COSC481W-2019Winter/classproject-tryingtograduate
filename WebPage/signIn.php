@@ -3,6 +3,9 @@
 	$username = filter_input(INPUT_POST, 'usernameEmail');
 	$passWordEst = filter_input(INPUT_POST, 'passwordEst');
 
+	//hash pasword
+	$hash = password_hash($passWordEst, PASSWORD_BCRYPT);
+	
 	//Variables created to access the database on Wi2017_436_kbledsoe3
     $servername = "localhost";
 	$db_username = "kbledsoe3";     //Username for MySQL
@@ -20,8 +23,7 @@
 		}
 
 	//Sets a variable ($query) equal to the mysql query we want to run
-	$query = "SELECT emailAddress, passwordHash FROM Person WHERE emailAddress = '$username' AND passwordHash = '$passWordEst'";
-
+	$query = "SELECT emailAddress, passwordHash FROM Person WHERE emailAddress = '$username' AND passwordHash = '$hash'";
 	//runs the query and stores the result in a variable called $result
 	$result = $conn->query("$query");
 
