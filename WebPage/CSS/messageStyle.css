@@ -1,0 +1,129 @@
+#Company{
+  font-size: 60pt;
+  text-shadow:
+    -2px -2px 0 #2a2825,
+    2px -2px 0 #2a2825,
+    -2px 2px 0 #2a2825,
+    2px 2px 0 #2a2825;
+  font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;
+}
+.center{
+  margin: 0 auto;
+}
+.button {
+  background-color: #0079a6;
+  border: 1px solid #2a2825;
+  border-radius: 12px;
+  font-size: 20px;
+  color: white;
+  padding: 20px 20px;
+  text-align: center;
+  margin: 20px 0;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;
+  width: 200px;
+  opacity: .9;
+}
+#topRight{
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 200px;
+}
+.button:hover{
+	background-color: #2a2825;
+}
+body{
+	background-image: url("../background1.jpg");
+	font-size: 14pt;
+	font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;
+	color: white;
+}
+#message{
+	border: 2px solid black;
+	width: 65%;
+	height: 300px;
+	text-align: left;
+	display: block;
+}
+p{
+	display: inline-block;
+}
+/*wrapper that centers the dropdown navigation bars*/
+#wrapper{
+	text-align: center;
+	width:auto;
+	margin:0 auto;
+}
+/*Much of the code below is pulled from 
+https://www.w3schools.com/howto/howto_css_dropdown_navbar.asp */
+/* Navbar container */
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  font-family: "Eras ITC", "Eras Light ITC",  sans-serif;
+  width: 21%;
+  display: inline-block;
+}
+
+/* Links inside the navbar */
+.navbar a {
+  display: inline-block;
+  font-size: 16px;
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+  text-align: center;
+}
+
+/* The dropdown container */
+.dropdown {
+  overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+  font-size: 16px; 
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit; 
+  margin: 0; 
+}
+
+/* Add a blue background color to navbar links on hover */
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: #0079a6;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
