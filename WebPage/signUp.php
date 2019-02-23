@@ -5,6 +5,9 @@
 	$eMail = filter_input(INPUT_POST, 'email');
 	$password = filter_input(INPUT_POST, 'passwordNew');
 	$phoneNum = filter_input(INPUT_POST, 'phone');
+	
+	//run password through hashing function
+	$hash = password_hash($password, PASSWORD_BCRYPT);
 
 	//Variables created to access the database on Wi2017_436_kbledsoe3
     $servername = "localhost";
@@ -27,7 +30,7 @@
 
 	//Sets a variable ($query2) equal to the mysql query we run to add a user to the Person table
 	$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash, phoneNumber)
-				VALUES ('$fName', '$lName', '$eMail', '$password', '$phoneNum')";
+				VALUES ('$fName', '$lName', '$eMail', '$hash', '$phoneNum')";
 
 	//runs the query and stores the result in a variable called $result
 	$result = $conn->query("$query");
