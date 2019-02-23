@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<title>Carrier Pigeon</title>
-		<link rel="stylesheet" type="text/css" href="groupStyle.css">
-    <link rel="stylesheet" type="text/css" href="../home/homeStyle.css">
+		<link rel="stylesheet" type="text/css" href="../CSS/groupStyle.css">
+		<link rel="stylesheet" type="text/css" href="../CSS/homeStyle.css">
 
 		<script>
 			function newGroupFunc() {
