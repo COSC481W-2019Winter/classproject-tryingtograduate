@@ -3,13 +3,16 @@
 	<head>
 		<title>Carrier Pigeon</title>
 		<link rel="stylesheet" type="text/css" href="messageStyle.css">
-	</head>
-		
+	</head>	
 	<body>
-		<!--<p>Welcome ("userName")</p>-->
+		<script>
+			var user = localStorage.getItem("userId");
+			alert(localStorage.getItem("userId"));
+		</script>
 		</br>
+		<a href= "passUser.php" ></a>
 		<h1 id = "Company" style = "text-align: center" >Message Dashboard</h1>
-		<button id = "topRight" class = "button button0" onclick = "window.location.href ='../groups'" >
+		<button id = "topRight" class = "button button0" onclick = "window.location.href ='Groups.html'" >
 		Edit Groups</button>
 		</br>
 		<div id = "wrapper">
@@ -24,7 +27,7 @@
 				</div>
 			</div>
 			<div class="navbar">
-			<a href="#news">Save Message</a>
+			<a href= "save.php" >Save Message</a>
 			</div>
 			<div class="navbar">
 				<div class="dropdown">
@@ -38,15 +41,15 @@
 			</div>
 		</div>
 		</br></br></br>
-		<textarea id = "message" class = "center">Type message here...</textarea>
+		<textarea id = "message" class = "center" name = "message">Type message here...</textarea>
 		</br></br>
 		<table class = "center">
 		<td>
-			<tr><td><button class = "button buttonA" onclick = "window.location.href ='../dashboard'" >
+			<tr><td><button class = "button buttonA" onclick = "window.location.href ='MessageDashboard.html'" >
 			Send</button></td>
-			<td><button class = "button buttonB" onclick = "window.location.href ='../home'" >
+			<td><button class = "button buttonB" onclick = "window.location.href ='Homepage.html'" >
 			Sign-Out</button></td>
-			<td><button class = "button buttonC" onclick = "window.location.href = '../dashboard'">
+			<td><button class = "button buttonC" onclick = "window.location.href = 'MessageDashboard.html'">
 			Cancel</button></td>
 		</td>
 		</table>
