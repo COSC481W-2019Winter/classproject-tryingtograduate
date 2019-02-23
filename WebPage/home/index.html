@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Carrier Pigeon</title>
+		<link rel="stylesheet" type="text/css" href="../CSS/homeStyle.css">
+		<script>
+				function passUser(){
+					var user = localStorage.setItem('userId', document.getElementById("usernameEmail").value );
+				}
+		</script>
+	</head>
+
+	<body>
+		<h1 id = "Company" style = "text-align: center" > Carrier Pigeon </h1>
+		<table id = "tables" class = "center" CELLPADDING="30" CELLSPACING="30">
+			<td id = "outter1">
+				<div id = "SI">
+					<h3 style="text-align: center">Sign-In:</h3>
+					<form id = "Sign-In" action = "../PHP/signIn.php" method = "post">
+						<label><br>Username:</br></label>
+						<input id = "usernameEmail" type="text" name="usernameEmail" placeholder = "Someone@domain.com" />
+						<label><br>Password:</br></label>
+						<input id = "passwordEst" type="password" name="passwordEst" placeholder = "Password"/>
+						<input class = "button button1" type = "submit" name = "SignIn" value = "Sign-In" onclick = "passUser();" >
+					</form>
+				</div>
+			</td>
+			
+			<td id = "outter2">
+				<div id = "SU">
+					<h3 class="center" style="text-align: center">Sign-Up:</h3>
+					<form id = "Sign-Up" action = "../PHP/signUp.php" method = "post">
+						<label><br>First Name:</br></label>
+						<input id = "fname" type="text" name="fname" placeholder = "First Name" />
+						<label><br>Last Name:</br></label>
+						<input id = "lname" type="text" name="lname" placeholder = "Last Name" />
+						<label><br>Email:</br></label>
+						<input id = "email" type="text" name="email" placeholder = "somename@domain.com" />
+						<label><br>Code:</br></label>
+						<input id = "code" type="text" class = "resizedTextbox" name="code" placeholder = "####"/>
+						<button class = "getCode" onclick="emailcode.html" >Get Code</button>
+						<label><br>Password:</br></label>
+						<input id = "passwordNew" type="password" name="passwordNew" placeholder = "Password"/>
+						<label><br>Confirm:</br></label>
+						<input id = "passwordNewCfm" type="password" name="passwordNewCnf" placeholder ="Password" />
+						<label><br>Phone:</br></label>
+						<input id = "phone" type="text" name="phone" placeholder = "###-###-####"/>
+						<input class = "button button2" type = "submit" name = "SignUp" value = "Sign-Up" >
+					</form>
+				</div>
+			</td>
+		</table>
+		</br></br>
+	</body>
+</html>
