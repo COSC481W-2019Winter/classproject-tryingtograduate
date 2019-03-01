@@ -1,6 +1,6 @@
-drop database if exists carrier_pidgeon;
-create database carrier_pidgeon;
-use carrier_pidgeon;
+drop database if exists Wi2017_436_kbledsoe3;
+create database Wi2017_436_kbledsoe3;
+use Wi2017_436_kbledsoe3;
 
 drop table if exists Queue;
 drop table if exists Message;
