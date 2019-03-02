@@ -58,7 +58,7 @@ create table Message
   groupId int not null,
   subject varchar(80) not null,
   content longtext,
-  lastSent date,
+  lastSent datetime,
   templateName varchar(80),
   foreign key (ownerId) references Person (uniqueId),
   foreign key (groupId) references Groups (groupId)
