@@ -43,6 +43,22 @@ insert into Message(messageId, ownerId, groupId, subject, content)
 insert into Queue (messageId) values (100);
 insert into Queue (messageId) values (200);
 
+select
+    *
+  from
+    Message
+;
+
+select
+    *
+  from
+    Queue
+;
+
+delete
+  from
+    Message
+;
 
 select
     Queue.messageId as messageId,
@@ -135,15 +151,4 @@ update
     lastSent = sysdate()
   where
     messageId = 100
-;
-
-select
-    *
-  from
-    Message
-;
-
-delete
-  from
-    Message
 ;
