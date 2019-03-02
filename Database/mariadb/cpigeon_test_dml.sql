@@ -115,3 +115,35 @@ select
   where
     carrierId = 1
 ;
+
+select
+    count(*)
+  from
+    Queue
+;
+
+delete
+  from
+    Queue
+  where
+    messageId = 100
+;
+
+update
+    Message
+  set
+    lastSent = sysdate()
+  where
+    messageId = 100
+;
+
+select
+    *
+  from
+    Message
+;
+
+delete
+  from
+    Message
+;
