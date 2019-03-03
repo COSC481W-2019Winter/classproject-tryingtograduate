@@ -1,6 +1,6 @@
 1) chmod 400 /path/ttg.pem
 
-2) ssh -i /path/ttg.pem ex2-user@ec2-52-15-67-84.us-east-2.compute.amazonaws.com
+2) ssh -i /path/ttg.pem ec2-user@ec2-52-15-67-84.us-east-2.compute.amazonaws.com
 
 3) yes when/if prompted (think it only shows up at the first login).
 
