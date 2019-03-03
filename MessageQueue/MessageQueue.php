@@ -122,15 +122,15 @@
     $messageResult = mysqli_query($conn, $messageQuery);
     $rawMessage = mysqli_fetch_array($messageResult);
 
-    $result->id = $rawMessage['messageId'];
-    $result->firstName = $rawMessage['firstName'];
-    $result->lastName = $rawMessage['lastName'];
-    $result->emailAddress = $rawMessage['emailAddress'];
-    $result->phoneNumber = $rawMessage['phoneNumber'];
+    $result->setId($rawMessage['messageId']);
+    $result->setFirstName($rawMessage['firstName']);
+    $result->setLastName($rawMessage['lastName']);
+    $result->setEmail($rawMessage['emailAddress']);
+    $result->setPhone($rawMessage['phoneNumber']);
     $carrierId = $rawMessage['carrierId'];
     $groupId = $rawMessage['groupId'];
-    $result->subject = $rawMessage['subject'];
-    $result->content = $rawMessage['content'];
+    $result->setSubject($rawMessage['subject']);
+    $result->setContent($rawMessage['content']);
 
     if($carrierId != null)
     {
@@ -145,7 +145,7 @@
       
       $carrierResult = mysqli_query($conn, $carrierQuery);
       $rawCarrier = mysqli_fetch_array($carrierResult);
-      $result->carrierEmail = $rawCarrier['emailAddress'];
+      $result->setCarrierEmail($rawCarrier['emailAddress']);
     }
 
     if($groupId == null)
@@ -180,12 +180,13 @@
           contactId = uniqueId
       ;";
 
-      $result->group = array();
+      $group = array();
       $groupResult = mysqli_query($conn, $groupQuery);
       while($members = mysqli_fetch_array($groupResult))
       {
-        array_push($result->group, new Contact($members['emailAddress'], $members['phoneNumber']));
+        array_push($group, new Contact($members['emailAddress'], $members['phoneNumber']));
       }
+      $result->setGroup($group);
     }
     return $result;
   }
@@ -238,21 +239,22 @@
         $allowExit = false;
         $message = getNextMessage();
 
-        /*echo "MessageId:    " . $message->id . "\n";
-        echo "firstName:    " . $message->firstName . "\n";
-        echo "lastName:     " . $message->lastName . "\n";
-        echo "email:        " . $message->emailAddress . "\n";
-        echo "phoneNumber:  " . $message->phoneNumber . "\n";
-        $groupLength = count($message->group);
+        /*echo "MessageId:    " . $message->getId() . "\n";
+        echo "firstName:    " . $message->getFirstName() . "\n";
+        echo "lastName:     " . $message->getLastName() . "\n";
+        echo "email:        " . $message->getEmailAddress() . "\n";
+        echo "phoneNumber:  " . $message->getPhoneNumber() . "\n";
+        $group = $message->getGroup();
+        $groupLength = count($group);
         echo "group:        " . "\n";
         for($i = 0; $i < $groupLength; $i++)
         {
-          echo "     " . $message->group[$i]->email . ", " . $message->group[$i]->phone . "\n";
+          echo "     " . $group[$i]->email . ", " . $group[$i]->phone . "\n";
         }
-        echo "subject:      " . $message->subject . "\n";
-        echo "content:      " . $message->content . "\n\n";*/
+        echo "subject:      " . $message->getSubject() . "\n";
+        echo "content:      " . $message->getContent() . "\n\n";*/
 
-        removeQueuedMessage($message->id);
+        removeQueuedMessage($message->getId());
         $allowExit = true;
       }
     }
