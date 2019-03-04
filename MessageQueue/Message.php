@@ -2,114 +2,70 @@
   class Message
   {
     private $id;
-    private $firstName;
-    private $lastName;
-    private $emailAddress;
-    private $phoneNumber;
-    private $carrierEmail;
+    private $user;
     private $group;
     private $subject;
     private $content;
 
-    function __construct()
+    public function __construct(int $id,
+                                Person $user,
+                                Group $group = null,
+                                string $subject,
+                                string $content)
     {
-      $this->id = null;
-      $this->firstName = null;
-      $this->lastName = null;
-      $this->emailAddress = null;
-      $this->phoneNumber = null;
-      $this->carrierEmail = null;
-      $this->group = null;
-      $this->subject = null;
-      $this->content = null;
+      $this->id = $id;
+      $this->user = $user;
+      $this->group = $group;
+      $this->subject = $subject;
+      $this->content = $content;
     }
 
-    function setId($id)
+    public function setId(int $id): void
     {
       $this->id = $id;
     }
 
-    function setFirstName($firstName)
+    public function setUser(Person $user): void
     {
-      $this->firstName = $firstName;
+      $this->user = $user;
     }
 
-    function setLastName($lastName)
+    public function setGroup(Group $group): void
     {
-      $this->lastName = $lastName;
+      $this->group = $group;
     }
 
-    function setEmail($email)
-    {
-      $this->emailAddress = $email;
-    }
-
-    function setPhone($phone)
-    {
-      $this->phoneNumber = $phone;
-    }
-
-    function setCarrierEmail($carrierEmail)
-    {
-      $this->carrierEmail = $carrierEmail;
-    }
-
-    function setGroup($groupId)
-    {
-      $this->group = $groupId;
-    }
-
-    function setSubject($subject)
+    public function setSubject(string $subject): void
     {
       $this->subject = $subject;
     }
 
-    function setContent($content)
+    public function setContent(string $content): void
     {
       $this->content = $content;
     }
 
-    function getId()
+    public function getId(): int
     {
       return $this->id;
     }
 
-    function getFirstName()
+    public function getUser(): Person
     {
-      return $this->firstName;
+      return $this->user;
     }
 
-    function getLastName()
-    {
-      return $this->lastName;
-    }
-
-    function getEmail()
-    {
-      return $this->emailAddress;
-    }
-
-    function getPhone()
-    {
-      return $this->phoneNumber;
-    }
-
-    function getCarrierEmail()
-    {
-      return $this->carrierEmail;
-    }
-
-    function getGroup()
+    public function getGroup(): ?Group
     {
       return $this->group;
     }
 
-    function getSubject()
+    public function getSubject(): string
     {
       return $this->subject;
     }
 
-    function getContent()
+    public function getContent(): string
     {
       return $this->content;
     }

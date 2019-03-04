@@ -2,7 +2,16 @@
   include('Database.php');
   include('QueueConfig.php');
   include('Message.php');
-  include('Contact.php');
+  include('Person.php');
+  include('Carrier.php');
+  include('Group.php');
+
+  $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+
+  if(!$conn)
+  {
+    die('Unable to connect: ' . mysql_error($conn));
+  }
 
   $allowExit = true;
   $forceExit = false;
@@ -14,7 +23,7 @@
   pcntl_signal(SIGTERM, "signalHandler");
   pcntl_signal(SIGHUP, "signalHandler");
 
-  function signalHandler($signal)
+  function signalHandler($signal): void
   {
     global $allowExit, $forceExit;
     
@@ -28,7 +37,7 @@
     } 
   }
 
-  function checkExit()
+  function checkExit(): void
   {
     global $allow_exit, $force_exit;
 
@@ -38,14 +47,9 @@
     }
   }
 
-  function hasMessage()
+  function hasMessage(): bool
   {
-    $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
-
-    if(!$conn)
-    {
-      die('Unable to connect: ' . mysql_error($conn));
-    }
+    global $conn
 
     $result = false;
 
@@ -67,28 +71,21 @@
     return $result;
   }
 
-  function getNextMessage()
+  function getNextMessage(): ?Contact
   {
-    $result = null;
-
-    $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
-
-    if(!$conn)
-    {
-      die('Unable to connect: ' . mysql_error($conn));
-    }
-
-    $result = new Message();
+    global $conn
 
     $messageQuery =
     "SELECT
           Queue.messageId AS messageId,
+          uniqueId,
           firstName,
           lastName,
           emailAddress,
           phoneNumber,
           carrierId,
-          groupId,
+          Message.groupId AS groupId,
+          groupName,
           subject,
           content
         FROM
@@ -103,6 +100,16 @@
           Message
         ON
           Queue.messageId = Message.messageId
+        INNER JOIN
+        (
+          SELECT
+              groupId,
+              groupName
+            FROM
+              Groups
+        ) AS Groups
+        ON
+          Message.groupId = Groups.groupId
         INNER JOIN
         (
           SELECT
@@ -122,20 +129,25 @@
     $messageResult = mysqli_query($conn, $messageQuery);
     $rawMessage = mysqli_fetch_array($messageResult);
 
-    $result->setId($rawMessage['messageId']);
-    $result->setFirstName($rawMessage['firstName']);
-    $result->setLastName($rawMessage['lastName']);
-    $result->setEmail($rawMessage['emailAddress']);
-    $result->setPhone($rawMessage['phoneNumber']);
+    $messageId = $rawMessage['messageId'];
+    $ownerId = $ramessage['uniqueId'];
+    $user = new Person($ownerId,
+                       $rawMessage['firstName'],
+                       $rawMessage['lastName'],
+                       $rawMessage['emailAddress'],
+                       $rawMessage['phoneNumber'],
+                       null, true, null);
     $carrierId = $rawMessage['carrierId'];
     $groupId = $rawMessage['groupId'];
-    $result->setSubject($rawMessage['subject']);
-    $result->setContent($rawMessage['content']);
+    $groupName = $rawMessage['groupName'];
+    $subject = $rawMessage['subject'];
+    $content = $rawMessage['content'];
 
     if($carrierId != null)
     {
       $carrierQuery =
       "SELECT
+          carrierName,
           emailAddress
         FROM
           Carrier
@@ -145,8 +157,18 @@
       
       $carrierResult = mysqli_query($conn, $carrierQuery);
       $rawCarrier = mysqli_fetch_array($carrierResult);
-      $result->setCarrierEmail($rawCarrier['emailAddress']);
+
+      $carrier = ($carrierId,
+                  $rawCarrier['carrierName'],
+                  $rawCarrier['emailAddress']);
+
+      $user->setCarrier($carrier);
     }
+
+    $result = new Message($messageId,
+                          $user,
+                          $subject,
+                          $content);
 
     if($groupId == null)
     {
@@ -156,6 +178,7 @@
     {
       $groupQuery =
       "SELECT
+          uniqueId,
           emailAddress,
           phoneNumber
         from
@@ -180,19 +203,35 @@
           contactId = uniqueId
       ;";
 
-      $group = array();
+      $groupMembers = [];
       $groupResult = mysqli_query($conn, $groupQuery);
+      $currPerson = null;
       while($members = mysqli_fetch_array($groupResult))
       {
-        array_push($group, new Contact($members['emailAddress'], $members['phoneNumber']));
+        $currPerson = new Person($members['uniqueId'],
+                                null, null,
+                                $members['emailAddress'],
+                                null, null, null,
+                                $members['phoneNumber'],
+                                null, false, $ownerId);
+
+        array_push($groupMembers, $currPerson);
       }
+
+      $group = new Group($groupId,
+                         $groupName,
+                         $owerId,
+                         $groupMembers);
+
       $result->setGroup($group);
     }
     return $result;
   }
 
-  function removeQueuedMessage($messageId)
+  function removeQueuedMessage($messageId): void
   {
+    global $conn
+
     $delQuery =
     "DELETE 
         FROM
@@ -210,24 +249,8 @@
         messageId = '$messageId'
     ;";
 
-    $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
-
-    if(!$conn)
-    {
-      die('Unable to connect: ' . mysql_error($conn));
-    }
-
     $delResult = mysqli_query($conn, $delQuery);
     $updtResult = mysqli_query($conn, $updtQuery);
-
-    /*if($delResult)
-    {
-      echo "message " . $messageId . " deleted.\n\n";
-    }
-    else
-    {
-      echo "Error: message " . $messageId . " not deleted.\n\n";
-    }*/
   }
 
   while(!$forceExit)
