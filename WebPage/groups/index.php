@@ -1,4 +1,5 @@
 <!doctype html>
+<!Group Page>
 <html>
 	<head>
 		<title>Carrier Pigeon</title>
@@ -6,6 +7,16 @@
     <link rel="stylesheet" type="text/css" href="../CSS/homeStyle.css">
 
 		<script>
+			//function to grab the value of the "Username:" field on the Sign-In form of homepage
+			//method is called by "onload" in <body> tag
+			function user(){
+				var user = "Not Working"
+				//loads the value into a variable called user
+				//use this value in sql query: SELECT uniqueId FROM Person where emailAddress = value in user var
+				user = localStorage.getItem("userId");
+				//echo's value to screen with message stating who is logged in
+				document.getElementById("user").innerHTML = "Logged in as:  " + user;
+			}
 			function newGroupFunc() {
 				var x = document.getElementById("newGroup");
 				if (x.style.display === "none") {
@@ -29,10 +40,8 @@
 			}
 		</script>
 	</head>
-
-	<body>
-
-		</br></br>
+	<body onload = "user();">
+		<h3 id = "user" style = "text-align: left" ><span id = "user"></span></h3>
 		<h1 id = "Company" style = "text-align: center" >Manage Groups</h1>
 		</br>
         <div id="all">
