@@ -1,4 +1,5 @@
-<?php session_start(); ?>
+<?php session_start();
+?>
 <!doctype html>
 <!Group Page>
 <html>
@@ -53,6 +54,7 @@
 						<select id="glist" name="glist" onchange="this.form.submit()">
 							<option value="0">Select Group</option>
 							<?php
+								session_start();
 								//Variables created to access the database on Wi2017_436_kbledsoe3
 							  $servername = "localhost";
 								$db_username = "kbledsoe3";     //Username for MySQL
@@ -63,17 +65,14 @@
 								//SignUp Variables
 								$UserEmail = $_SESSION['currentUserEmail'];
 
+
 								// Create connection
 								$conn = new mysqli($servername, $db_username, $db_password, $db_name);
-								$result = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE emailAddress = $UserEmail';");
-								if ($result->num_rows > 0) {
-								    // output data of each row
-								    while($row = $result->fetch_assoc()) {
-								       $userId = $row["uniqueId"];
-							    	}
-								} else {
+								$sql = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail' limit 1";
+								$result = $conn->query($sql);
+								$id = mysqli_fetch_object($result);
+								$UserId = $id->uniqueId;
 
-								}
 
 								$sql = "SELECT groupId, groupName FROM Groups WHERE ownerId = $UserId";
 								$result = $conn->query($sql);
@@ -133,12 +132,14 @@
 							</tr>
 
 							<?php
+							session_start();
 								//Variables created to access the database on Wi2017_436_kbledsoe3
 							  $servername = "localhost";
 								$db_username = "kbledsoe3";     //Username for MySQL
 								$db_password = "1784793b4a";     //Password for MySQL
 								$db_name   = "Wi2017_436_kbledsoe3"; //Database name
 									$selectedGroup = $_POST['glist'];
+									$_SESSION['currentGroup']= $selectedGroup;
 									// Create connection
 									$conn = new mysqli($servername, $db_username, $db_password, $db_name);
 									if(isset($_POST['glist'])){
@@ -173,6 +174,7 @@
 
 <!-- CHANGE 5.0 -->
 <?php
+	session_start();
 	//Variables created to access the database on Wi2017_436_kbledsoe3
   $servername = "localhost";
 	$db_username = "kbledsoe3";     //Username for MySQL
@@ -182,13 +184,19 @@
 	//Variables created to reference input textboxes, reference html by name
 	//SignUp Variables
 	$newGroupName = $_POST['newGName'];
-  $UserEmail = $_POST['uEmail'];
+
+	$UserEmail = $_SESSION['currentUserEmail'];
+	//Get user ID from Session
+	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+	$sql = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail' limit 1";
+	$result = $conn->query($sql);
+	$id = mysqli_fetch_object($result);
+	$UserId = $id->uniqueId;
 
 
 	// Create connection
 	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
 	// Check connection
-	$uid = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE emailAddress = $UserEmail';");
 
 	//Testing to see if the SignUp button has been pressed referenced by html name
 	if(isset($_POST['addGtoDB']))
@@ -229,7 +237,7 @@
 	$lname = $_POST['newLname'];
 	$phone = $_POST['newCphone'];
 	$email = $_POST['newCemail'];
-	$selectedGroup = $_POST['groupPicked'];
+	$selectedGroup = $_SESSION['currentGroup'];
 
 
 	if(isset($_POST['addCtoDB']))
