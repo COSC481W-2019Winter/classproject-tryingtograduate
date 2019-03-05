@@ -1,5 +1,4 @@
 <?php session_start();
-	$example = $_POST['glist'];
 ?>
 <!doctype html>
 <!Group Page>
@@ -51,7 +50,6 @@
 		</br>
         <div id="all">
 					<form name="glist" action="" method="post">
-						<input type="hidden" id="uEmail" name="uEmail">
 						<select id="glist" name="glist" onchange="this.form.submit()" >
 							<option value="0">Select Group</option>
 							<?php
@@ -140,10 +138,11 @@
 								$db_password = "1784793b4a";     //Password for MySQL
 								$db_name   = "Wi2017_436_kbledsoe3"; //Database name
 									$selectedGroup = $_POST['glist'];
-									$_SESSION['currentGroup']= $selectedGroup;
+
 									// Create connection
 									$conn = new mysqli($servername, $db_username, $db_password, $db_name);
 									if(isset($_POST['glist'])){
+										$_SESSION['currentGroup']= $selectedGroup;
 
 										$sql = "SELECT Person.firstName, Person.lastName, Person.emailAddress, Person.phoneNumber FROM Person, Group_JT
 											WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId;";
