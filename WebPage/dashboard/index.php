@@ -28,30 +28,6 @@
 	</head>
 	<body onload = "user();">
 		</br>
-		<?php
-			$username = 'kristal.bledsoe@gmail.com';
-			$UserId = '16';
-			//Variables created to access the database on Wi2017_436_kbledsoe3
-			$servername = "localhost";
-			$db_username = "kbledsoe3";     //Username for MySQL
-			$db_password = "1784793b4a";     //Password for MySQL
-			$db_name   = "Wi2017_436_kbledsoe3"; //Database name
-
-			// Create connection
-			$conn = new mysqli($servername, $db_username, $db_password, $db_name);
-			// Check connection
-			if ($conn->connect_error)
-			{
-				echo "could not establish connection to db2...";
-				die("Connection failed: " . $conn->connect_error);
-			}
-			else
-			{
-				echo "Successful Connection to DB2!";
-			}
-			$conn->close();
-		?>
-
 		<h1 id = "Company" style = "text-align: center" >Message Dashboard</h1>
 		<h2 id = "user" style = "text-align: center" ><span id = "user"></span></h2>
 		<button id = "topRight" class = "button button0" onclick = "window.location.href ='../groups/index.php'" >
@@ -86,9 +62,9 @@
 		<div id="saveMessage" style = "text-align: center" class="savemessage">
 			<form action = "" method = "post">
 				<label class = "savemessage">Message name:</label>
-				<input type="text" style = "width:10%" name="newMsgName" placeholder="Message Name">
+				<input type="text" style = "width:10%" name="newMsgName" placeholder="Message Name" id = "tempName">
 				<label>Subject:</label>
-				<input type="text" style = "width:38%" name="newMsgSubject" placeholder="Message Subject">
+				<input type="text" style = "width:38%" name="newMsgSubject" placeholder="Message Subject" id = "tempSubject">
 				</br></br>
 				<input id="addMsgButton" type="submit" name="addMsgToDB" value="SAVE" onclick="saveMessageFunc">
 				<button id = "cancel" onclick = "saveMessageFunc">CANCEL</button>
@@ -109,3 +85,67 @@
 		</table>
 	</body>
 </html>
+<?php
+	//Variables needed to save the message
+	// CODE FOR NEW CONTACT
+	$tempName = $_POST['tempName'];
+	$tempSubject = $_POST['tempSubject'];
+	$tempMsg = $_POST['message'];
+	$ownerId = '16';
+	$groupId = '1';
+	
+	//Variables created to access the database on Wi2017_436_kbledsoe3
+	$servername = "localhost";
+	$db_username = "kbledsoe3";     //Username for MySQL
+	$db_password = "1784793b4a";     //Password for MySQL
+	$db_name   = "Wi2017_436_kbledsoe3"; //Database name
+
+	// Create connection
+	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+	// Check connection
+	if ($conn->connect_error)
+	{
+		echo "could not establish connection to db2...";
+		die("Connection failed: " . $conn->connect_error);
+	}
+	else
+	{
+		echo "Successful Connection to DB2!";
+	}
+	//check to see if SAVE button has been clicked		
+	if(isset($_POST['addMsgButton']))
+	{
+		//Test to see if the template information entered already exists in the table
+		$query2 = mysqli_query($conn, "SELECT * FROM Message WHERE templateName = '$tempName' AND subject = '$tempSubject' AND ownerId = '$UserId';");
+
+		if ($query2->num_rows != 0) //if username exists
+		{
+				echo '<script language="javascript">';
+				echo 'alert("Template already Exists.")';
+				echo '</script>';
+		}
+		else //if template does not exist
+		{
+			//Inserts new record into table from sql statement
+			mysqli_query($conn, "INSERT INTO Person(ownerId, groupId, subject, content, templateName)
+				VALUES ('$ownerId','$groupId', '$tempSubject', '$tempMsg', '$tempName')");
+
+			//Check the status of the query
+			if (mysqli_affected_rows($conn) > 0)
+			{
+				echo '<script language="javascript">';
+				echo 'alert("Template added successfully!!")';
+				echo '</script>';
+				// Re-route
+				echo '<script language="javascript">';
+				echo 'window.location.href ="../dashboard/"' ;
+				echo '</script>';
+			}
+			else
+			{
+				echo "Template not added";
+			}
+		}
+	}		
+	$conn->close();
+?>
