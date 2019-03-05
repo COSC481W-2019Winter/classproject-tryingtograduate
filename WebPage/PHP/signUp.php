@@ -41,7 +41,7 @@
 			echo '</script>';
 			//rerout the user from this php file back to homepage to try again
 			echo '<script language="javascript">';
-			echo 'window.location.href ="Homepage.html"' ;
+			echo 'window.location.href ="../home"' ;
 			echo '</script>';
 		}
 	else
@@ -58,7 +58,7 @@
 					echo '</script>';
 					//rerouts user to homepage to sign in with new credentials
 					echo '<script language="javascript">';
-					echo 'window.location.href ="Homepage.html"' ;
+					echo 'window.location.href ="../home"' ;
 					echo '</script>';
 				}
 			else
