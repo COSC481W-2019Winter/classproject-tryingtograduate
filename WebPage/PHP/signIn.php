@@ -30,7 +30,7 @@
 		{
 		//routs the user to the Message Dashboard if username and password were found in same row of table
 			echo '<script language="javascript">';
-			echo 'window.location.href ="MessageDashboard.html"' ;
+			echo 'window.location.href ="../dashboard"' ;
 			echo '</script>';
 		}
 	else
@@ -42,7 +42,7 @@
 			echo '</script>';
 			//rerout the user from this php file back to homepage to try again
 			echo '<script language="javascript">';
-			echo 'window.location.href ="Homepage.html"' ;
+			echo 'window.location.href ="../home"' ;
 			echo '</script>';
 		}
 
