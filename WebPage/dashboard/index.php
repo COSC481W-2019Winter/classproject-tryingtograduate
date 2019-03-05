@@ -62,12 +62,12 @@
 		<div id="saveMessage" style = "text-align: center" class="savemessage">
 			<form action = "" method = "post">
 				<label class = "savemessage">Message name:</label>
-				<input type="text" style = "width:10%" name="newMsgName" placeholder="Message Name" id = "tempName">
+				<input type="text" style = "width:10%" placeholder="Message Name" id = "tempName" name = "tempName">
 				<label>Subject:</label>
-				<input type="text" style = "width:38%" name="newMsgSubject" placeholder="Message Subject" id = "tempSubject">
+				<input type="text" style = "width:38%" placeholder="Message Subject" id = "tempSubject" name = "tempSubject">
 				</br></br>
-				<input id="addMsgButton" type="submit" name="addMsgToDB" value="SAVE" onclick="saveMessageFunc">
-				<button id = "cancel" onclick = "saveMessageFunc">CANCEL</button>
+				<input id="addMsgButton" name = "addMsgButton" type="submit" value="SAVE">
+				<button id = "cancel">CANCEL</button>
 			</form>
 		</div>
 		</br></br>
@@ -87,7 +87,6 @@
 </html>
 <?php
 	//Variables needed to save the message
-	// CODE FOR NEW CONTACT
 	$tempName = $_POST['tempName'];
 	$tempSubject = $_POST['tempSubject'];
 	$tempMsg = $_POST['message'];
@@ -116,7 +115,7 @@
 	if(isset($_POST['addMsgButton']))
 	{
 		//Test to see if the template information entered already exists in the table
-		$query2 = mysqli_query($conn, "SELECT * FROM Message WHERE templateName = '$tempName' AND subject = '$tempSubject' AND ownerId = '$UserId';");
+		$query2 = mysqli_query($conn, "SELECT * FROM Message WHERE templateName = '$tempName' AND subject = '$tempSubject' AND ownerId = '$ownerId';");
 
 		if ($query2->num_rows != 0) //if username exists
 		{
@@ -127,7 +126,7 @@
 		else //if template does not exist
 		{
 			//Inserts new record into table from sql statement
-			mysqli_query($conn, "INSERT INTO Person(ownerId, groupId, subject, content, templateName)
+			mysqli_query($conn, "INSERT INTO Message(ownerId, groupId, subject, content, templateName)
 				VALUES ('$ownerId','$groupId', '$tempSubject', '$tempMsg', '$tempName')");
 
 			//Check the status of the query
@@ -136,14 +135,16 @@
 				echo '<script language="javascript">';
 				echo 'alert("Template added successfully!!")';
 				echo '</script>';
-				// Re-route
+				// Re-route back to dashboard
 				echo '<script language="javascript">';
 				echo 'window.location.href ="../dashboard/"' ;
 				echo '</script>';
 			}
 			else
 			{
-				echo "Template not added";
+				echo '<script language="javascript">';
+				echo 'alert("Template not saved.  More work to do.")';
+				echo '</script>';
 			}
 		}
 	}		
