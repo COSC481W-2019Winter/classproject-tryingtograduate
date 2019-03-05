@@ -2,7 +2,7 @@
 <!MessageDashboard>
 <html>
 	<head>
-		
+
 		<title>Carrier Pigeon</title>
 		<link rel="stylesheet" type="text/css" href="../CSS/messageStyle.css">
 		<script>
@@ -25,7 +25,7 @@
 				}
 			}
 		</script>
-	</head>	
+	</head>
 	<body onload = "user();">
 		</br>
 		<?php
@@ -36,22 +36,22 @@
 			$db_username = "kbledsoe3";     //Username for MySQL
 			$db_password = "1784793b4a";     //Password for MySQL
 			$db_name   = "Wi2017_436_kbledsoe3"; //Database name
-		
+
 			// Create connection
 			$conn = new mysqli($servername, $db_username, $db_password, $db_name);
 			// Check connection
-			if ($conn->connect_error) 
+			if ($conn->connect_error)
 			{
 				echo "could not establish connection to db2...";
-				die("Connection failed: " . $conn->connect_error);	
+				die("Connection failed: " . $conn->connect_error);
 			}
 			else
 			{
 				echo "Successful Connection to DB2!";
-			}	
+			}
 			$conn->close();
 		?>
-		
+
 		<h1 id = "Company" style = "text-align: center" >Message Dashboard</h1>
 		<h2 id = "user" style = "text-align: center" ><span id = "user"></span></h2>
 		<button id = "topRight" class = "button button0" onclick = "window.location.href ='../groups/index.php'" >
@@ -79,7 +79,7 @@
 						<a href="#">Contractors</a>
 						<a href="#">All Staff</a>
 					</div>
-				</div> 
+				</div>
 			</div>
 		</div>
 		</br>

@@ -2,7 +2,7 @@
 	//SignIn variables passed from html "name" field of input tag
 	$username = filter_input(INPUT_POST, 'usernameEmail');
 	$passWordEst = filter_input(INPUT_POST, 'passwordEst');
-
+	
 	//Variables created to access the database on Wi2017_436_kbledsoe3
     $servername = "localhost";
 	$db_username = "kbledsoe3";     //Username for MySQL
