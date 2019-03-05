@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!doctype html>
 <!Group Page>
 <html>
@@ -10,6 +11,7 @@
 			//function to grab the value of the "Username:" field on the Sign-In form of homepage
 			//method is called by "onload" in <body> tag
 			function user(){
+
 				var user = "Not Working"
 				//loads the value into a variable called user
 				//use this value in sql query: SELECT uniqueId FROM Person where emailAddress = value in user var
@@ -37,6 +39,7 @@
 				var x = document.getElementById('glist').value;
 				var group = document.getElementById('groupPicked');
 				group.value = x;
+				alert(x);
 			}
 		</script>
 	</head>
@@ -45,7 +48,9 @@
 		<h1 id = "Company" style = "text-align: center" >Manage Groups</h1>
 		</br>
         <div id="all">
-						<select id="glist" name="glist" onchange="groupPickFunc()">
+					<form name="glist" action="" method="post">
+						<input type="hidden" id="uEmail" name="uEmail">
+						<select id="glist" name="glist" onchange="this.form.submit()">
 							<option value="0">Select Group</option>
 							<?php
 								//Variables created to access the database on Wi2017_436_kbledsoe3
@@ -56,10 +61,19 @@
 
 								//Variables created to reference input textboxes, reference html by name
 								//SignUp Variables
-								$UserId = 13;
+								$UserEmail = $_SESSION['currentUserEmail'];
 
 								// Create connection
 								$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+								$result = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE emailAddress = $UserEmail';");
+								if ($result->num_rows > 0) {
+								    // output data of each row
+								    while($row = $result->fetch_assoc()) {
+								       $userId = $row["uniqueId"];
+							    	}
+								} else {
+
+								}
 
 								$sql = "SELECT groupId, groupName FROM Groups WHERE ownerId = $UserId";
 								$result = $conn->query($sql);
@@ -77,6 +91,8 @@
 								$conn->close();
 							?>
 						</select>
+					</form>
+
 
             <button class="button" id="addGroup" onclick="newGroupFunc()">Add Group</button>
             <button class="button" id="editGroup" onclick="newContactFunc()">Edit Group</button>
@@ -86,6 +102,7 @@
 							<form class="newGroup" action = "" method = "post">
 								<label>Group name:</label>
 								<input type="text" name="newGName" placeholder="Group Name">
+								<input type="hidden" id="uEmail" name="uEmail">
 								<input class="button" id="addGbutton" type="submit" name="addGtoDB" value="ADD" onclick="newGroupFunc">
 								<button id="cancel" onclick="newGroupFunc">CANCEL</button>
 							</form>
@@ -102,44 +119,45 @@
 								<label>E-mail:</label>
 								<input type="text" name="newCemail" placeholder="example@email.com">
 								<input type="hidden" id="groupPicked" name="groupPicked">
+								<input type="hidden" id="uEmail" name="uEmail">
 								<input class="button" id="addCbutton" type="submit" name="addCtoDB" value="ADD" onclick= "newContactFunc">
 								<button id="cancel" onclick="newContactFunc">CANCEL</button>
 							</form>
 						</div>
+
 						<table id="contactList">
 							<tr>
 								<th>Name</th>
 								<th>Phone Number</th>
 								<th>E-mail Address</th>
 							</tr>
+
 							<?php
 								//Variables created to access the database on Wi2017_436_kbledsoe3
 							  $servername = "localhost";
 								$db_username = "kbledsoe3";     //Username for MySQL
 								$db_password = "1784793b4a";     //Password for MySQL
 								$db_name   = "Wi2017_436_kbledsoe3"; //Database name
+									$selectedGroup = $_POST['glist'];
+									// Create connection
+									$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+									if(isset($_POST['glist'])){
 
-								//Variables created to reference input textboxes, reference html by name
-								//SignUp Variables
-								$UserId = 13;
-								$selectedGroup = $_POST["groupPicked"];
+										$sql = "SELECT Person.firstName, Person.lastName, Person.emailAddress, Person.phoneNumber FROM Person, Group_JT
+											WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId;";
 
-								// Create connection
-								$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+										$result = $conn->query($sql);
+										if ($result->num_rows > 0) {
+										    // output data of each row
+										    while($row = $result->fetch_assoc()) {
+										       echo "<tr><td>". $row["firstName"]. " ". $row["lastName"]. "</td><td>". $row["phoneNumber"]. "</td><td>". $row["emailAddress"]. "</td></tr>";
 
-								$sql = "SELECT Person.firstName, Person.lastName, Person.emailAddress, Person.phoneNumber FROM Person, Group_JT
-									WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId;";
+									    	}
+										} else {
+										    echo "<tr><td>No contacts<td></tr>";
+										}
+									}
 
-								$result = $conn->query($sql);
-								if ($result->num_rows > 0) {
-								    // output data of each row
-								    while($row = $result->fetch_assoc()) {
-								       echo "<tr><td>". $row["Person.firstName"]. " ". $row["lastName"]. "</td><td>". $row["Person.phoneNumber"]. "</td><td>". $row["Person.emailAddress"]. "</td></tr>";
-
-							    	}
-								} else {
-								    echo "<tr><td>No contacts<td></tr>";
-								}
 
 
 								$conn->close();
@@ -149,6 +167,7 @@
 
 
         </div>
+
 	</body>
 </html>
 
@@ -163,13 +182,13 @@
 	//Variables created to reference input textboxes, reference html by name
 	//SignUp Variables
 	$newGroupName = $_POST['newGName'];
-  $UserId = 13;
+  $UserEmail = $_POST['uEmail'];
 
 
 	// Create connection
 	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
 	// Check connection
-
+	$uid = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE emailAddress = $UserEmail';");
 
 	//Testing to see if the SignUp button has been pressed referenced by html name
 	if(isset($_POST['addGtoDB']))

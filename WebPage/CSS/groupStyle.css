@@ -124,11 +124,8 @@ input[type=text], input[type=password] {
 #contactList {
     width: 100%;
     border-collapse: collapse;
-    background-color: gray;
     opacity: .9;
     position: relative;
-}
-
-th #contactList{
-  background-color: #2a2825;
+    background-color: #2a2825;
+    text-align: center;
 }
