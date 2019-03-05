@@ -1,4 +1,5 @@
 <?php session_start();
+	$example = $_POST['glist'];
 ?>
 <!doctype html>
 <!Group Page>
@@ -51,7 +52,7 @@
         <div id="all">
 					<form name="glist" action="" method="post">
 						<input type="hidden" id="uEmail" name="uEmail">
-						<select id="glist" name="glist" onchange="this.form.submit()">
+						<select id="glist" name="glist" onchange="this.form.submit()" >
 							<option value="0">Select Group</option>
 							<?php
 								session_start();
@@ -237,7 +238,7 @@
 	$lname = $_POST['newLname'];
 	$phone = $_POST['newCphone'];
 	$email = $_POST['newCemail'];
-	$selectedGroup = $_SESSION['currentGroup'];
+	$selectedGroup2 = $_SESSION['currentGroup'];
 
 
 	if(isset($_POST['addCtoDB']))
@@ -265,7 +266,7 @@
 			$contactId = mysqli_fetch_array($query3);
 
 			mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId)
-				VALUES ('$contactId[0]','$UserId', '$selectedGroup')");
+				VALUES ('$contactId[0]','$UserId', '$selectedGroup2')");
 
 
 			//Check the status of the query
