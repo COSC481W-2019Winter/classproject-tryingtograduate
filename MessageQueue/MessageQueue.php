@@ -131,17 +131,23 @@
 
     $messageId = $rawMessage['messageId'];
     $ownerId = $rawMessage['uniqueId'];
-    $user = new Person($ownerId,
-                       $rawMessage['firstName'],
-                       $rawMessage['lastName'],
-                       $rawMessage['emailAddress'],
-                       $rawMessage['phoneNumber'],
-                       null, true, null);
+    $firstName = $rawMessage['firstName'];
+    $lastName = $rawMessage['lastName'];
+    $emailAddress = $rawMessage['emailAddress'];
+    $phoneNumber = $rawMessage['phoneNumber'];
     $carrierId = $rawMessage['carrierId'];
     $groupId = $rawMessage['groupId'];
     $groupName = $rawMessage['groupName'];
     $subject = $rawMessage['subject'];
     $content = $rawMessage['content'];
+
+    $user = new Person($ownerId,
+                       $firstName,
+                       $lastName,
+                       $emailAddress,
+                       null, null, null,
+                       $phoneNumber,
+                       null, true, null);
 
     if($carrierId != null)
     {
@@ -263,20 +269,20 @@
         $allowExit = false;
         $message = getNextMessage();
 
-        /*echo "MessageId:    " . $message->getId() . "\n";
-        echo "firstName:    " . $message->getFirstName() . "\n";
-        echo "lastName:     " . $message->getLastName() . "\n";
-        echo "email:        " . $message->getEmailAddress() . "\n";
-        echo "phoneNumber:  " . $message->getPhoneNumber() . "\n";
-        $group = $message->getGroup();
+        echo "MessageId:    " . $message->getId() . "\n";
+        echo "firstName:    " . $message->getUser()->getFirstName() . "\n";
+        echo "lastName:     " . $message->getUser()->getLastName() . "\n";
+        echo "email:        " . $message->getUser()->getEmail() . "\n";
+        echo "phoneNumber:  " . $message->getUser()->getPhone() . "\n";
+        $group = $message->getGroup()->getMembers();
         $groupLength = count($group);
         echo "group:        " . "\n";
         for($i = 0; $i < $groupLength; $i++)
         {
-          echo "     " . $group[$i]->email . ", " . $group[$i]->phone . "\n";
+          echo "     " . $group[$i]->getEmail() . ", " . $group[$i]->getPhone() . "\n";
         }
         echo "subject:      " . $message->getSubject() . "\n";
-        echo "content:      " . $message->getContent() . "\n\n";*/
+        echo "content:      " . $message->getContent() . "\n\n";
 
         removeQueuedMessage($message->getId());
         $allowExit = true;

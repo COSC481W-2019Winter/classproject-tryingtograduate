@@ -22,45 +22,20 @@
                                 string $passwdHash = null,
                                 string $phone = null,
                                 Carrier $carrier = null,
-                                bool $isUser = false,
+                                bool $isUser,
                                 int $ownerId = null)
     {
       $this->id = $id;
       $this->firstName = $firstName;
       $this->lastName = $lastName;
       $this->email = $email;
+      $this->vCode = $vCode;
+      $this->vCodeExp = $vCodeExp;
+      $this->passwdHash = $passwdHash;
+      $this->carrier = $carrier;
       $this->phone = $phone;
       $this->isUser = $isUser;
       $this->ownerId = $ownerId;
-
-      if($isUser && $email != null)
-      {
-        $this->vCode = $vCode;
-        $this->vCodeExp = $vCodeExp;
-        $this->passwdHash = $passwdHash;
-        $this->carrier = $carrier;
-      }
-      elseif(!$isUser && $ownerId != null && ($email != null || $phone != null))
-      {
-        $this->vCode = null;
-        $this->vCodeExp = null;
-        $this->passwdHash = null;
-        $this->carrier = null;
-      }
-      else
-      {
-        $this->id = null;
-        $this->firstName = null;
-        $this->lastName = null;
-        $this->email = null;
-        $this->vCode = null;
-        $this->vCodeExp = null;
-        $this->passwdHash = null;
-        $this->phone = null;
-        $this->carrier = null;
-        $this->isUser = null;
-        $this->ownerId = null;
-      }
     }
 
     public function setId(int $id): void
