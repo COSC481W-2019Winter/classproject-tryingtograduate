@@ -49,7 +49,7 @@
 
   function hasMessage(): bool
   {
-    global $conn
+    global $conn;
 
     $result = false;
 
@@ -71,9 +71,9 @@
     return $result;
   }
 
-  function getNextMessage(): ?Contact
+  function getNextMessage(): ?Message
   {
-    global $conn
+    global $conn;
 
     $messageQuery =
     "SELECT
@@ -130,7 +130,7 @@
     $rawMessage = mysqli_fetch_array($messageResult);
 
     $messageId = $rawMessage['messageId'];
-    $ownerId = $ramessage['uniqueId'];
+    $ownerId = $rawMessage['uniqueId'];
     $user = new Person($ownerId,
                        $rawMessage['firstName'],
                        $rawMessage['lastName'],
@@ -158,7 +158,7 @@
       $carrierResult = mysqli_query($conn, $carrierQuery);
       $rawCarrier = mysqli_fetch_array($carrierResult);
 
-      $carrier = ($carrierId,
+      $carrier = new Carrier($carrierId,
                   $rawCarrier['carrierName'],
                   $rawCarrier['emailAddress']);
 
@@ -167,6 +167,7 @@
 
     $result = new Message($messageId,
                           $user,
+                          null,
                           $subject,
                           $content);
 
@@ -220,7 +221,7 @@
 
       $group = new Group($groupId,
                          $groupName,
-                         $owerId,
+                         $ownerId,
                          $groupMembers);
 
       $result->setGroup($group);
@@ -230,7 +231,7 @@
 
   function removeQueuedMessage($messageId): void
   {
-    global $conn
+    global $conn;
 
     $delQuery =
     "DELETE 
