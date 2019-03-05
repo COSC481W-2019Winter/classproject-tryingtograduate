@@ -1,6 +1,4 @@
 <?php session_start();
-	$a = "tboyd10@emich.edu";
-	$_SESSION[currentUserEmail]= $a;
 ?>
 <!doctype html>
 <!Group Page>
