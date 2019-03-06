@@ -9,17 +9,6 @@
     <link rel="stylesheet" type="text/css" href="../CSS/homeStyle.css">
 
 		<script>
-			//function to grab the value of the "Username:" field on the Sign-In form of homepage
-			//method is called by "onload" in <body> tag
-			function user(){
-
-				var user = "Not Working"
-				//loads the value into a variable called user
-				//use this value in sql query: SELECT uniqueId FROM Person where emailAddress = value in user var
-				user = localStorage.getItem("userId");
-				//echo's value to screen with message stating who is logged in
-				document.getElementById("user").innerHTML = "Logged in as:  " + user;
-			}
 			function newGroupFunc() {
 				var x = document.getElementById("newGroup");
 				if (x.style.display === "none") {
@@ -44,7 +33,30 @@
 			}
 		</script>
 	</head>
-	<body onload = "user();">
+	<body>
+	<?php	
+		//Variables needed to access current user in Person
+		$UserEmail = $_SESSION['currentUserEmail'];
+		//Variables created to access the database on Wi2017_436_kbledsoe3
+		$servername = "localhost";
+		$db_username = "kbledsoe3";     //Username for MySQL
+		$db_password = "1784793b4a";     //Password for MySQL
+		$db_name   = "Wi2017_436_kbledsoe3"; //Database name
+		// Create connection
+		$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+		//get first name	
+		$queryC = "SELECT firstName FROM Person WHERE emailAddress = '$UserEmail'";
+		$resultC = $conn->query($queryC);
+		$idC = mysqli_fetch_object($resultC);
+		$FirstNm = $idC->firstName;	
+		//get last name
+		$queryD = "SELECT lastName FROM Person WHERE emailAddress = '$UserEmail'";
+		$resultD = $conn->query($queryD);
+		$idD = mysqli_fetch_object($resultD);
+		$LastNm = $idD->lastName;	
+		echo "Logged in as:  ", $FirstNm, " ", $LastNm;
+		$conn->close();
+	?>
 		<h3 id = "user" style = "text-align: left" ><span id = "user"></span></h3>
 		<h1 id = "Company" style = "text-align: center" >Manage Groups</h1>
 		</br>
