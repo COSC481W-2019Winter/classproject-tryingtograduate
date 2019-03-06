@@ -6,16 +6,6 @@
 		<title>Carrier Pigeon</title>
 		<link rel="stylesheet" type="text/css" href="../CSS/messageStyle.css">
 		<script>
-			//function to grab the value of the "Username:" field on the Sign-In form of homepage
-			//method is called by "onload" in <body> tag
-			function user(){
-				var user = "Not Working"
-				//loads the value into a variable called user
-				//use this value in sql query: SELECT uniqueId FROM Person where emailAddress = value in user var
-				user = localStorage.getItem("userId");
-				//echo's value to screen with message stating who is logged in
-				document.getElementById("user").innerHTML = "Welcome:  " + user;
-			}
 			function saveMessage() {
 				var header = document.getElementById("saveMessage");
 				if (header.style.display === "none") {
@@ -26,7 +16,7 @@
 			}
 		</script>
 	</head>
-	<body onload = "user();">
+	<body>
 		</br>
 		<h1 id = "Company" style = "text-align: center" >Message Dashboard</h1>
 		<h2 id = "user" style = "text-align: center" ><span id = "user"></span></h2>
@@ -86,13 +76,14 @@
 	</body>
 </html>
 <?php
+	session_start();
 	//Variables needed to save the message
 	$tempName = $_POST['tempName'];
 	$tempSubject = $_POST['tempSubject'];
-	$tempMsg = $_POST['message'];
-	$ownerId = '16';
-	$groupId = '1';
-	
+	$tempMsg = $_GET['message'];
+	$groupId = '10';
+	$UserEmail = $_SESSION['currentUserEmail'];
+
 	//Variables created to access the database on Wi2017_436_kbledsoe3
 	$servername = "localhost";
 	$db_username = "kbledsoe3";     //Username for MySQL
@@ -109,13 +100,33 @@
 	}
 	else
 	{
-		echo "Successful Connection to DB2!";
+		$queryA = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail'";
+		$resultA = $conn->query($queryA);
+		$idA = mysqli_fetch_object($resultA);
+		$UniqueId = $idA->uniqueId;
+	
+		$queryB = "SELECT ownerId FROM Person WHERE emailAddress = '$UserEmail'";
+		$resultB = $conn->query($queryB);
+		$idB = mysqli_fetch_object($resultB);
+		$OwnerId = $idB->ownerId;
+		
+		$queryC = "SELECT firstName FROM Person WHERE emailAddress = '$UserEmail'";
+		$resultC = $conn->query($queryC);
+		$idC = mysqli_fetch_object($resultC);
+		$FirstNm = $idC->firstName;	
+	
+		$queryD = "SELECT lastName FROM Person WHERE emailAddress = '$UserEmail'";
+		$resultD = $conn->query($queryD);
+		$idD = mysqli_fetch_object($resultD);
+		$LastNm = $idD->lastName;	
+
+		echo "Logged in as:  ", $FirstNm, " ", $LastNm;
 	}
 	//check to see if SAVE button has been clicked		
 	if(isset($_POST['addMsgButton']))
 	{
 		//Test to see if the template information entered already exists in the table
-		$query2 = mysqli_query($conn, "SELECT * FROM Message WHERE templateName = '$tempName' AND subject = '$tempSubject' AND ownerId = '$ownerId';");
+		$query2 = mysqli_query($conn, "SELECT * FROM Message WHERE templateName = '$tempName' AND subject = '$tempSubject' AND ownerId = '$UserId';");
 
 		if ($query2->num_rows != 0) //if username exists
 		{
