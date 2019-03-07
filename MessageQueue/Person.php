@@ -95,7 +95,7 @@
       }
     }
 
-    public function setIsUser($isUser): void
+    public function setIsUser(bool $isUser): void
     {
       if($ownerId == null)
       {
@@ -103,7 +103,7 @@
       }
     }
 
-    public function setOwner($ownerId): void
+    public function setOwner(int $ownerId): void
     {
       if(!$this->isUser)
       {
