@@ -32,7 +32,7 @@
       $this->ownerId = $ownerId;
     }
 
-    public function setmembers(array $members): void
+    public function setMembers(array $members): void
     {
       $this->members = $members;
     }
