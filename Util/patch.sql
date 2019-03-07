@@ -9,4 +9,4 @@ CHANGE COLUMN `lastSent` `lastSent` DATETIME NULL;
 ALTER TABLE `Message` 
 DROP FOREIGN KEY `Message_ibfk_2`;
 ALTER TABLE `Message` 
-DROP INDEX `groupId` ;
+DROP INDEX `groupId`;

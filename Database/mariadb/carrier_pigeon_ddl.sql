@@ -60,8 +60,7 @@ create table Message
   content longtext,
   lastSent datetime,
   templateName varchar(80),
-  foreign key (ownerId) references Person (uniqueId),
-  foreign key (groupId) references Groups (groupId)
+  foreign key (ownerId) references Person (uniqueId)
 );
 
 create table Queue
