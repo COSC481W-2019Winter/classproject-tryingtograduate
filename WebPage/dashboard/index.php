@@ -15,18 +15,14 @@
 			}
 		</script>
 	</head>
-	<body>
+	<body onload >
 	<?php	
 		session_start();
 		//Variables needed to access current user in Person
 		$UserEmail = $_SESSION['currentUserEmail'];
-		//Variables created to access the database on Wi2017_436_kbledsoe3
-		$servername = "localhost";
-		$db_username = "kbledsoe3";     //Username for MySQL
-		$db_password = "1784793b4a";     //Password for MySQL
-		$db_name   = "Wi2017_436_kbledsoe3"; //Database name
+		include ('../PHP/Database.php');
 		// Create connection
-		$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+		$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 		//get first name	
 		$queryC = "SELECT firstName FROM Person WHERE emailAddress = '$UserEmail'";
 		$resultC = $conn->query($queryC);
