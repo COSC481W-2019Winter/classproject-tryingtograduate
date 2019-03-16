@@ -17,7 +17,8 @@
 		}
 		
 	//Sets a variable ($query) equal to the mysql query we want to run
-	$query = "SELECT emailAddress, passwordHash FROM Person WHERE emailAddress = '$username' AND passwordHash = '$passWordEst'";
+	$hash = password_hash($password, PASSWORD_DEFAULT);
+	$query = "SELECT emailAddress, passwordHash FROM Person WHERE emailAddress = '$username' AND passwordHash = '$hash'";
 
 	//runs the query and stores the result in a variable called $result
 	$result = $conn->query("$query");

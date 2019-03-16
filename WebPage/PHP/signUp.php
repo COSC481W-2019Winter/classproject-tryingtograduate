@@ -21,9 +21,16 @@
 	$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$eMail'";
 	
 	//Sets a variable ($query2) equal to the mysql query we run to add a user to the Person table
+<<<<<<< Updated upstream
 	$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash, phoneNumber) 
 				VALUES ('$fName', '$lName', '$eMail', '$password', '$phoneNum')";
 				
+=======
+	$hash = password_hash($password, PASSWORD_DEFAULT);
+	$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash, phoneNumber)
+				VALUES ('$fName', '$lName', '$eMail', '$hash', '$phoneNum')";
+
+>>>>>>> Stashed changes
 	//runs the query and stores the result in a variable called $result
 	$result = $conn->query("$query");
 	
