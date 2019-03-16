@@ -5,14 +5,9 @@
 	$passWordEst = filter_input(INPUT_POST, 'passwordEst');
 	$_SESSION['currentUserEmail'] = $username;
 
-	//Variables created to access the database on Wi2017_436_kbledsoe3
-    $servername = "localhost";
-	$db_username = "kbledsoe3";     //Username for MySQL
-	$db_password = "1784793b4a";     //Password for MySQL
-	$db_name   = "Wi2017_436_kbledsoe3"; //Database name
-
+	include ('../PHP/Database.php');
 	// Create connection
-	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+	$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 
 	// Check connection
 	if ($conn->connect_error)
@@ -20,7 +15,7 @@
 			echo "could not establish connection to db2...";
 			die("Connection failed: " . $conn->connect_error);
 		}
-
+		
 	//Sets a variable ($query) equal to the mysql query we want to run
 	$query = "SELECT emailAddress, passwordHash FROM Person WHERE emailAddress = '$username' AND passwordHash = '$passWordEst'";
 
