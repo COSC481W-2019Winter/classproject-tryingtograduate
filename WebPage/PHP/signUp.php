@@ -6,34 +6,29 @@
 	$password = filter_input(INPUT_POST, 'passwordNew');
 	$phoneNum = filter_input(INPUT_POST, 'phone');
 
-	//Variables created to access the database on Wi2017_436_kbledsoe3
-    $servername = "localhost";
-	$db_username = "kbledsoe3";     //Username for MySQL
-	$db_password = "1784793b4a";     //Password for MySQL
-	$db_name   = "Wi2017_436_kbledsoe3"; //Database name
-
+	include ('../PHP/Database.php');
 	// Create connection
-	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
-
+	$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+	
 	// Check connection
-	if ($conn->connect_error)
+	if ($conn->connect_error) 
 		{
 			echo "could not establish connection to db2...";
-			die("Connection failed: " . $conn->connect_error);
+			die("Connection failed: " . $conn->connect_error);	
 		}
-
+	
 	//Sets a variable ($query) equal to the mysql query we run to test for existing email in Person table
 	$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$eMail'";
-
+	
 	//Sets a variable ($query2) equal to the mysql query we run to add a user to the Person table
-	$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash, phoneNumber)
+	$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash, phoneNumber) 
 				VALUES ('$fName', '$lName', '$eMail', '$password', '$phoneNum')";
-
+				
 	//runs the query and stores the result in a variable called $result
 	$result = $conn->query("$query");
-
+	
 	//tests the result to see if the query yielded any rows from Person table that match the email entered
-	if ($result->num_rows != 0)
+	if ($result->num_rows != 0) 
 		{
 			//if email already exists in Person table, user is alerted
 			echo '<script language="javascript">';
@@ -52,7 +47,7 @@
 			//checks to see if the user was actually added to the Person table
 			if (mysqli_affected_rows($conn) > 0)
 				{
-					//alerts user of successful registration
+					//alerts user of successful registration 
 					echo '<script language="javascript">';
 					echo 'alert("You have registered successfully!!")';
 					echo '</script>';
@@ -66,8 +61,9 @@
 					echo '<script language="javascript">';
 					echo 'alert("Something went wrong!!")';
 					echo '</script>';
-				}
+				}	
 		}
 	//Close connection
 	$conn->close();
 ?>
+
