@@ -34,26 +34,23 @@
 		</script>
 	</head>
 	<body>
-	<?php	
+	<?php
 		//Variables needed to access current user in Person
 		$UserEmail = $_SESSION['currentUserEmail'];
 		//Variables created to access the database on Wi2017_436_kbledsoe3
-		$servername = "localhost";
-		$db_username = "kbledsoe3";     //Username for MySQL
-		$db_password = "1784793b4a";     //Password for MySQL
-		$db_name   = "Wi2017_436_kbledsoe3"; //Database name
+		include ('../PHP/Database.php');
 		// Create connection
-		$conn = new mysqli($servername, $db_username, $db_password, $db_name);
-		//get first name	
+		$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+		//get first name
 		$queryC = "SELECT firstName FROM Person WHERE emailAddress = '$UserEmail'";
 		$resultC = $conn->query($queryC);
 		$idC = mysqli_fetch_object($resultC);
-		$FirstNm = $idC->firstName;	
+		$FirstNm = $idC->firstName;
 		//get last name
 		$queryD = "SELECT lastName FROM Person WHERE emailAddress = '$UserEmail'";
 		$resultD = $conn->query($queryD);
 		$idD = mysqli_fetch_object($resultD);
-		$LastNm = $idD->lastName;	
+		$LastNm = $idD->lastName;
 		echo "Logged in as:  ", $FirstNm, " ", $LastNm;
 		$conn->close();
 	?>
@@ -78,7 +75,10 @@
 
 
 								// Create connection
-								$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+								include ('../PHP/Database.php');
+								// Create connection
+								$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+
 								$sql = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail' limit 1";
 								$result = $conn->query($sql);
 								$id = mysqli_fetch_object($result);
@@ -145,14 +145,11 @@
 							<?php
 							session_start();
 								//Variables created to access the database on Wi2017_436_kbledsoe3
-							  $servername = "localhost";
-								$db_username = "kbledsoe3";     //Username for MySQL
-								$db_password = "1784793b4a";     //Password for MySQL
-								$db_name   = "Wi2017_436_kbledsoe3"; //Database name
-									$selectedGroup = $_POST['glist'];
+								include ('../PHP/Database.php');
+								// Create connection
+								$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+								$selectedGroup = $_POST['glist'];
 
-									// Create connection
-									$conn = new mysqli($servername, $db_username, $db_password, $db_name);
 									if(isset($_POST['glist'])){
 										$_SESSION['currentGroup']= $selectedGroup;
 
@@ -188,10 +185,9 @@
 <?php
 	session_start();
 	//Variables created to access the database on Wi2017_436_kbledsoe3
-  $servername = "localhost";
-	$db_username = "kbledsoe3";     //Username for MySQL
-	$db_password = "1784793b4a";     //Password for MySQL
-	$db_name   = "Wi2017_436_kbledsoe3"; //Database name
+	include ('../PHP/Database.php');
+	// Create connection
+	$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 
 	//Variables created to reference input textboxes, reference html by name
 	//SignUp Variables
@@ -199,7 +195,6 @@
 
 	$UserEmail = $_SESSION['currentUserEmail'];
 	//Get user ID from Session
-	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
 	$sql = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail' limit 1";
 	$result = $conn->query($sql);
 	$id = mysqli_fetch_object($result);
