@@ -105,7 +105,7 @@
 
 
             <button class="button" id="addGroup" onclick="newGroupFunc()">Add Group</button>
-            <button class="button" id="editGroup" onclick="newContactFunc()">Edit Group</button>
+            <button class="button" id="editGroup" onclick="newContactFunc()">Add Contact</button>
             <button class="button" id="exit" onclick = "window.location.href = '../dashboard'">Exit to Main</button>
 
 						<div id="newGroup">
