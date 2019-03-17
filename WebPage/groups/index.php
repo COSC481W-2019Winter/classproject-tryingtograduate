@@ -209,7 +209,7 @@
 	if(isset($_POST['addGtoDB']))
 	{
 		//Test to see if the email entered already exists in the table
-		$query = mysqli_query($conn, "SELECT * FROM Groups WHERE groupName = '$newGroupName';");
+		$query = mysqli_query($conn, "SELECT * FROM Groups WHERE groupName = '$newGroupName' AND ownerId = '$UserId';");
 
 		if ($query->num_rows != 0) //if username exists
 		{
