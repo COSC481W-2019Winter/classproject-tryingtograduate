@@ -1,9 +1,0 @@
-{
-    "type": "sftp",
-    "host": "db2.emich.edu",
-    "username": "kbledsoe3",
-    "password": "1784793b4a",
-    "port": 22,
-    "remotePath": "public_html/",
-    "uploadOnSave": true
-}
