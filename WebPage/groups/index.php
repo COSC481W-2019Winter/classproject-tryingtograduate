@@ -124,10 +124,18 @@
 								<input type="text" name="newFname" placeholder="First Name">
 								<label>Last name:</label>
 								<input type="text" name="newLname" placeholder="Last Name">
-								<label>Phone Number:</label>
-								<input type="text" name="newCphone" placeholder="###-###-####">
 								<label>E-mail:</label>
 								<input type="text" name="newCemail" placeholder="example@email.com">
+								<label>Phone Number:</label>
+								<input type="text" name="newCphone" placeholder="###-###-####">
+								<select id = "carrier" name = "carrier">
+									<option value="0">Select Carrier</option>
+									<option value="1">Verizon</option>
+									<option value="2">Sprint</option>
+									<option value="3">T-mobile</option>
+									<option value="4">AT&T</option>
+									<option value="5">Cricket</option>
+								</select>
 								<input type="hidden" id="groupPicked" name="groupPicked">
 								<input type="hidden" id="uEmail" name="uEmail">
 								<input class="button" id="addCbutton" type="submit" name="addCtoDB" value="ADD" onclick= "newContactFunc">
@@ -244,6 +252,7 @@
 	$lname = $_POST['newLname'];
 	$phone = $_POST['newCphone'];
 	$email = $_POST['newCemail'];
+	$carrier = $_POST['carrier'];
 	$selectedGroup2 = $_SESSION['currentGroup'];
 
 
@@ -263,8 +272,8 @@
 		else //if email does not exist
 		{
 			//Inserts new record into table from sql statement
-			mysqli_query($conn, "INSERT INTO Person(firstName, lastName, emailAddress, phoneNumber, ownerId)
-				VALUES ('$fname','$lname', '$email', '$phone', '$UserId')");
+			mysqli_query($conn, "INSERT INTO Person(firstName, lastName, emailAddress, phoneNumber, ownerId, carrierID)
+				VALUES ('$fname','$lname', '$email', '$phone', '$UserId','$carrier')");
 
 			$query3 = mysqli_query($conn, "SELECT uniqueId FROM Person
 				WHERE firstName = '$fname' AND lastName = '$lname' AND ownerId = '$UserId';");
