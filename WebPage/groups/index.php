@@ -148,6 +148,7 @@
 								<th>Name</th>
 								<th>Phone Number</th>
 								<th>E-mail Address</th>
+								<th>Delete</th>
 							</tr>
 
 							<?php
@@ -168,7 +169,8 @@
 										if ($result->num_rows > 0) {
 										    // output data of each row
 										    while($row = $result->fetch_assoc()) {
-										       echo "<tr><td>". $row["firstName"]. " ". $row["lastName"]. "</td><td>". $row["phoneNumber"]. "</td><td>". $row["emailAddress"]. "</td></tr>";
+										       echo "<tr><td>". $row["firstName"]. " ". $row["lastName"]. "</td><td>". $row["phoneNumber"]. "</td><td>". $row["emailAddress"]. "</td>";
+													 echo "<td><input class=\"button\" id=\"deleteContact\" type=\"submit\" name=\"deleteContact\" value=\"DELETE\" ></td></tr>";
 
 									    	}
 										} else {
