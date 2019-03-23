@@ -5,7 +5,8 @@
 	$eMail = filter_input(INPUT_POST, 'email');
 	$password = filter_input(INPUT_POST, 'passwordNew');
 	$phoneNum = filter_input(INPUT_POST, 'phone');
-
+	$hash = password_hash($password, PASSWORD_DEFAULT);
+	
 	include ('../PHP/Database.php');
 	// Create connection
 	$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
@@ -23,10 +24,9 @@
 	//Sets a variable ($query2) equal to the mysql query we run to add a user to the Person table
 <<<<<<< Updated upstream
 	$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash, phoneNumber) 
-				VALUES ('$fName', '$lName', '$eMail', '$password', '$phoneNum')";
+				VALUES ('$fName', '$lName', '$eMail', '$hash', '$phoneNum')";
 				
 =======
-	$hash = password_hash($password, PASSWORD_DEFAULT);
 	$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash, phoneNumber)
 				VALUES ('$fName', '$lName', '$eMail', '$hash', '$phoneNum')";
 

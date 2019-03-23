@@ -17,8 +17,7 @@
 		}
 		
 	//Sets a variable ($query) equal to the mysql query we want to run
-	$hash = password_hash($password, PASSWORD_DEFAULT);
-	$query = "SELECT emailAddress, passwordHash FROM Person WHERE emailAddress = '$username' AND passwordHash = '$hash'";
+	$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$username'";
 
 	//runs the query and stores the result in a variable called $result
 	$result = $conn->query("$query");
@@ -26,10 +25,25 @@
 	//tests the result to see if the query yielded any rows from our Person table
 	if ($result->num_rows != 0)
 		{
-		//routs the user to the Message Dashboard if username and password were found in same row of table
-			echo '<script language="javascript">';
-			echo 'window.location.href ="../dashboard"' ;
-			echo '</script>';
+			//query and store query result in variable $queryHash then fetch stored password hash
+			$queryHash = "SELECT passwordHash FROM Person WHERE emailAddress = '$UserEmail'";
+			$resultHash = $conn->query("$queryHash");
+			$resultHashRow = mysql_fetch_row($resultHash);
+			$hash = $resultHashRow['passwordHash'];
+				
+			if (password_verify($passWordEst, $passwordHash))
+			{
+				//routs the user to the Message Dashboard if username and password were found in same row of table
+				echo '<script language="javascript">';
+				echo 'window.location.href ="../dashboard"' ;
+				echo '</script>';
+			}
+			else
+			{
+				echo '<script language="javascript">';
+				echo 'alert("Invalid password. Please enter a valid username and password.")';
+				echo '</script>';
+			}
 		}
 	else
 		{
