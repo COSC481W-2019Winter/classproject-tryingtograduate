@@ -162,7 +162,7 @@
 									if(isset($_POST['glist'])){
 										$_SESSION['currentGroup']= $selectedGroup;
 
-										$sql = "SELECT Person.firstName, Person.lastName, Person.emailAddress, Person.phoneNumber FROM Person, Group_JT
+										$sql = "SELECT Person.firstName, Person.lastName, Person.emailAddress, Person.phoneNumber, Person.uniqueId FROM Person, Group_JT
 											WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId;";
 
 										$result = $conn->query($sql);
@@ -170,14 +170,16 @@
 										    // output data of each row
 										    while($row = $result->fetch_assoc()) {
 										       echo "<tr><td>". $row["firstName"]. " ". $row["lastName"]. "</td><td>". $row["phoneNumber"]. "</td><td>". $row["emailAddress"]. "</td>";
-													 echo "<td><input class=\"button\" id=\"deleteContact\" type=\"submit\" name=\"deleteContact\" value=\"DELETE\" ></td></tr>";
+													 echo "<td><form name=\"delContact\" action=\"\" method=\"post\">
+													 				<input type=\"hidden\" id=\"delID\" name=\"delID\" value=". $row["uniqueId"]. ">
+													 				<input class=\"button\" id=\"deleteContact\" type=\"submit\" name=\"deleteContact\" value=\"DELETE\"
+													 				style=\"width: 55%; box-shadow: 0; padding: 0; margin: 0;\"></form></td>";
 
 									    	}
 										} else {
 										    echo "<tr><td>No contacts<td></tr>";
 										}
 									}
-
 
 
 								$conn->close();
@@ -303,6 +305,34 @@
 			}
 		}
 	}
+
+	// CODE FOR DELETE CONTACT
+	$deleteID = $_POST['delID'];
+	$selectedGroup3 = $_SESSION['currentGroup'];
+
+
+	if(isset($_POST['deleteContact']))
+	{
+
+			//Deletes slelected  record into table from sql statement
+			mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup3' AND contactId = '$deleteID';");
+
+			//Check the status of the query
+			if (mysqli_affected_rows($conn) > 0)
+			{
+				echo '<script language="javascript">';
+				echo 'alert("Deleted successfully!!")';
+				echo '</script>';
+				// Re-route
+				echo '<script language="javascript">';
+				echo 'window.location.href ="../groups/"' ;
+				echo '</script>';
+			}
+			else
+			{
+				echo "User not Deleted";
+			}
+		}
 
 	//Close connection
 	$conn->close();
