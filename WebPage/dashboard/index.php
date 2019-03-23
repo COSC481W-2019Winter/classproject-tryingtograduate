@@ -104,23 +104,17 @@
 			
 		</div>
 		</br></br>
-		<textarea id = "message" class = "center">
-		<?php
-			if(isset($_POST['tmpList'])){
+		<textarea id = "message" name = "message" class = "center"><?php
+		if(isset($_POST['tmpList'])){
 			$temp_select = "unchanged";
 			$temp_select = $_POST['tmpList'];
-			//echo $temp_select;
-			$query3 = "SELECT content FROM Message WHERE templateName = '$temp_select'";
+			$query3 = "SELECT content FROM Message WHERE templateName = '$temp_select' AND ownerId = $UniqueId";
 			$result3 = $conn->query($query3);
-			//echo $temp_select;
 			$tm = mysqli_fetch_object($result3);
-			//echo $temp_select;
 			$mo = $tm->content;
-			//echo "still working";
 			echo $mo;
 			}
-		?>
-	</textarea>
+		?></textarea>
 		</br></br>
 		</form>
 		<table class = "center">
@@ -147,7 +141,7 @@
 	if(isset($_POST['addMsgButton']))
 	{
 		//Test to see if the template information entered already exists in the table
-		$query2 = mysqli_query($conn, "SELECT * FROM Message WHERE templateName = '$tempName' AND subject = '$tempSubject' AND ownerId = '$OwnerId';");
+		$query2 = mysqli_query($conn, "SELECT * FROM Message WHERE templateName = '$tempName' AND ownerId = '$UniqueId';");
 		if ($query2->num_rows != 0) //if username exists
 		{
 				echo '<script language="javascript">';
@@ -159,7 +153,6 @@
 			//Inserts new record into Message table from sql statement
 			mysqli_query($conn, "INSERT INTO Message(ownerId, groupId, subject, content, templateName)
 				VALUES ('$UniqueId','$groupId', '$tempSubject', '$tempMsg', '$tempName')");
-
 			//Check the status of the query
 			if (mysqli_affected_rows($conn) > 0)
 			{
