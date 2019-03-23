@@ -23,7 +23,7 @@
 	
 	//Sets a variable ($query2) equal to the mysql query we run to add a user to the Person table
 	$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash, phoneNumber) 
-				VALUES ('$fName', '$lName', '$eMail', '$password', '$phoneNum')";
+				VALUES ('$fName', '$lName', '$eMail', '$hash', '$phoneNum')";
 				
 	//runs the query and stores the result in a variable called $result
 	$result = $conn->query("$query");
