@@ -129,3 +129,6 @@ input[type=text], input[type=password] {
     background-color: #2a2825;
     text-align: center;
 }
+#deleteContact:hover{
+  background-color: #2a2825;
+}

@@ -15,7 +15,7 @@
 			}
 		</script>
 	</head>
-	<body onload >
+	<body>
 	<?php	
 		session_start();
 		//Variables needed to access current user in Person
@@ -44,6 +44,10 @@
 		$idB = mysqli_fetch_object($resultB);
 		$OwnerId = $idB->ownerId;
 		echo "Logged in as:  ", $FirstNm, " ", $LastNm;
+		//use $UniquiId established above to output current users template list from Message
+		$result = $conn->query("SELECT messageId, templateName FROM Message WHERE ownerId = $UniqueId");
+		//use $UniqueId established above to access groups for current user from Groups table
+		$result1 = $conn->query("SELECT groupId, groupName FROM Groups WHERE ownerId = $UniqueId");
 	?>
 		</br>
 		<h1 id = "Company" style = "text-align: center" >Message Dashboard</h1>
@@ -54,21 +58,15 @@
 		<div id = "wrapper">
 			<div class="navbar">
 				<div class="dropdown">
-					<form name="glist" action="" method="post">
-						<select id="tmpList" name="tmpList" class = "dropbtn" >
-							<option  value="0"class="dropdown-content">Select Message</option>
+					<form name="tlist" action = "" method = "post">
+						<select id="tmpList" name="tmpList" class = "dropbtn" onchange = "this.form.submit()">
+							<option  type  = 'submit' value="0"class="dropdown-content" name = 'selection'>Select Message</option>
 							<?php
-								//use $UniquiId established above to output current users template list from Message
-								$sql = "SELECT messageId, templateName FROM Message WHERE ownerId = $UniqueId";
-								$result = $conn->query($sql);
-								if ($result->num_rows > 0) {
-								    // output data of each row
-								    while($row = $result->fetch_assoc()) {
-								       echo "<option value=\"". $row["messageId"]. "\">". $row["templateName"]."</option>";
-							    	}
-								} else {
-								    echo "<option value=\"4\">You have no templates</option>";
-								}
+								// output data of each row
+								while($row = $result->fetch_assoc()) {
+								$temp_name = $row['templateName'];
+								echo"<option name = 'tmpSelect' value = '$temp_name'>$temp_name</option>";
+							    }
 							?>
 						</select>
 					</form>
@@ -79,22 +77,15 @@
 			</div>
 			<div class="navbar">
 				<div class="dropdown">
-					
 					<form name="glist" action="" method="post">
 						<select id="glist" name="glist" class = "dropbtn">
 							<option value="0"class="dropdown-content">Select Group</option>
 							<?php
-								//use $UniqueId established above to access groups for current user from Groups table
-								$sql = "SELECT groupId, groupName FROM Groups WHERE ownerId = $UniqueId";
-								$result = $conn->query($sql);
-								if ($result->num_rows > 0) {
-								    // output data of each row
-								    while($row = $result->fetch_assoc()) {
-								       echo "<option value=\"". $row["groupId"]. "\">". $row["groupName"]."</option>";
-							    	}
-								} else {
-								    echo "<option value=\"4\">You have no groups</option>";
-								}
+								// output data of each row
+								while($row = $result1->fetch_assoc()) {
+								$group_name = $row['groupName'];
+								echo "<option value = '$group_name'>$group_name</option>";
+							    }
 							?>
 						</select>
 					</form>
@@ -113,7 +104,23 @@
 			
 		</div>
 		</br></br>
-		<textarea id = "message" class = "center" name = "message">Type message here...</textarea>
+		<textarea id = "message" class = "center">
+		<?php
+			if(isset($_POST['tmpList'])){
+			$temp_select = "unchanged";
+			$temp_select = $_POST['tmpList'];
+			//echo $temp_select;
+			$query3 = "SELECT content FROM Message WHERE templateName = '$temp_select'";
+			$result3 = $conn->query($query3);
+			//echo $temp_select;
+			$tm = mysqli_fetch_object($result3);
+			//echo $temp_select;
+			$mo = $tm->content;
+			//echo "still working";
+			echo $mo;
+			}
+		?>
+	</textarea>
 		</br></br>
 		</form>
 		<table class = "center">
@@ -171,6 +178,6 @@
 				echo '</script>';
 			}
 		}
-	}		
+	}
 	$conn->close();
 ?>
