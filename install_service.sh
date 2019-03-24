@@ -1,10 +1,24 @@
 #!/bin/bash
+SYSTEMD=`which systemctl| grep -c systemctl`
+USEREXISTS=`grep -c cpigeon /etc/passwd`
+
 sudo mkdir /opt/CarrierPigeon
 sudo cp -r MessageQueue /opt/CarrierPigeon/
-sudo cp Util/cpigeon.service /lib/systemd/system/
-sudo ln -s /lib/systemd/system/cpigeon.service /etc/systemd/system/cpigeon.service
-sudo adduser cpigeon
-sudo systemctl daemon-reload 
-sudo systemctl enable cpigeon
-sudo systemctl start cpigeon
-sudo systemctl status cpigeon
+if [[ !USEREXISTS ]]
+then
+  sudo adduser cpigeon
+fi
+
+if [[ SYSTEMD ]]
+then
+  sudo cp Util/cpigeon.service /lib/systemd/system/
+  sudo ln -s /lib/systemd/system/cpigeon.service /etc/systemd/system/cpigeon.service
+  sudo systemctl daemon-reload 
+  sudo systemctl enable cpigeon
+  sudo systemctl start cpigeon
+  sudo systemctl status cpigeon
+else
+  sudo cp Util/messagequeue /etc/init.d/
+  sudo chkconfig --add
+  sudo /etc/init.d/messagequeue start 
+fi
