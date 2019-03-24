@@ -56,6 +56,8 @@
 	?>
 		<h3 id = "user" style = "text-align: left" ><span id = "user"></span></h3>
 		<h1 id = "Company" style = "text-align: center" >Manage Groups</h1>
+		<button style="position: fixed; top: 0; right: 0; width: 200px;" class="button button0" onclick="window.location.href ='../dashboard/index.php'" >
+		Exit to Main</button>
 		</br>
         <div id="all">
 					<form name="glist" action="" method="post">
@@ -63,16 +65,16 @@
 							<option value="0">Select Group</option>
 							<?php
 								session_start();
-								//Variables created to access the database on Wi2017_436_kbledsoe3
-							  $servername = "localhost";
-								$db_username = "kbledsoe3";     //Username for MySQL
-								$db_password = "1784793b4a";     //Password for MySQL
-								$db_name   = "Wi2017_436_kbledsoe3"; //Database name
 
 								//Variables created to reference input textboxes, reference html by name
+								$servername = "localhost";
+							 	$db_username = "kbledsoe3";     //Username for MySQL
+							 	$db_password = "1784793b4a";     //Password for MySQL
+							 	$db_name   = "Wi2017_436_kbledsoe3"; //Database name
+
 								//SignUp Variables
 								$UserEmail = $_SESSION['currentUserEmail'];
-
+								$groupSelected = $_POST['glist'];
 
 								// Create connection
 								include ('../PHP/Database.php');
@@ -90,7 +92,11 @@
 								if ($result->num_rows > 0) {
 								    // output data of each row
 								    while($row = $result->fetch_assoc()) {
-								       echo "<option value=\"". $row["groupId"]. "\">". $row["groupName"]."</option>";
+											if($groupSelected == $row["groupId"]){
+												echo "<option value=\"". $row["groupId"]. "\" selected=\"selected\">". $row["groupName"]."</option>";
+											}else{
+												echo "<option value=\"". $row["groupId"]. "\">". $row["groupName"]."</option>";
+											}
 
 							    	}
 								} else {
@@ -106,7 +112,9 @@
 
             <button class="button" id="addGroup" onclick="newGroupFunc()">Add Group</button>
             <button class="button" id="editGroup" onclick="newContactFunc()">Add Contact</button>
-            <button class="button" id="exit" onclick = "window.location.href = '../dashboard'">Exit to Main</button>
+						<form style="float: right; width: 20%;" action="" method="post">
+            	<input style="width: 100%;"type=submit class="button" id="exit" name="delGroup" value="Delete Group">
+						</form>
 
 						<div id="newGroup">
 							<form class="newGroup" action = "" method = "post">
@@ -128,7 +136,7 @@
 								<input type="text" name="newCemail" placeholder="example@email.com">
 								<label>Phone Number:</label>
 								<input type="text" name="newCphone" placeholder="###-###-####">
-								<select id = "carrier" name = "carrier">
+								<select id="carrier" name="carrier">
 									<option value="0">Select Carrier</option>
 									<option value="1">Verizon</option>
 									<option value="2">Sprint</option>
@@ -196,6 +204,9 @@
 <!-- CHANGE 5.0 -->
 <?php
 	session_start();
+	if(isset($_POST['glist'])){
+		$_SESSION['currentGroup']= $_POST['glist'];
+	}
 	//Variables created to access the database on Wi2017_436_kbledsoe3
 	include ('../PHP/Database.php');
 	// Create connection
@@ -225,7 +236,7 @@
 
 		if ($query->num_rows != 0) //if username exists
 		{
-			echo '<script language="javascript">';
+				echo '<script language="javascript">';
 				echo 'alert("Group already Exists.")';
 				echo '</script>';
 		}
@@ -275,9 +286,10 @@
 		}
 		else //if email does not exist
 		{
+			echo $fname.','.$lname.','.$email.','.$phone.','.$UserId;
 			//Inserts new record into table from sql statement
-			mysqli_query($conn, "INSERT INTO Person(firstName, lastName, emailAddress, phoneNumber, ownerId, carrierID)
-				VALUES ('$fname','$lname', '$email', '$phone', '$UserId','$carrier')");
+			mysqli_query($conn, "INSERT INTO Person(firstName, lastName, emailAddress, phoneNumber, ownerId)
+				VALUES ('$fname','$lname','$email','$phone','$UserId')");
 
 			$query3 = mysqli_query($conn, "SELECT uniqueId FROM Person
 				WHERE firstName = '$fname' AND lastName = '$lname' AND ownerId = '$UserId';");
@@ -332,8 +344,34 @@
 			{
 				echo "User not Deleted";
 			}
-		}
+	}
 
+		// CODE FOR DELETE GROUP
+		$selectedGroup4 = $_SESSION['currentGroup'];
+		if(isset($_POST['delGroup']))
+		{
+
+				//Deletes slelected  record into table from sql statement
+				mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup4';");
+
+				mysqli_query($conn, "DELETE FROM Groups WHERE groupId = '$selectedGroup4';");
+
+				//Check the status of the query
+				if (mysqli_affected_rows($conn) > 0)
+				{
+					echo '<script language="javascript">';
+					echo 'alert("Deleted successfully!!")';
+					echo '</script>';
+					// Re-route
+					echo '<script language="javascript">';
+					echo 'window.location.href ="../groups/"' ;
+					echo '</script>';
+				}
+				else
+				{
+					echo "Group not Deleted";
+				}
+		}
 	//Close connection
 	$conn->close();
 ?>
