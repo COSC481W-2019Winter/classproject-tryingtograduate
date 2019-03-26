@@ -24,7 +24,7 @@ create table Person
   emailAddress varchar(80) not null,
   verifyCode int,
   verifyCodeExp int,
-  passwordHash varchar(500),
+  passwordHash varchar(2000),
   phoneNumber varchar(15),
   carrierID int,
   isUser bool,
