@@ -26,12 +26,12 @@
 	if ($result->num_rows != 0)
 		{
 			//query and store query result in variable $queryHash then fetch stored password hash
-			$queryHash = "SELECT passwordHash FROM Person WHERE emailAddress = '$UserEmail'";
-			$resultHash = $conn->query("$queryHash");
-			$resultHashRow = mysql_fetch_row($resultHash);
-			$hash = $resultHashRow['passwordHash'];	
+			$queryHash = "SELECT passwordHash FROM Person WHERE emailAddress = '$username'";
+			$resultHash = $conn->query($queryHash);
+			$resultHashRow = $resultHash->fetch_assoc();
+			$hash = $resultHashRow['passwordHash'];
 			
-			if (password_verify($passwordEst, $hash))
+			if (password_verify($passWordEst, $hash))
 			{
 				//routs the user to the Message Dashboard if username and password were found in same row of table
 				echo '<script language="javascript">';
