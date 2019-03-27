@@ -52,6 +52,10 @@
 		$idD = mysqli_fetch_object($resultD);
 		$LastNm = $idD->lastName;
 		echo "Logged in as:  ", $FirstNm, " ", $LastNm;
+		// Set Session Variable
+		if(isset($_POST['glist'])){
+			$_SESSION['currentGroup']= $_POST['glist'];
+		}
 		$conn->close();
 	?>
 		<h3 id = "user" style = "text-align: left" ><span id = "user"></span></h3>
@@ -65,16 +69,8 @@
 							<option value="0">Select Group</option>
 							<?php
 								session_start();
-
-								//Variables created to reference input textboxes, reference html by name
-								$servername = "localhost";
-							 	$db_username = "kbledsoe3";     //Username for MySQL
-							 	$db_password = "1784793b4a";     //Password for MySQL
-							 	$db_name   = "Wi2017_436_kbledsoe3"; //Database name
-
-								//SignUp Variables
 								$UserEmail = $_SESSION['currentUserEmail'];
-								$groupSelected = $_POST['glist'];
+								$groupSelected = $_SESSION['currentGroup'];
 
 								// Create connection
 								include ('../PHP/Database.php');
@@ -165,82 +161,78 @@
 								include ('../PHP/Database.php');
 								// Create connection
 								$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
-								$selectedGroup = $_POST['glist'];
 
-									if(isset($_POST['glist'])){
-										$_SESSION['currentGroup']= $selectedGroup;
+								// ON Group list dropdown change run this function
+								//if(isset($_POST['glist'])){
+									$selectedGroup = $_SESSION['currentGroup'];
 
-										$sql = "SELECT Person.firstName, Person.lastName, Person.emailAddress, Person.phoneNumber, Person.uniqueId FROM Person, Group_JT
-											WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId;";
+									$sql = "SELECT Person.firstName, Person.lastName, Person.emailAddress, Person.phoneNumber, Person.uniqueId FROM Person, Group_JT
+										WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId;";
 
-										$result = $conn->query($sql);
-										if ($result->num_rows > 0) {
-										    // output data of each row
-										    while($row = $result->fetch_assoc()) {
-										       echo "<tr><td>". $row["firstName"]. " ". $row["lastName"]. "</td><td>". $row["phoneNumber"]. "</td><td>". $row["emailAddress"]. "</td>";
-													 echo "<td><form name=\"delContact\" action=\"\" method=\"post\">
-													 				<input type=\"hidden\" id=\"delID\" name=\"delID\" value=". $row["uniqueId"]. ">
-													 				<input class=\"button\" id=\"deleteContact\" type=\"submit\" name=\"deleteContact\" value=\"DELETE\"
-													 				style=\"width: 55%; box-shadow: 0; padding: 0; margin: 0;\"></form></td>";
+									$result = $conn->query($sql);
+									if ($result->num_rows > 0) {
+									    // output data of each row
+									    while($row = $result->fetch_assoc()) {
+									       echo "<tr><td>". $row["firstName"]. " ". $row["lastName"]. "</td><td>". $row["phoneNumber"]. "</td><td>". $row["emailAddress"]. "</td>";
+												 // DELETE BUTTONS WITH VALUES AND STYLING
+												 echo "<td><form name=\"delContact\" action=\"\" method=\"post\">
+												 				<input type=\"hidden\" id=\"delID\" name=\"delID\" value=". $row["uniqueId"]. ">
+												 				<input class=\"button\" id=\"deleteContact\" type=\"submit\" name=\"deleteContact\" value=\"DELETE\"
+												 				style=\"width: 55%; box-shadow: 0; padding: 0; margin: 0;\"></form></td>";
 
-									    	}
-										} else {
-										    echo "<tr><td>No contacts<td></tr>";
-										}
+								    	}
+									} else {
+									    echo "<tr><td>No contacts<td></tr>";
 									}
+								//}
+
 
 
 								$conn->close();
 							?>
+
 						</table>
-
-
 
         </div>
 
 	</body>
+
 </html>
 
 <!-- CHANGE 5.0 -->
 <?php
 	session_start();
-	if(isset($_POST['glist'])){
-		$_SESSION['currentGroup']= $_POST['glist'];
-	}
 	//Variables created to access the database on Wi2017_436_kbledsoe3
 	include ('../PHP/Database.php');
 	// Create connection
 	$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 
-	//Variables created to reference input textboxes, reference html by name
+
 	//SignUp Variables
 	$newGroupName = $_POST['newGName'];
-
 	$UserEmail = $_SESSION['currentUserEmail'];
+
 	//Get user ID from Session
 	$sql = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail' limit 1";
 	$result = $conn->query($sql);
 	$id = mysqli_fetch_object($result);
 	$UserId = $id->uniqueId;
 
-
-	// Create connection
-	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
-	// Check connection
-
-	//Testing to see if the SignUp button has been pressed referenced by html name
+	//-------------------------
+	// CODE FOR NEW GROUP
+	//-------------------------
 	if(isset($_POST['addGtoDB']))
 	{
-		//Test to see if the email entered already exists in the table
+		//Test to see if the groupname entered already exists in the table
 		$query = mysqli_query($conn, "SELECT * FROM Groups WHERE groupName = '$newGroupName' AND ownerId = '$UserId';");
 
-		if ($query->num_rows != 0) //if username exists
+		if ($query->num_rows != 0)
 		{
 				echo '<script language="javascript">';
 				echo 'alert("Group already Exists.")';
 				echo '</script>';
 		}
-		else //if email does not exist
+		else
 		{
 			//Inserts new record into table from sql statement
 			mysqli_query($conn, "INSERT INTO Groups(groupName, ownerId) VALUES ('$newGroupName','$UserId')");
@@ -262,21 +254,22 @@
 			}
 		}
 	}
+
+	//-------------------------
 	// CODE FOR NEW CONTACT
+	//-------------------------
 	$fname = $_POST['newFname'];
 	$lname = $_POST['newLname'];
 	$phone = $_POST['newCphone'];
 	$email = $_POST['newCemail'];
 	$carrier = $_POST['carrier'];
-	$selectedGroup2 = $_SESSION['currentGroup'];
 
 
 	if(isset($_POST['addCtoDB']))
 	{
-
-
+		$selectedGroup=$_SESSION['currentGroup'];
 		//Test to see if the email entered already exists in the table
-		$query2 = mysqli_query($conn, "SELECT * FROM Person WHERE firstName = '$fname' AND lastName = '$lname' AND ownerId = '$UserId';");
+		$query2 = mysqli_query($conn, "SELECT * FROM Person WHERE firstName = '$fname' AND lastName = '$lname' AND emailAddress = '$email' AND ownerId = '$UserId';");
 
 		if ($query2->num_rows != 0) //if username exists
 		{
@@ -286,10 +279,9 @@
 		}
 		else //if email does not exist
 		{
-			echo $fname.','.$lname.','.$email.','.$phone.','.$UserId;
 			//Inserts new record into table from sql statement
-			mysqli_query($conn, "INSERT INTO Person(firstName, lastName, emailAddress, phoneNumber, ownerId)
-				VALUES ('$fname','$lname','$email','$phone','$UserId')");
+			mysqli_query($conn, "INSERT INTO Person(firstName, lastName, emailAddress, phoneNumber, ownerId, carrierID)
+				VALUES ('$fname','$lname','$email','$phone','$UserId', '$carrier')");
 
 			$query3 = mysqli_query($conn, "SELECT uniqueId FROM Person
 				WHERE firstName = '$fname' AND lastName = '$lname' AND ownerId = '$UserId';");
@@ -297,7 +289,7 @@
 			$contactId = mysqli_fetch_array($query3);
 
 			mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId)
-				VALUES ('$contactId[0]','$UserId', '$selectedGroup2')");
+				VALUES ('$contactId[0]','$UserId', '$selectedGroup')");
 
 
 			//Check the status of the query
@@ -318,60 +310,62 @@
 		}
 	}
 
+	//-------------------------
 	// CODE FOR DELETE CONTACT
+	//-------------------------
 	$deleteID = $_POST['delID'];
-	$selectedGroup3 = $_SESSION['currentGroup'];
 
 
 	if(isset($_POST['deleteContact']))
 	{
+		$selectedGroup=$_SESSION['currentGroup'];
+		//Deletes slelected  record into table from sql statement
+		mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup' AND contactId = '$deleteID';");
 
-			//Deletes slelected  record into table from sql statement
-			mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup3' AND contactId = '$deleteID';");
-
-			//Check the status of the query
-			if (mysqli_affected_rows($conn) > 0)
-			{
-				echo '<script language="javascript">';
-				echo 'alert("Deleted successfully!!")';
-				echo '</script>';
-				// Re-route
-				echo '<script language="javascript">';
-				echo 'window.location.href ="../groups/"' ;
-				echo '</script>';
-			}
-			else
-			{
-				echo "User not Deleted";
-			}
+		//Check the status of the query
+		if (mysqli_affected_rows($conn) > 0)
+		{
+			echo '<script language="javascript">';
+			echo 'alert("Deleted successfully!!")';
+			echo '</script>';
+			// Re-route
+			echo '<script language="javascript">';
+			echo 'window.location.href ="../groups/"' ;
+			echo '</script>';
+		}
+		else
+		{
+			echo "User not Deleted";
+		}
 	}
 
-		// CODE FOR DELETE GROUP
-		$selectedGroup4 = $_SESSION['currentGroup'];
-		if(isset($_POST['delGroup']))
+	//-------------------------
+	// CODE FOR DELETE GROUP
+	//-------------------------
+	if(isset($_POST['delGroup'])){
+		$selectedGroup=$_SESSION['currentGroup'];
+
+		//Deletes all records from group
+		mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup';");
+		// deleetes group
+		mysqli_query($conn, "DELETE FROM Groups WHERE groupId = '$selectedGroup';");
+
+		//Check the status of the query
+		if (mysqli_affected_rows($conn) > 0)
 		{
-
-				//Deletes slelected  record into table from sql statement
-				mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup4';");
-
-				mysqli_query($conn, "DELETE FROM Groups WHERE groupId = '$selectedGroup4';");
-
-				//Check the status of the query
-				if (mysqli_affected_rows($conn) > 0)
-				{
-					echo '<script language="javascript">';
-					echo 'alert("Deleted successfully!!")';
-					echo '</script>';
-					// Re-route
-					echo '<script language="javascript">';
-					echo 'window.location.href ="../groups/"' ;
-					echo '</script>';
-				}
-				else
-				{
-					echo "Group not Deleted";
-				}
+			echo '<script language="javascript">';
+			echo 'alert("Deleted successfully!!")';
+			echo '</script>';
+			// Re-route
+			echo '<script language="javascript">';
+			echo 'window.location.href ="../groups/"' ;
+			echo '</script>';
 		}
+		else
+		{
+			echo "Group not Deleted";
+		}
+	}
 	//Close connection
 	$conn->close();
 ?>
