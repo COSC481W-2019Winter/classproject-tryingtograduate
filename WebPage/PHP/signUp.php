@@ -4,10 +4,12 @@
 	$lName = filter_input(INPUT_POST, 'lname');
 	$eMail = filter_input(INPUT_POST, 'email');
 	$password = filter_input(INPUT_POST, 'passwordNew');
+	$passwordCnf = filter_input(INPUT_POST, 'passwordNewCnf');
 	$phoneNum = filter_input(INPUT_POST, 'phone');
 	$hash = password_hash($password, PASSWORD_DEFAULT);
 	
 	include ('../PHP/Database.php');
+	include ('../PHP/Validation.php');
 	// Create connection
 	$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 	
@@ -17,6 +19,12 @@
 			echo "could not establish connection to db2...";
 			die("Connection failed: " . $conn->connect_error);	
 		}
+		
+	//call password validation
+	passwordValidation($password);
+	
+	//call to confirm password
+	confirmPassword($password, $passwordCnf);
 	
 	//Sets a variable ($query) equal to the mysql query we run to test for existing email in Person table
 	$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$eMail'";
@@ -35,6 +43,7 @@
 			echo '<script language="javascript">';
 			echo 'alert("Email already registered.")';
 			echo '</script>';
+			
 			//rerout the user from this php file back to homepage to try again
 			echo '<script language="javascript">';
 			echo 'window.location.href ="../home"' ;
@@ -52,6 +61,7 @@
 					echo '<script language="javascript">';
 					echo 'alert("You have registered successfully!!")';
 					echo '</script>';
+					
 					//rerouts user to homepage to sign in with new credentials
 					echo '<script language="javascript">';
 					echo 'window.location.href ="../home"' ;
