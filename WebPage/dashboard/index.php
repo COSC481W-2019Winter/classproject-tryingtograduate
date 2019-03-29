@@ -96,23 +96,30 @@
 			<form action = "" method = "post">
 				<label class = "savemessage">Message name:</label>
 				<input type="text" style = "width:10%" placeholder="Message Name" id = "tempName" name = "tempName">
-				<label>Subject:</label>
-				<input type="text" style = "width:38%" placeholder="Message Subject" id = "tempSubject" name = "tempSubject">
+				
 				</br></br>
 				<input id="addMsgButton" name = "addMsgButton" type="submit" value="SAVE">
 				<button id = "cancel">CANCEL</button>
-			
 		</div>
-		</br></br>
-		<textarea id = "message" name = "message" class = "center"><?php
-		if(isset($_POST['tmpList'])){
-			$temp_select = "unchanged";
+		<label>Subject:</label>
+		<input type="text" style = "width:57%" placeholder="Message Subject" id = "tempSubject" name = "tempSubject" value = "<?php 
+			if(isset($_POST['tmpList'])){
 			$temp_select = $_POST['tmpList'];
-			$query3 = "SELECT content FROM Message WHERE templateName = '$temp_select' AND ownerId = $UniqueId";
+			$query3 = "SELECT subject FROM Message WHERE templateName = '$temp_select' AND ownerId = $UniqueId";
 			$result3 = $conn->query($query3);
 			$tm = mysqli_fetch_object($result3);
-			$mo = $tm->content;
-			echo $mo;
+			$subject = $tm->subject;
+			echo $subject;
+			}?>">
+		</br></br>
+		<textarea id = "message" name = "message" class = "center"><?php
+			if(isset($_POST['tmpList'])){
+			$temp_select = $_POST['tmpList'];
+			$query4 = "SELECT content, subject FROM Message WHERE templateName = '$temp_select' AND ownerId = $UniqueId";
+			$result4 = $conn->query($query4);
+			$tm = mysqli_fetch_object($result4);
+			$body = $tm->content;
+			echo $body;
 			}
 		?></textarea>
 		</br></br>
