@@ -1,9 +1,9 @@
 body{
-			background-image: url("../background1.jpg");
-			font-size: 14pt;
-			font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;
-			color: white;
-		}
+  background-image: url("../background1.jpg");
+  font-size: 14pt;
+  font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;
+  color: white;
+}
 .savemessage{
   font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;	
   font-size: 20px;
@@ -90,6 +90,12 @@ body{
 	height: 300px;
 	text-align: left;
 	display: block;
+}
+#tempSubject, #tempName{
+	border: 2px solid black;
+	width: 57%;
+	text-align: left;
+	height: 20px;
 }
 p{
 	display: inline-block;
@@ -183,3 +189,4 @@ select::-ms-expand {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
