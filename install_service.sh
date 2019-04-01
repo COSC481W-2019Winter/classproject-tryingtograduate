@@ -18,7 +18,7 @@ then
   sudo systemctl start cpigeon
   sudo systemctl status cpigeon
 else
-  sudo cp Util/messagequeue /etc/init.d/
-  sudo chkconfig --add
-  sudo /etc/init.d/messagequeue start 
+  sudo cp Util/carrierpigeon /etc/init.d/
+  sudo chkconfig --add carrierpigeon
+  sudo /etc/init.d/carrierpigeon start 
 fi
