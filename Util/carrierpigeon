@@ -26,32 +26,34 @@ SCRIPTNAME=/etc/init.d/$NAME
 
 START_OPTS="--start --background --make-pidfile --pidfile ${PIDFILE} --exec ${DAEMON} ${DAEMONOPTS}"
 STOP_OPTS="--stop --pidfile ${PIDFILE}"
+LOGFILE="/var/log/carrierpigeon"
 
 case "$1" in
 start)
-  printf "%-50s" "Starting $NAME..."
-  start-stop-daemon $START_OPTS >> $LOGFILE
+    printf "%-50s" "Starting $NAME..."
+    start-stop-daemon $START_OPTS >> $LOGFILE
 ;;
 status)
-        printf "%-50s" "Checking $NAME..."
-        if [ -f $PIDFILE ]; then
-            PID=`cat $PIDFILE`
-            if [ -z "`ps axf | grep ${PID} | grep -v grep`" ]; then
-                printf "%s\n" "Process dead but pidfile exists"
-            else
-                echo "Running"
-            fi
+    printf "%-50s" "Checking $NAME..."
+    if [ -f $PIDFILE ]; then
+        PID=`cat $PIDFILE`
+        if [ -z "`ps axf | grep ${PID} | grep -v grep`" ]; then
+            printf "%s\n" "Process dead but pidfile exists"
         else
-            printf "%s\n" "Service not running"
+            echo "Running"
         fi
+    else
+        printf "%s\n" "Service not running"
+    fi
 ;;
 stop)
-        printf "%-50s" "Stopping $NAME"
-            start-stop-daemon $STOP_OPTS
-            rm -f $PIDFILE
-        else
-            printf "%s\n" "pidfile not found"
-        fi
+    printf "%-50s" "Stopping $NAME"
+    if [ -f $PIDFILE ]; then
+        start-stop-daemon $STOP_OPTS
+        rm -f $PIDFILE
+    else
+        printf "%s\n" "pidfile not found"
+    fi
 ;;
 
 restart)
@@ -60,6 +62,6 @@ restart)
 ;;
 
 *)
-        echo "Usage: $0 {status|start|stop|restart}"
-        exit 1
+    echo "Usage: $0 {status|start|stop|restart}"
+    exit 1
 esac
