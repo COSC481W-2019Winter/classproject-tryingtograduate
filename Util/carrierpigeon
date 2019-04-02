@@ -6,8 +6,8 @@
 
 DAEMON_PATH="/opt/CarrierPigeon/MessageQueue"
 
-DAEMON="/usr/bin/php"
-DAEMONOPTS="/opt/CarrierPigeon/MessageQueue/MessageQueue.php"
+DAEMON="/bin/env"
+DAEMONOPTS="/usr/bin/php /opt/CarrierPigeon/MessageQueue/MessageQueue.php"
 
 NAME="carrierpigeon"
 DESC="Carrier Pidgeon Message Queue Service"
