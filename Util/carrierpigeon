@@ -15,6 +15,8 @@
 # Source function library.
 . /etc/init.d/functions
 
+DAEMON_PATH="/opt/CarrierPigeon/MessageQueue"
+
 DAEMON="/usr/bin/php"
 DAEMONOPTS="/opt/CarrierPigeon/MessageQueue/MessageQueue.php"
 
@@ -24,36 +26,45 @@ DESC="Carrier Pidgeon Message Queue Service"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
-START_OPTS="--start --background --make-pidfile --pidfile ${PIDFILE} --exec ${DAEMON} ${DAEMONOPTS}"
-STOP_OPTS="--stop --pidfile ${PIDFILE}"
 LOGFILE="/var/log/carrierpigeon"
 
 case "$1" in
 start)
-    printf "%-50s" "Starting $NAME..."
-    start-stop-daemon $START_OPTS >> $LOGFILE
+  printf "%-50s" "Starting $NAME..."
+  cd $DAEMON_PATH
+  PID=`$DAEMON $DAEMONOPTS > $LOGFILE 2>&1 & echo $!`
+  #echo "Saving PID" $PID " to " $PIDFILE
+        if [ -z $PID ]; then
+            printf "%s\n" "Fail"
+        else
+            echo $PID > $PIDFILE
+            printf "%s\n" "Ok"
+        fi
 ;;
 status)
-    printf "%-50s" "Checking $NAME..."
-    if [ -f $PIDFILE ]; then
-        PID=`cat $PIDFILE`
-        if [ -z "`ps axf | grep ${PID} | grep -v grep`" ]; then
-            printf "%s\n" "Process dead but pidfile exists"
+        printf "%-50s" "Checking $NAME..."
+        if [ -f $PIDFILE ]; then
+            PID=`cat $PIDFILE`
+            if [ -z "`ps axf | grep ${PID} | grep -v grep`" ]; then
+                printf "%s\n" "Process dead but pidfile exists"
+            else
+                echo "Running"
+            fi
         else
-            echo "Running"
+            printf "%s\n" "Service not running"
         fi
-    else
-        printf "%s\n" "Service not running"
-    fi
 ;;
 stop)
-    printf "%-50s" "Stopping $NAME"
-    if [ -f $PIDFILE ]; then
-        start-stop-daemon $STOP_OPTS
-        rm -f $PIDFILE
-    else
-        printf "%s\n" "pidfile not found"
-    fi
+        printf "%-50s" "Stopping $NAME"
+            PID=`cat $PIDFILE`
+            cd $DAEMON_PATH
+        if [ -f $PIDFILE ]; then
+            kill -HUP $PID
+            printf "%s\n" "Ok"
+            rm -f $PIDFILE
+        else
+            printf "%s\n" "pidfile not found"
+        fi
 ;;
 
 restart)
@@ -62,6 +73,6 @@ restart)
 ;;
 
 *)
-    echo "Usage: $0 {status|start|stop|restart}"
-    exit 1
+        echo "Usage: $0 {status|start|stop|restart}"
+        exit 1
 esac
