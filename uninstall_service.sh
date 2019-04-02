@@ -1,7 +1,7 @@
 #!/bin/bash
 SYSTEMD=`which systemctl| grep -c systemctl`
 
-if [[ SYSTEMD ]]
+if [[ SYSTEMD == 1 ]]
 then
   sudo systemctl stop cpigeon
   sudo systemctl disable cpigeon

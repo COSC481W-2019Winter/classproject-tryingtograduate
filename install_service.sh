@@ -9,7 +9,7 @@ then
   sudo adduser cpigeon
 fi
 
-if [[ SYSTEMD ]]
+if [[ SYSTEMD == 1 ]]
 then
   sudo cp Util/cpigeon.service /lib/systemd/system/
   sudo ln -s /lib/systemd/system/cpigeon.service /etc/systemd/system/cpigeon.service
