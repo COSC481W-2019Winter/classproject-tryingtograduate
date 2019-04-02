@@ -23,7 +23,7 @@
   pcntl_signal(SIGTERM, "signalHandler");
   pcntl_signal(SIGHUP, "signalHandler");
 
-  function signalHandler($signal): void
+  function signalHandler($signal)
   {
     global $allowExit, $forceExit;
     
