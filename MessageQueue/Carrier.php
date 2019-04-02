@@ -14,32 +14,32 @@
       $this->email = $email;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id)
     {
       $this->id = $id;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name)
     {
       $this->name = $name;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(string $email)
     {
       $this->email = $email;
     }
 
-    public function getId(): int
+    public function getId()
     {
       return $this->id;
     }
 
-    public function getName(): string
+    public function getName()
     {
       return $this->name;
     }
 
-    public function getEmail(): string
+    public function getEmail()
     {
       return $this->email;
     }

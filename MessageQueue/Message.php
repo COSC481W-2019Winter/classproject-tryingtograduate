@@ -20,52 +20,52 @@
       $this->content = $content;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id)
     {
       $this->id = $id;
     }
 
-    public function setUser(Person $user): void
+    public function setUser(Person $user)
     {
       $this->user = $user;
     }
 
-    public function setGroup(Group $group): void
+    public function setGroup(Group $group)
     {
       $this->group = $group;
     }
 
-    public function setSubject(string $subject): void
+    public function setSubject(string $subject)
     {
       $this->subject = $subject;
     }
 
-    public function setContent(string $content): void
+    public function setContent(string $content)
     {
       $this->content = $content;
     }
 
-    public function getId(): int
+    public function getId()
     {
       return $this->id;
     }
 
-    public function getUser(): Person
+    public function getUser()
     {
       return $this->user;
     }
 
-    public function getGroup(): ?Group
+    public function getGroup()
     {
       return $this->group;
     }
 
-    public function getSubject(): string
+    public function getSubject()
     {
       return $this->subject;
     }
 
-    public function getContent(): string
+    public function getContent()
     {
       return $this->content;
     }

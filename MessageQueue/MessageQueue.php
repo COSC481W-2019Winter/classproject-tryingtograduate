@@ -37,7 +37,7 @@
     } 
   }
 
-  function checkExit(): void
+  function checkExit()
   {
     global $allow_exit, $force_exit;
 
@@ -47,7 +47,7 @@
     }
   }
 
-  function hasMessage(): bool
+  function hasMessage()
   {
     global $conn;
 
@@ -71,7 +71,7 @@
     return $result;
   }
 
-  function getNextMessage(): ?Message
+  function getNextMessage()
   {
     global $conn;
 
@@ -235,7 +235,7 @@
     return $result;
   }
 
-  function removeQueuedMessage($messageId): void
+  function removeQueuedMessage($messageId)
   {
     global $conn;
 
