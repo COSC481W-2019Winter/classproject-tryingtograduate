@@ -4,7 +4,7 @@ USEREXISTS=`grep -c cpigeon /etc/passwd`
 
 sudo mkdir /opt/CarrierPigeon
 sudo cp -r MessageQueue /opt/CarrierPigeon/
-if [[ !USEREXISTS ]]
+if [[ USEREXISTS == 0 ]]
 then
   sudo adduser cpigeon
 fi
