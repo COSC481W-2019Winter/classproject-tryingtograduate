@@ -1,32 +1,18 @@
 #!/bin/bash
 # Carrier Pigeon daemon
-# chkconfig: 345 68 32
+# chkconfig: 345 82 28
 # description: Carrier Pidgeon Message Queue Service
 # processname: php
-#
-### BEGIN INIT INFO
-# Provides: carrierpigeon 
-# Required-Start: $local_fs $network $named
-# Required-Stop: $local_fs $network $named
-# Short-Description: Carrier Pidgeon Message Queue Service
-# Description: Carrier Pidgeon Message Queue Service
-### END INIT INFO
-
-# Source function library.
-. /etc/init.d/functions
 
 DAEMON_PATH="/opt/CarrierPigeon/MessageQueue"
 
 DAEMON="/usr/bin/php"
 DAEMONOPTS="/opt/CarrierPigeon/MessageQueue/MessageQueue.php"
 
-DAEMONUSER="cpigeon"
 NAME="carrierpigeon"
 DESC="Carrier Pidgeon Message Queue Service"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
-
-LOGFILE="/var/log/carrierpigeon"
 
 case "$1" in
 start)
