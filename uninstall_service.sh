@@ -12,4 +12,5 @@ else
   sudo /etc/init.d/carrierpigeon stop
   sudo chkconfig --del carrierpigeon
   sudo rm -f /etc/init.d/carrierpigeon
+fi
 sudo rm -rf /opt/CarrierPigeon
