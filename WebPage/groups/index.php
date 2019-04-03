@@ -212,6 +212,20 @@
 								echo ">Cricket</option>";
 							}
 							echo 		"</select>";
+							// Allow users to add contact to new group.
+							echo 		"<select id=\"updateGroups\" name=\"updateGroups\">";
+							echo      "<option value=\"0\">Assign to Group</optiom>";
+							$sql = "SELECT groupId, groupName FROM Groups WHERE ownerId = $UserId";
+							$result = $conn->query($sql);
+							if ($result->num_rows > 0) {
+									// output data of each row
+									while($row = $result->fetch_assoc()) {
+											echo "<option value=\"". $row["groupId"]. "\">". $row["groupName"]."</option>";
+									}
+							} else {
+									echo "<option value=\"4\">You have no groups</option>";
+							}
+							echo    "</select>";
 							echo    "<input type=\"hidden\" name=\"editID\" value=\"" .$selectId. "\">";
 							echo 		"<input class=\"button\" id=\"addCbutton\" type=\"submit\" name=\"editCinDB\" value=\"UPDATE\" onclick= \"newContactFunc\">";
 							echo 		"<button id=\"cancel\" onclick=\"newContactFunc\">CANCEL</button>";
@@ -222,8 +236,6 @@
 						?>
 
 						<table id="contactList">
-
-
 							<?php
 							session_start();
 								//Variables created to access the database on Wi2017_436_kbledsoe3
@@ -482,11 +494,12 @@
 	$email = $_POST['editCemail'];
 	$carrier = $_POST['editCarrier'];
 	$editId = $_POST['editID'];
+	$updateGroup = $_POST['updateGroups'];
 
 
 	if(isset($_POST['editCinDB']))
 	{
-			//Inserts new record into table from sql statement
+			//Updates record into table from sql statement
 			mysqli_query($conn, "UPDATE Person SET firstName = '$fname', lastName = '$lname', emailAddress = '$email',
 				phoneNumber = '$phone', carrierID = '$carrier' WHERE uniqueId = $editId;");
 
@@ -497,16 +510,39 @@
 				echo '<script language="javascript">';
 				echo 'alert("Edit successful!!")';
 				echo '</script>';
-				// Re-route
+
+			} else {
 				echo '<script language="javascript">';
-				echo 'window.location.href ="../groups/"' ;
+				echo 'alert("No changes made to User information.")';
 				echo '</script>';
 			}
-			else
-			{
-				echo "User not changed";
+			if($updateGroup != '0'){
+				// Check to see if contact is already in this group
+				$query2 = mysqli_query($conn, "SELECT * FROM Group_JT WHERE groupId = $updateGroup AND contactId = $editId;");
+
+				if ($query2->num_rows != 0) {
+					echo '<script language="javascript">';
+					echo 'alert("Contact already Exists in Group.")';
+					echo '</script>';
+				} else {
+					mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId) VALUES ('$editId','$UserId', '$updateGroup')");
+					if (mysqli_affected_rows($conn) > 0){
+						echo '<script language="javascript">';
+						echo 'alert("User Added to Group successfully!!")';
+						echo '</script>';
+
+						echo '<script language="javascript">';
+						echo 'window.location.href ="../groups/"' ;
+						echo '</script>';
+					} else {
+						echo '<script language="javascript">';
+						echo 'alert("User not added to Group.")';
+						echo '</script>';
+					}
+				}
 			}
 		}
+
 
 
 	//Close connection
