@@ -18,11 +18,16 @@
 				}
 			}
 			function newContactFunc() {
-				var x = document.getElementById("newContact");
-				if (x.style.display === "none") {
-					x.style.display = "block";
+				var y = document.getElementById('glist').value;
+				if(y == 'all' || y == 0){
+					alert("Please select a group first.");
 				} else {
-					x.style.display = "none";
+					var x = document.getElementById("newContact");
+					if (x.style.display === "none") {
+						x.style.display = "block";
+					} else {
+						x.style.display = "none";
+					}
 				}
 			}
 			function groupPickFunc(){
@@ -69,9 +74,14 @@
 							<option value="0">Select Group</option>
 							<?php
 								session_start();
+
 								$UserEmail = $_SESSION['currentUserEmail'];
 								$groupSelected = $_SESSION['currentGroup'];
-
+								if($groupSelected == 'all'){
+									echo "<option value=\"all\" selected=\"selected\">All Contacts</option>";
+								} else {
+									echo "<option value=\"all\">All Contacts</option>";
+								}
 								// Create connection
 								include ('../PHP/Database.php');
 								// Create connection
@@ -140,20 +150,79 @@
 									<option value="4">AT&T</option>
 									<option value="5">Cricket</option>
 								</select>
-								<input type="hidden" id="groupPicked" name="groupPicked">
-								<input type="hidden" id="uEmail" name="uEmail">
 								<input class="button" id="addCbutton" type="submit" name="addCtoDB" value="ADD" onclick= "newContactFunc">
 								<button id="cancel" onclick="newContactFunc">CANCEL</button>
 							</form>
 						</div>
+						<!-- TERRIBLE CODE TO ALLOW A USER TO EDIT CONTACTS-->
+						<?php
+						$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+						$selectId = $_POST['editID'];
+
+						if(isset($_POST['editContact'])){
+							$sql = "SELECT * FROM Person WHERE uniqueId = $selectId limit 1";
+							$result = $conn->query($sql);
+							$id = mysqli_fetch_object($result);
+							$editFName = $id->firstName;
+							$editLName = $id->lastName;
+							$editEmail = $id->emailAddress;
+							$editPhone = $id->phoneNumber;
+							$editCarrier = $id->carrierID;
+
+							echo "<div id=\"edittingContact\">";
+							echo 		"<form class=\"newContact\" action = \"\" method = \"post\">";
+							echo 		"<label>First name:</label>";
+							echo 		"<input type=\"text\" name=\"editFname\" value=\"" .$editFName. "\">";
+							echo 		"<label>Last name:</label>";
+							echo 		"<input type=\"text\" name=\"editLname\" value=\"" .$editLName. "\">";
+							echo 		"<label>E-mail:</label>";
+							echo 		"<input type=\"text\" name=\"editCemail\" value=\"" .$editEmail. "\">";
+							echo 		"<label>Phone Number:</label>";
+							echo 		"<input type=\"text\" name=\"editCphone\" value=\"" .$editPhone. "\">";
+							echo 		"<select id=\"carrier\" name=\"editCarrier\">";
+							echo 			"<option value=\"0\">Select Carrier</option>";
+							echo 			"<option value=\"1\" ";
+							if($editCarrier == 1){
+								 echo "selected=\"selected\">Verizon</option>";
+							}else{
+								 echo ">Verizon</option>";
+							}
+							echo 			"<option value=\"2\" ";
+							if($editCarrier == 2){
+								echo "selected=\"selected\">Sprint</option>";
+							}else{
+								echo ">Sprint</option>";
+							}
+							echo 			"<option value=\"3\" ";
+							if($editCarrier == 3){
+								echo "selected=\"selected\">T-mobile</option>";
+							}else{
+								echo ">T-mobile</option>";
+							}
+							echo 			"<option value=\"4\" ";
+							if($editCarrier == 4){
+								echo "selected=\"selected\">AT&T</option>";
+							}else{
+								echo ">AT&T</option>";
+							}
+							echo 			"<option value=\"5\" ";
+							if($editCarrier == 5){
+								echo "selected=\"selected\">Cricket</option>";
+							}else{
+								echo ">Cricket</option>";
+							}
+							echo 		"</select>";
+							echo    "<input type=\"hidden\" name=\"editID\" value=\"" .$selectId. "\">";
+							echo 		"<input class=\"button\" id=\"addCbutton\" type=\"submit\" name=\"editCinDB\" value=\"UPDATE\" onclick= \"newContactFunc\">";
+							echo 		"<button id=\"cancel\" onclick=\"newContactFunc\">CANCEL</button>";
+							echo 	"</form>";
+							echo "</div>";
+						}
+						$conn->close();
+						?>
 
 						<table id="contactList">
-							<tr>
-								<th>Name</th>
-								<th>Phone Number</th>
-								<th>E-mail Address</th>
-								<th>Delete</th>
-							</tr>
+
 
 							<?php
 							session_start();
@@ -162,35 +231,51 @@
 								// Create connection
 								$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 
-								// ON Group list dropdown change run this function
-								//if(isset($_POST['glist'])){
-									$selectedGroup = $_SESSION['currentGroup'];
+
+								$selectedGroup = $_SESSION['currentGroup'];
+
+								if($selectedGroup=='all'){
+									$sql = "SELECT Person.firstName, Person.lastName, Person.emailAddress, Person.phoneNumber, Person.uniqueId FROM Person
+													WHERE ownerId = '$UserId';";
+								} else {
 
 									$sql = "SELECT Person.firstName, Person.lastName, Person.emailAddress, Person.phoneNumber, Person.uniqueId FROM Person, Group_JT
-										WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId;";
+											WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId;";
+								}
+								echo "<tr><th>Name</th><th>Phone Number</th><th>E-mail Address</th>";
+								if($selectedGroup == 'all'){
+									echo "<th>Edit</th>";
+								}
+								echo "<th>Delete</th></tr>";
+								$result = $conn->query($sql);
+								if ($result->num_rows > 0) {
+								// output data of each row
+									while($row = $result->fetch_assoc()) {
+										echo "<tr><td>". $row["firstName"]. " ". $row["lastName"]. "</td><td>". $row["phoneNumber"]. "</td><td>". $row["emailAddress"]. "</td>";
+													// EDIT BUTTONS WITH VALUES AND STYLING
+										if($selectedGroup == 'all'){
+											echo "<td><form name=\"editContact\" action=\"\" method=\"post\">
+									 			 	<input type=\"hidden\" id=\"editID\" name=\"editID\" value=". $row["uniqueId"]. ">
+									 		 	 	<input class=\"button\" id=\"editContact\" type=\"submit\" name=\"editContact\" value=\"EDIT\"
+									 		 	 	style=\"width: 55%; box-shadow: 0; padding: 0; margin: 0;\"></form></td>";
 
-									$result = $conn->query($sql);
-									if ($result->num_rows > 0) {
-									    // output data of each row
-									    while($row = $result->fetch_assoc()) {
-									       echo "<tr><td>". $row["firstName"]. " ". $row["lastName"]. "</td><td>". $row["phoneNumber"]. "</td><td>". $row["emailAddress"]. "</td>";
+										}
 												 // DELETE BUTTONS WITH VALUES AND STYLING
-												 echo "<td><form name=\"delContact\" action=\"\" method=\"post\">
-												 				<input type=\"hidden\" id=\"delID\" name=\"delID\" value=". $row["uniqueId"]. ">
-												 				<input class=\"button\" id=\"deleteContact\" type=\"submit\" name=\"deleteContact\" value=\"DELETE\"
-												 				style=\"width: 55%; box-shadow: 0; padding: 0; margin: 0;\"></form></td>";
+								  	echo "<td><form name=\"delContact\" action=\"\" method=\"post\">
+								 				 	<input type=\"hidden\" id=\"delID\" name=\"delID\" value=". $row["uniqueId"]. ">
+								 			 	 	<input class=\"button\" id=\"deleteContact\" type=\"submit\" name=\"deleteContact\" value=\"DELETE\"
+								 			 	 	style=\"width: 55%; box-shadow: 0; padding: 0; margin: 0;\"></form></td>";
 
 								    	}
 									} else {
 									    echo "<tr><td>No contacts<td></tr>";
 									}
-								//}
+
 
 
 
 								$conn->close();
 							?>
-
 						</table>
 
         </div>
@@ -240,6 +325,10 @@
 			//Check the status of the query
 			if (mysqli_affected_rows($conn) > 0)
 			{
+				$query = mysqli_query($conn, "SELECT * FROM Groups WHERE groupName = '$newGroupName' AND ownerId = '$UserId';");
+				$newGroup = mysqli_fetch_array($query);
+				$_SESSION['currentGroup']=$newGroup[0];
+
 				echo '<script language="javascript">';
 				echo 'alert("Added successfully!!")';
 				echo '</script>';
@@ -308,6 +397,7 @@
 				echo "User not added";
 			}
 		}
+
 	}
 
 	//-------------------------
@@ -319,8 +409,13 @@
 	if(isset($_POST['deleteContact']))
 	{
 		$selectedGroup=$_SESSION['currentGroup'];
-		//Deletes slelected  record into table from sql statement
-		mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup' AND contactId = '$deleteID';");
+		if($selectedGroup == 'all'){
+			mysqli_query($conn, "DELETE FROM Group_JT WHERE contactId = '$deleteID';");
+			mysqli_query($conn, "DELETE FROM Person WHERE uniqueId = '$deleteID';");
+		} else {
+			//Deletes slelected  record into table from sql statement
+			mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup' AND contactId = '$deleteID';");
+		}
 
 		//Check the status of the query
 		if (mysqli_affected_rows($conn) > 0)
@@ -337,6 +432,7 @@
 		{
 			echo "User not Deleted";
 		}
+
 	}
 
 	//-------------------------
@@ -344,28 +440,75 @@
 	//-------------------------
 	if(isset($_POST['delGroup'])){
 		$selectedGroup=$_SESSION['currentGroup'];
-
-		//Deletes all records from group
-		mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup';");
-		// deleetes group
-		mysqli_query($conn, "DELETE FROM Groups WHERE groupId = '$selectedGroup';");
-
-		//Check the status of the query
-		if (mysqli_affected_rows($conn) > 0)
-		{
+		if($selectedGroup == 0 || $selectedGroup == 'all'){
 			echo '<script language="javascript">';
-			echo 'alert("Deleted successfully!!")';
+			echo 'alert("Please select a group before deleting.")';
 			echo '</script>';
 			// Re-route
 			echo '<script language="javascript">';
 			echo 'window.location.href ="../groups/"' ;
 			echo '</script>';
-		}
-		else
-		{
-			echo "Group not Deleted";
+		}else{
+
+		//Deletes all records from group
+			mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup';");
+			// deleetes group
+			mysqli_query($conn, "DELETE FROM Groups WHERE groupId = '$selectedGroup';");
+
+			//Check the status of the query
+			if (mysqli_affected_rows($conn) > 0)
+			{
+				echo '<script language="javascript">';
+				echo 'alert("Deleted successfully!!")';
+				echo '</script>';
+				// Re-route
+				echo '<script language="javascript">';
+				echo 'window.location.href ="../groups/"' ;
+				echo '</script>';
+			}
+			else
+			{
+				echo "Group not Deleted";
+			}
 		}
 	}
+
+	//----------------------
+	// CODE TO EDIT CONTACTS
+	//----------------------
+	$fname = $_POST['editFname'];
+	$lname = $_POST['editLname'];
+	$phone = $_POST['editCphone'];
+	$email = $_POST['editCemail'];
+	$carrier = $_POST['editCarrier'];
+	$editId = $_POST['editID'];
+
+
+	if(isset($_POST['editCinDB']))
+	{
+			//Inserts new record into table from sql statement
+			mysqli_query($conn, "UPDATE Person SET firstName = '$fname', lastName = '$lname', emailAddress = '$email',
+				phoneNumber = '$phone', carrierID = '$carrier' WHERE uniqueId = $editId;");
+
+
+			//Check the status of the query
+			if (mysqli_affected_rows($conn) > 0)
+			{
+				echo '<script language="javascript">';
+				echo 'alert("Edit successful!!")';
+				echo '</script>';
+				// Re-route
+				echo '<script language="javascript">';
+				echo 'window.location.href ="../groups/"' ;
+				echo '</script>';
+			}
+			else
+			{
+				echo "User not changed";
+			}
+		}
+
+
 	//Close connection
 	$conn->close();
 ?>
