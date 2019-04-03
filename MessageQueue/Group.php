@@ -17,42 +17,42 @@
       $this->members = $members;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id)
     {
       $this->id = $id;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name)
     {
       $this->name = $name;
     }
 
-    public function setOwnerId(int $ownerId): void
+    public function setOwnerId(int $ownerId)
     {
       $this->ownerId = $ownerId;
     }
 
-    public function setMembers(array $members): void
+    public function setMembers(array $members)
     {
       $this->members = $members;
     }
 
-    public function getId(): int
+    public function getId()
     {
       return $this->id;
     }
 
-    public function getName(): string
+    public function getName()
     {
       return $this->name;
     }
 
-    public function getOwnerId(): int
+    public function getOwnerId()
     {
       return $this->ownerId;
     }
 
-    public function getmembers(): array
+    public function getmembers()
     {
       return $this->members;
     }

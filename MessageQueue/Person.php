@@ -38,27 +38,27 @@
       $this->ownerId = $ownerId;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id)
     {
       $this->id = $id;
     }
 
-    public function setFirstName(string $firstName): void
+    public function setFirstName(string $firstName)
     {
       $this->firstName = $firstName;
     }
 
-    public function setLastName(string $lastName): void
+    public function setLastName(string $lastName)
     {
       $this->lastName = $lastName;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(string $email)
     {
       $this->email = $email;
     }
 
-    public function setVerCode(int $vCode): void
+    public function setVerCode(int $vCode)
     {
       if($this->isUser)
       {
@@ -66,7 +66,7 @@
       }
     }
 
-    public function setVerCodeExp(DateTime $vCodeExp): void
+    public function setVerCodeExp(DateTime $vCodeExp)
     {
       if($this->isUser)
       {
@@ -74,7 +74,7 @@
       }
     }
 
-    public function setPasswdHash(string $passwdHash): void
+    public function setPasswdHash(string $passwdHash)
     {
       if($this->isUser)
       {
@@ -82,12 +82,12 @@
       }
     }
 
-    public function setPhone(string $phone): void
+    public function setPhone(string $phone)
     {
       $this->phone = $phone;
     }
 
-    public function setCarrier(Carrier $carrier): void
+    public function setCarrier(Carrier $carrier)
     {
       if($this->isUser && $this->phone)
       {
@@ -95,7 +95,7 @@
       }
     }
 
-    public function setIsUser(bool $isUser): void
+    public function setIsUser(bool $isUser)
     {
       if($ownerId == null)
       {
@@ -103,7 +103,7 @@
       }
     }
 
-    public function setOwner(int $ownerId): void
+    public function setOwner(int $ownerId)
     {
       if(!$this->isUser)
       {
@@ -111,57 +111,57 @@
       }
     }
 
-    public function getId(): ?int
+    public function getId()
     {
       return $this->id;
     }
 
-    public function getFirstName(): ?string
+    public function getFirstName()
     {
       return $this->firstName;
     }
 
-    public function getLastName(): ?string
+    public function getLastName()
     {
       return $this->lastName;
     }
 
-    public function getEmail(): ?string
+    public function getEmail()
     {
       return $this->email;
     }
 
-    public function getVerCode(): ?int
+    public function getVerCode()
     {
       return $this->vCode;
     }
 
-    public function getVerCodeExp(): ?DateTime
+    public function getVerCodeExp()
     {
       return $this->vCodeExp;
     }
 
-    public function getPasswdHash(): ?string
+    public function getPasswdHash()
     {
       return $this->passwdHash;
     }
 
-    public function getPhone(): ?string
+    public function getPhone()
     {
       return $this->phone;
     }
 
-    public function getCarrier(): ?Carrier
+    public function getCarrier()
     {
       return $this->carrier;
     }
 
-    public function isUser(): ?bool
+    public function isUser()
     {
       return $this->isUser;
     }
 
-    public function getOwner(): ?int
+    public function getOwner()
     {
       return $this->ownerId;
     }

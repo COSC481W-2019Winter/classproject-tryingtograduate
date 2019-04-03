@@ -62,7 +62,7 @@
 						<select id="tmpList" name="tmpList" class = "dropbtn" onchange = "this.form.submit()">
 							<option  type  = 'submit' value="0"class="dropdown-content" name = 'selection'>Select Message</option>
 							<?php
-								// output data of each row
+								// output data of each row that matches query "$result" listed above
 								while($row = $result->fetch_assoc()) {
 								$temp_name = $row['templateName'];
 								echo"<option name = 'tmpSelect' value = '$temp_name'>$temp_name</option>";
@@ -81,7 +81,7 @@
 						<select id="glist" name="glist" class = "dropbtn">
 							<option value="0"class="dropdown-content">Select Group</option>
 							<?php
-								// output data of each row
+								// output data of each row that matches query "$result1" listed above
 								while($row = $result1->fetch_assoc()) {
 								$group_name = $row['groupName'];
 								echo "<option value = '$group_name'>$group_name</option>";
@@ -89,37 +89,42 @@
 							?>
 						</select>
 					</form>
-			</div>
-		</div>
-		</br>
-		<div id="saveMessage" style = "text-align: center" class="savemessage">
+				</div>
+			</div></br>
+			<div id="saveMessage" style = "text-align: center" class="savemessage">
 			<form action = "" method = "post">
+				</br>
 				<label class = "savemessage">Message name:</label>
-				<input type="text" style = "width:10%" placeholder="Message Name" id = "tempName" name = "tempName">
-				<label>Subject:</label>
-				<input type="text" style = "width:38%" placeholder="Message Subject" id = "tempSubject" name = "tempSubject">
-				</br></br>
+				<input type="text" style = "width:20%" placeholder="Message Name" id = "tempName" name = "tempName">
+				</br>
 				<input id="addMsgButton" name = "addMsgButton" type="submit" value="SAVE">
 				<button id = "cancel">CANCEL</button>
-			
-		</div>
-		</br></br>
-		<textarea id = "message" name = "message" class = "center"><?php
-		if(isset($_POST['tmpList'])){
-			$temp_select = "unchanged";
+		</div></br>
+		<label class = "savemessage">Subject:</label>
+		<input type="text" placeholder="Message Subject" id = "tempSubject" value = "<?php 
+			if(isset($_POST['tmpList'])){
 			$temp_select = $_POST['tmpList'];
-			$query3 = "SELECT content FROM Message WHERE templateName = '$temp_select' AND ownerId = $UniqueId";
+			$query3 = "SELECT subject FROM Message WHERE templateName = '$temp_select' AND ownerId = $UniqueId";
 			$result3 = $conn->query($query3);
 			$tm = mysqli_fetch_object($result3);
-			$mo = $tm->content;
-			echo $mo;
+			$subject = $tm->subject;
+			echo $subject;
+			}?>">
+		</br></br>
+		<textarea id = "message" name = "message" class = "center"><?php
+			if(isset($_POST['tmpList'])){
+			$temp_select = $_POST['tmpList'];
+			$query4 = "SELECT content, subject FROM Message WHERE templateName = '$temp_select' AND ownerId = $UniqueId";
+			$result4 = $conn->query($query4);
+			$tm = mysqli_fetch_object($result4);
+			$body = $tm->content;
+			echo $body;
 			}
 		?></textarea>
 		</br></br>
 		</form>
 		<table class = "center">
 		<td>
-		
 			<tr><td><button class = "button buttonA" onclick = "window.location.href ='../dashboard/index.php'" >
 			Send</button></td>
 			<td><button class = "button buttonB" onclick = "window.location.href ='../home/index.html'" >
@@ -131,7 +136,6 @@
 	</body>
 </html>
 <?php
-	
 	//Variables needed to save the message
 	$tempName = $_POST['tempName'];
 	$tempSubject = $_POST['tempSubject'];
@@ -167,7 +171,7 @@
 			else
 			{
 				echo '<script language="javascript">';
-				echo 'alert("Template not saved.  More work to do.")';
+				echo 'alert("Template not saved.  Something went wrong.")';
 				echo '</script>';
 			}
 		}
