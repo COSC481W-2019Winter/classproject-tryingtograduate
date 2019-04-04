@@ -4,10 +4,10 @@
 # description: Carrier Pidgeon Message Queue Service
 # processname: php
 
-DAEMON_PATH="/opt/CarrierPigeon/MessageQueue"
+DAEMON_PATH="/usr/bin/"
 
-DAEMON="/bin/env"
-DAEMONOPTS="/usr/bin/php /opt/CarrierPigeon/MessageQueue/MessageQueue.php"
+DAEMON="php"
+DAEMONOPTS="/opt/CarrierPigeon/MessageQueue/MessageQueue.php"
 
 NAME="carrierpigeon"
 DESC="Carrier Pidgeon Message Queue Service"
