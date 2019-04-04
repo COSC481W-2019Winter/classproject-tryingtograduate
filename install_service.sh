@@ -4,12 +4,13 @@ USEREXISTS=`grep -c cpigeon /etc/passwd`
 
 sudo mkdir /opt/CarrierPigeon
 sudo cp -r MessageQueue /opt/CarrierPigeon/
+sudo cp $HOME/Email.php /opt/CarrierPigeon/MessageQueue/
 if [[ USEREXISTS == 0 ]]
 then
   sudo adduser cpigeon
 fi
 
-if [[ SYSTEMD == 1 ]]
+if [[ $SYSTEMD == 1 ]]
 then
   sudo cp Util/cpigeon.service /lib/systemd/system/
   sudo ln -s /lib/systemd/system/cpigeon.service /etc/systemd/system/cpigeon.service
