@@ -1,5 +1,6 @@
 <?php
 include('Email.php');
+
 // If necessary, modify the path in the require statement below to refer to the 
 // location of your Composer autoload.php file.
 require 'vendor/autoload.php';
@@ -23,19 +24,19 @@ $mail->setFrom('jpeck3@emich.edu', 'Josh Peck');
 $mail->addAddress('jtang376@gmail.com', 'Josh Peck');
 
 // Replace smtp_username with your Amazon SES SMTP user name.
-$mail->Username = $SMTPUSER;
+$mail->Username = SMTPUSER;
 
 // Replace smtp_password with your Amazon SES SMTP password.
-$mail->Password = $SMTPPASS;
+$mail->Password = SMTPPASS;
     
 // Specify a configuration set. If you do not want to use a configuration
 // set, comment or remove the next line.
-$mail->addCustomHeader('X-SES-CONFIGURATION-SET', 'ConfigSet');
+//$mail->addCustomHeader('X-SES-CONFIGURATION-SET', 'ConfigSet');
  
 // If you're using Amazon SES in a region other than US West (Oregon), 
 // replace email-smtp.us-west-2.amazonaws.com with the Amazon SES SMTP  
 // endpoint in the appropriate region.
-$mail->Host = $SMTPHOST;
+$mail->Host = SMTPHOST;
 
 // The subject line of the email
 $mail->Subject = 'Amazon SES test (SMTP interface accessed using PHP)';
