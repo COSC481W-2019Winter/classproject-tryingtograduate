@@ -27,7 +27,6 @@ create table Person
   passwordHash varchar(500),
   phoneNumber varchar(15),
   carrierID int,
-  isUser bool,
   ownerId int,
   foreign key (carrierId) references Carrier (carrierId)
 );
@@ -55,7 +54,7 @@ create table Message
 (
   messageId int not null auto_increment primary key,
   ownerId int not null,
-  groupId int not null,
+  groupId int,
   subject varchar(80) not null,
   content longtext,
   lastSent datetime,
@@ -68,3 +67,11 @@ create table Queue
   taskNum int not null auto_increment primary key,
   messageId int not null
 );
+
+insert into `Carrier`
+  values
+    (1,'Verizon','@vzw.com'),
+    (2,'Sprint','@messaging.sprintpcs.com'),
+    (3,'T-mobile','@tmomail.net'),(4,'AT&T','@txt.att.net'),
+    (5,'Cricket','@mms.cricketwireless.net')
+;
