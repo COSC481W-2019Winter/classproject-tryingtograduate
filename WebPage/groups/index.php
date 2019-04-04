@@ -381,7 +381,7 @@
 		else //if email does not exist
 		{
 			//Inserts new record into table from sql statement
-			mysqli_query($conn, "INSERT INTO Person(firstName, lastName, emailAddress, phoneNumber, ownerId, carrierID)
+			mysqli_query($conn, "INSERT INTO Person (firstName, lastName, emailAddress, phoneNumber, ownerId, carrierID) 
 				VALUES ('$fname','$lname','$email','$phone','$UserId', '$carrier')");
 
 			$query3 = mysqli_query($conn, "SELECT uniqueId FROM Person
