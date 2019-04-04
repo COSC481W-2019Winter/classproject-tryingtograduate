@@ -7,11 +7,11 @@
     private $subject;
     private $content;
 
-    public function __construct(int $id,
-                                Person $user,
-                                Group $group = null,
-                                string $subject,
-                                string $content)
+    public function __construct($id,
+                                $user,
+                                $group = null,
+                                $subject,
+                                $content)
     {
       $this->id = $id;
       $this->user = $user;
@@ -20,27 +20,27 @@
       $this->content = $content;
     }
 
-    public function setId(int $id)
+    public function setId($id)
     {
       $this->id = $id;
     }
 
-    public function setUser(Person $user)
+    public function setUser($user)
     {
       $this->user = $user;
     }
 
-    public function setGroup(Group $group)
+    public function setGroup($group)
     {
       $this->group = $group;
     }
 
-    public function setSubject(string $subject)
+    public function setSubject($subject)
     {
       $this->subject = $subject;
     }
 
-    public function setContent(string $content)
+    public function setContent($content)
     {
       $this->content = $content;
     }

@@ -5,26 +5,26 @@
     private $name;
     private $email;
 
-    public function __construct(int $id,
-                                string $name,
-                                string $email)
+    public function __construct($id,
+                                $name,
+                                $email)
     {
       $this->id = $id;
       $this->name = $name;
       $this->email = $email;
     }
 
-    public function setId(int $id)
+    public function setId($id)
     {
       $this->id = $id;
     }
 
-    public function setName(string $name)
+    public function setName($name)
     {
       $this->name = $name;
     }
 
-    public function setEmail(string $email)
+    public function setEmail($email)
     {
       $this->email = $email;
     }

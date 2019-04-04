@@ -13,17 +13,17 @@
     private $isUser;
     private $ownerId;
 
-    public function __construct(int $id,
-                                string $firstName = null,
-                                string $lastName = null, 
-                                string $email = null,
-                                int $vCode = null,
-                                DateTime $vCodeExp = null,
-                                string $passwdHash = null,
-                                string $phone = null,
-                                Carrier $carrier = null,
-                                bool $isUser,
-                                int $ownerId = null)
+    public function __construct($id,
+                                $firstName = null,
+                                $lastName = null, 
+                                $email = null,
+                                $vCode = null,
+                                $vCodeExp = null,
+                                $passwdHash = null,
+                                $phone = null,
+                                $carrier = null,
+                                $isUser,
+                                $ownerId = null)
     {
       $this->id = $id;
       $this->firstName = $firstName;
@@ -38,27 +38,27 @@
       $this->ownerId = $ownerId;
     }
 
-    public function setId(int $id)
+    public function setId($id)
     {
       $this->id = $id;
     }
 
-    public function setFirstName(string $firstName)
+    public function setFirstName($firstName)
     {
       $this->firstName = $firstName;
     }
 
-    public function setLastName(string $lastName)
+    public function setLastName($lastName)
     {
       $this->lastName = $lastName;
     }
 
-    public function setEmail(string $email)
+    public function setEmail($email)
     {
       $this->email = $email;
     }
 
-    public function setVerCode(int $vCode)
+    public function setVerCode($vCode)
     {
       if($this->isUser)
       {
@@ -66,7 +66,7 @@
       }
     }
 
-    public function setVerCodeExp(DateTime $vCodeExp)
+    public function setVerCodeExp($vCodeExp)
     {
       if($this->isUser)
       {
@@ -74,7 +74,7 @@
       }
     }
 
-    public function setPasswdHash(string $passwdHash)
+    public function setPasswdHash($passwdHash)
     {
       if($this->isUser)
       {
@@ -82,12 +82,12 @@
       }
     }
 
-    public function setPhone(string $phone)
+    public function setPhone($phone)
     {
       $this->phone = $phone;
     }
 
-    public function setCarrier(Carrier $carrier)
+    public function setCarrier($carrier)
     {
       if($this->isUser && $this->phone)
       {
@@ -95,7 +95,7 @@
       }
     }
 
-    public function setIsUser(bool $isUser)
+    public function setIsUser($isUser)
     {
       if($ownerId == null)
       {
@@ -103,7 +103,7 @@
       }
     }
 
-    public function setOwner(int $ownerId)
+    public function setOwner($ownerId)
     {
       if(!$this->isUser)
       {

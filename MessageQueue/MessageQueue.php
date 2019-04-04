@@ -130,7 +130,7 @@
     $rawMessage = mysqli_fetch_array($messageResult);
 
     $messageId = $rawMessage['messageId'];
-    $ownerId = (int)$rawMessage['uniqueId'];
+    $ownerId = $rawMessage['uniqueId'];
     $firstName = $rawMessage['firstName'];
     $lastName = $rawMessage['lastName'];
     $emailAddress = $rawMessage['emailAddress'];
