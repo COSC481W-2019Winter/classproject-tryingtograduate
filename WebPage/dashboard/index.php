@@ -138,14 +138,14 @@
 		<table class = "center">
 		<td>
 			<tr><td><input id = "send" name = "send" class = "button buttonA" type = "submit" value = "Send">
-			</td>
+			</td></form><!end of form to save message as template>
 			<td><button class = "button buttonB" onclick = "window.location.href ='../home/index.html'" >
 			Sign-Out</button></td>
 			<td><button class = "button buttonC" onclick = "window.location.href = '../dashboard/index.php'">
 			Cancel</button></td>
 		</td>
 		</table>
-		</form><!end of form to save message as template>
+		
 		
 	</body>
 </html>
