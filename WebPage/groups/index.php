@@ -499,49 +499,67 @@
 
 	if(isset($_POST['editCinDB']))
 	{
-			//Updates record into table from sql statement
-			mysqli_query($conn, "UPDATE Person SET firstName = '$fname', lastName = '$lname', emailAddress = '$email',
-				phoneNumber = '$phone', carrierID = '$carrier' WHERE uniqueId = $editId;");
-
-
-			//Check the status of the query
-			if (mysqli_affected_rows($conn) > 0)
-			{
+		//We need to make sure that the email/Phone number being changed doesn't already exist in the Database.
+		$sql = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE NOT uniqueId = $editId AND phoneNumber = '$phone' AND ownerId = $UserId;");
+		if ($sql->num_rows != 0) {
+			echo '<script language="javascript">';
+			echo 'alert("Contact already Exists with that Phone.")';
+			echo '</script>';
+		} else {
+			$sql = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE NOT uniqueId = $editId AND emailAddress = '$email' AND ownerId = $UserId;");
+		  if ($sql->num_rows != 0){
 				echo '<script language="javascript">';
-				echo 'alert("Edit successful!!")';
+				echo 'alert("Contact already Exists with that phone number.")';
 				echo '</script>';
-
 			} else {
-				echo '<script language="javascript">';
-				echo 'alert("No changes made to User information.")';
-				echo '</script>';
-			}
-			if($updateGroup != '0'){
-				// Check to see if contact is already in this group
-				$query2 = mysqli_query($conn, "SELECT * FROM Group_JT WHERE groupId = $updateGroup AND contactId = $editId;");
+				//Updates record into table from sql statement
+				mysqli_query($conn, "UPDATE Person SET firstName = '$fname', lastName = '$lname', emailAddress = '$email',
+					phoneNumber = '$phone', carrierID = '$carrier' WHERE uniqueId = $editId;");
 
-				if ($query2->num_rows != 0) {
+
+				//Check the status of the query
+				if (mysqli_affected_rows($conn) > 0)
+				{
 					echo '<script language="javascript">';
-					echo 'alert("Contact already Exists in Group.")';
+					echo 'alert("Edit successful!!")';
+					echo '</script>';
+
+					echo '<script language="javascript">';
+					echo 'window.location.href ="../groups/"' ;
 					echo '</script>';
 				} else {
-					mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId) VALUES ('$editId','$UserId', '$updateGroup')");
-					if (mysqli_affected_rows($conn) > 0){
-						echo '<script language="javascript">';
-						echo 'alert("User Added to Group successfully!!")';
-						echo '</script>';
+					echo '<script language="javascript">';
+					echo 'alert("No changes made to User information.")';
+					echo '</script>';
+				}
+				if($updateGroup != '0'){
+					// Check to see if contact is already in this group
+					$query2 = mysqli_query($conn, "SELECT * FROM Group_JT WHERE groupId = $updateGroup AND contactId = $editId;");
 
+					if ($query2->num_rows != 0) {
 						echo '<script language="javascript">';
-						echo 'window.location.href ="../groups/"' ;
+						echo 'alert("Contact already Exists in Group.")';
 						echo '</script>';
 					} else {
-						echo '<script language="javascript">';
-						echo 'alert("User not added to Group.")';
-						echo '</script>';
+						mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId) VALUES ('$editId','$UserId', '$updateGroup')");
+						if (mysqli_affected_rows($conn) > 0){
+							echo '<script language="javascript">';
+							echo 'alert("User Added to Group successfully!!")';
+							echo '</script>';
+
+							echo '<script language="javascript">';
+							echo 'window.location.href ="../groups/"' ;
+							echo '</script>';
+						} else {
+							echo '<script language="javascript">';
+							echo 'alert("User not added to Group.")';
+							echo '</script>';
+						}
 					}
 				}
 			}
 		}
+	}
 
 
 
