@@ -210,7 +210,7 @@
           contactId = uniqueId
       ;";
 
-      $groupMembers = [];
+      $groupMembers = array();
       $groupResult = mysqli_query($conn, $groupQuery);
       $currPerson = null;
       while($members = mysqli_fetch_array($groupResult))
