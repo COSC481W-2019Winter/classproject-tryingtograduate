@@ -6,6 +6,8 @@ require 'vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
+include('Email.php');
+
 // Instantiate a new PHPMailer 
 $mail = new PHPMailer;
 
@@ -23,10 +25,10 @@ $mail->setFrom('jpeck3@emich.edu', 'Josh Peck');
 $mail->addAddress('jtang376@gmail.com', 'Josh Peck');
 
 // Replace smtp_username with your Amazon SES SMTP user name.
-$mail->Username = 'smtp_username';
+$mail->Username = $SMTPUSER;
 
 // Replace smtp_password with your Amazon SES SMTP password.
-$mail->Password = 'smtp_password';
+$mail->Password = $SMTPPASS;
     
 // Specify a configuration set. If you do not want to use a configuration
 // set, comment or remove the next line.
@@ -35,7 +37,7 @@ $mail->addCustomHeader('X-SES-CONFIGURATION-SET', 'ConfigSet');
 // If you're using Amazon SES in a region other than US West (Oregon), 
 // replace email-smtp.us-west-2.amazonaws.com with the Amazon SES SMTP  
 // endpoint in the appropriate region.
-$mail->Host = 'email-smtp.us-east-1.amazonaws.com';
+$mail->Host = $SMTPHOST;
 
 // The subject line of the email
 $mail->Subject = 'Amazon SES test (SMTP interface accessed using PHP)';
@@ -55,7 +57,7 @@ $mail->SMTPSecure = 'tls';
 $mail->Port = 587;
 
 // Tells PHPMailer to send HTML-formatted email
-$mail->isHTML(true);
+$mail->isHTML(true); 
 
 // The alternative email body; this is only displayed when a recipient
 // opens the email in a non-HTML email client. The \r\n represents a 
