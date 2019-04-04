@@ -18,7 +18,7 @@ then
   sudo systemctl start cpigeon
   sudo systemctl status cpigeon
 else
-  #sudo mv /opt/CarrierPigeon/MessageQueue/AWS.php /opt/CarrierPigeon/MessageQueue/Database.php
+  sudo mv /opt/CarrierPigeon/MessageQueue/AWS.php /opt/CarrierPigeon/MessageQueue/Database.php
   sudo cp Util/carrierpigeon /etc/init.d/
   sudo chkconfig --add carrierpigeon
   sudo /etc/init.d/carrierpigeon start 
