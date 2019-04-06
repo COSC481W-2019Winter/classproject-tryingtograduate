@@ -5,6 +5,14 @@
   include('Person.php');
   include('Carrier.php');
   include('Group.php');
+  include('Mail.php');
+  
+  // required for Mail.php
+  include('Email.php');
+  require_once 'vendor/autoload.php';
+  use PHPMailer\PHPMailer\PHPMailer;
+
+  $mail = new Mail();
 
   $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 
@@ -256,8 +264,21 @@
         messageId = '$messageId'
     ;";
 
+    $dateQuery =
+    "SELECT
+        lastSent
+      FROM
+        Message
+      WHERE
+        messageId = '$messageId'
+    ;";
+
     $delResult = mysqli_query($conn, $delQuery);
     $updtResult = mysqli_query($conn, $updtQuery);
+    $dateResult = mysqli_query($conn, $dateQuery);
+    $rawDate = mysqli_fetch_array($dateResult);
+    return $rawDate['lastSent'];
+
   }
 
   while(!$forceExit)
@@ -269,22 +290,65 @@
         $allowExit = false;
         $message = getNextMessage();
 
-        echo "MessageId:    " . $message->getId() . "\n";
-        echo "firstName:    " . $message->getUser()->getFirstName() . "\n";
-        echo "lastName:     " . $message->getUser()->getLastName() . "\n";
-        echo "email:        " . $message->getUser()->getEmail() . "\n";
-        echo "phoneNumber:  " . $message->getUser()->getPhone() . "\n";
+        $messageId = $message->getId();
+        $senderAddress = $message->getUser()->getEmail();
+
+        $fullName = $message->getUser()->getFirstName();
+        $fullName .= " ";
+        $fullName .= $message->getUser()->getLastName();
+
+        $groupId = $message->getGroup()->getId();
         $group = $message->getGroup()->getMembers();
+        $recipients = array();
         $groupLength = count($group);
-        echo "group:        " . "\n";
         for($i = 0; $i < $groupLength; $i++)
         {
-          echo "     " . $group[$i]->getEmail() . ", " . $group[$i]->getPhone() . "\n";
+          // TODO: build logic to determine whether to send SMS instead of email.
+          $recipients[$i] = $group[$i]->getEmail();
         }
-        echo "subject:      " . $message->getSubject() . "\n";
-        echo "content:      " . $message->getContent() . "\n\n";
+        $subject = $message->getSubject();
+        $content = $message->getContent();
+        
+        $success = $mail->sendMail($senderAddress,
+                                  $fullName,
+                                  $recipients,
+                                  $subject,
+                                  $content);
 
-        removeQueuedMessage($message->getId());
+        $sendDate = removeQueuedMessage($message->getId());
+
+        $logEntry = $sendDate;
+        $logEntry .= " MessageId: ";
+        $logEntry .= $messageId; 
+        $logEntry .= " UserId: ";
+        $logEntry .= $senderAddress;
+        $logEntry .= " Send Status:";
+
+        $reportBody .= " Message with subject \"";
+        $reportBody .= $subject;
+        
+
+        if($success)
+        {
+          $logEntry .= " Success\n";
+          $reportBody .= "\" was sent";
+        }
+        else
+        {
+          $logEntry .= " Failure\n";
+          $reportBody .= "\" was not sent";
+        }
+        $reportBody .=" successfully.";
+        echo $logEntry;
+
+        $sender = array();
+        $sender[0] = $senderAddress;
+        $mail->sendMail("jpeck3@emich.edu",
+                        "Carrier Pigeon",
+                        $sender,
+                        "Carrier Pigeon Message Report",
+                        $reportBody);
+
         $allowExit = true;
       }
     }
