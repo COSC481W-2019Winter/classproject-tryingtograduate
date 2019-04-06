@@ -1,5 +1,7 @@
 <!doctype html>
 <!MessageDashboard>
+<?php session_start();
+?>
 <html>
 	<head>
 		<title>Carrier Pigeon</title>
@@ -13,11 +15,16 @@
 					header.style.display = "none";
 				}
 			}
+			//stores selected group from dropdown as a cookie to be used by PHP
+			//this avoids page refresh upon selection
+			function groupPickFunc(){
+				var x = document.getElementById('glist').value;
+				document.cookie = "selectedGroup="+x;
+			}
 		</script>
 	</head>
 	<body>
-	<?php	
-		session_start();
+	<?php
 		//Variables needed to access current user in Person
 		$UserEmail = $_SESSION['currentUserEmail'];
 		include ('../PHP/Database.php');
@@ -45,7 +52,7 @@
 		$OwnerId = $idB->ownerId;
 		echo "Logged in as:  ", $FirstNm, " ", $LastNm;
 		//use $UniquiId established above to output current users template list from Message
-		$result = $conn->query("SELECT messageId, templateName FROM Message WHERE ownerId = $UniqueId");
+		$result = $conn->query("SELECT messageId, templateName FROM Message WHERE ownerId = $UniqueId AND templateName IS NOT NULL");
 		//use $UniqueId established above to access groups for current user from Groups table
 		$result1 = $conn->query("SELECT groupId, groupName FROM Groups WHERE ownerId = $UniqueId");
 	?>
@@ -55,9 +62,11 @@
 		<button id = "topRight" class = "button button0" onclick = "window.location.href ='../groups/index.php'" >
 		Edit Groups</button>
 		</br>
+		<!navigation bar starts here>
 		<div id = "wrapper">
 			<div class="navbar">
 				<div class="dropdown">
+					<!form for template dropdown starts here>
 					<form name="tlist" action = "" method = "post">
 						<select id="tmpList" name="tmpList" class = "dropbtn" onchange = "this.form.submit()">
 							<option  type  = 'submit' value="0"class="dropdown-content" name = 'selection'>Select Message</option>
@@ -70,6 +79,7 @@
 							?>
 						</select>
 					</form>
+					<!template dropdown form ends here>
 				</div>
 			</div>
 			<div class="navbar">
@@ -77,8 +87,10 @@
 			</div>
 			<div class="navbar">
 				<div class="dropdown">
+				<!Form used to display templates in dropdown and select starts here>
+				<form action="" method="post">
 					<form name="glist" action="" method="post">
-						<select id="glist" name="glist" class = "dropbtn">
+						<select id="glist" name="glist" class = "dropbtn" onchange = 'groupPickFunc();'>
 							<option value="0"class="dropdown-content">Select Group</option>
 							<?php
 								// output data of each row that matches query "$result1" listed above
@@ -88,10 +100,11 @@
 							    }
 							?>
 						</select>
-					</form>
+					</form><!Display & Select templates ends here>
 				</div>
 			</div></br>
 			<div id="saveMessage" style = "text-align: center" class="savemessage">
+			<!form to save message as template>
 			<form action = "" method = "post">
 				</br>
 				<label class = "savemessage">Message name:</label>
@@ -101,7 +114,7 @@
 				<button id = "cancel">CANCEL</button>
 		</div></br>
 		<label class = "savemessage">Subject:</label>
-		<input type="text" placeholder="Message Subject" id = "tempSubject" value = "<?php 
+		<input type="text" placeholder="Message Subject" id = "tempSubject", name = "tempSubject" value = "<?php 
 			if(isset($_POST['tmpList'])){
 			$temp_select = $_POST['tmpList'];
 			$query3 = "SELECT subject FROM Message WHERE templateName = '$temp_select' AND ownerId = $UniqueId";
@@ -122,17 +135,18 @@
 			}
 		?></textarea>
 		</br></br>
-		</form>
 		<table class = "center">
 		<td>
-			<tr><td><button class = "button buttonA" onclick = "window.location.href ='../dashboard/index.php'" >
-			Send</button></td>
+			<tr><td><input id = "send" name = "send" class = "button buttonA" type = "submit" value = "Send">
+			</td></form><!end of form to save message as template>
 			<td><button class = "button buttonB" onclick = "window.location.href ='../home/index.html'" >
 			Sign-Out</button></td>
 			<td><button class = "button buttonC" onclick = "window.location.href = '../dashboard/index.php'">
 			Cancel</button></td>
 		</td>
 		</table>
+		
+		
 	</body>
 </html>
 <?php
@@ -140,13 +154,14 @@
 	$tempName = $_POST['tempName'];
 	$tempSubject = $_POST['tempSubject'];
 	$tempMsg = $_POST['message'];
-	$groupId = '10';
+	$groupId = '29';
+	$messageId = '51';
 	//check to see if SAVE button has been clicked		
 	if(isset($_POST['addMsgButton']))
 	{
 		//Test to see if the template information entered already exists in the table
 		$query2 = mysqli_query($conn, "SELECT * FROM Message WHERE templateName = '$tempName' AND ownerId = '$UniqueId';");
-		if ($query2->num_rows != 0) //if username exists
+		if ($query2->num_rows != 0) //if template exists
 		{
 				echo '<script language="javascript">';
 				echo 'alert("Template already Exists.")';
@@ -174,6 +189,46 @@
 				echo 'alert("Template not saved.  Something went wrong.")';
 				echo '</script>';
 			}
+		}
+	}
+	//Code activated when SEND button is clicked
+	if(isset($_POST['send'])){
+		
+		//Get groupId based on group selection
+		$selectedGroup = $_COOKIE['selectedGroup'];
+		$results = mysqli_query($conn, "SELECT groupId FROM Groups WHERE groupName = '$selectedGroup'");
+		if (mysqli_affected_rows($conn) > 0) //if rows are more than 0, selected group found in tables
+		{
+				//Get the row as an object
+				$object = mysqli_fetch_object($results);
+				//Extract the information you want by using the column name
+				$grId = $object->groupId;
+				
+				//Insert message to Message Table when Send is clicked
+				mysqli_query($conn, "INSERT INTO Message(ownerId, groupId, subject, content)
+				VALUES ('$UniqueId','$grId', '$tempSubject', '$tempMsg')");
+				
+				//Select messageId from Message table for message saved when Send was clicked
+				//Query will look for max message ID because the message saved will be the last in the list
+				$results2 = mysqli_query($conn, "SELECT MAX(messageId) AS max FROM Message");
+				if (mysqli_affected_rows($conn) > 0) //if rows are more than 0, max found in tables
+				{
+					//Get the associated value (in this case we asked for something specific rather than a row)
+					$object2 = mysqli_fetch_assoc($results2);
+					//use the nickname max we created in our SELECT statement to grab the id number and store
+					$msId = $object2['max'];
+					//use the stored messageId to insert a job into the Queue
+					mysqli_query($conn, "INSERT INTO Queue(messageId)VALUES ('$msId')");
+					//Alert the user of successful message deployment
+					echo '<script language="javascript">';
+					echo 'alert("Your message has been added to the queue and will be sent shortly.")';
+					echo '</script>';
+				}
+		}else{
+			//alert the user if they have not yet selected a group
+			echo '<script language="javascript">';
+			echo 'alert("Please Select a Group")';
+			echo '</script>';
 		}
 	}
 	$conn->close();
