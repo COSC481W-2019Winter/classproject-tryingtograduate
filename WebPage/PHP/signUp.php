@@ -45,7 +45,7 @@
 					VALUES ('$fName', '$lName', '$eMail', '$hash', '$phoneNum')";
 
 		//runs the query and stores the result in a variable called $result
-		$result = $conn->query("$query");
+		$result = $conn->query($query);
 
 		//tests the result to see if the query yielded any rows from Person table that match the email entered
 		if ($result->num_rows != 0)
@@ -61,36 +61,33 @@
 		else  //if no matching email exists, run second query
 		{
 			//runs the second query and stores the result in $result2
-			$result2 = $conn->query("$query2");
+			$result2 = $conn->query($query2);
 
 			//checks to see if the user was actually added to the Person table
 			if (mysqli_affected_rows($conn) > 0)
 			{
 				//if successful, get ownerId from Person table
-				echo '<script language="javascript">';
-				echo 'alert("Still Working.")';
-				echo '</script>';
 				$query3 = "SELECT ownerId FROM Person WHERE emailAddress = '$email'";
-				$result3 = $conn->query("$query3");
-				$object = mysqli_fetch_assoc($result3);
-				$ownerId = $object['ownerId'];
+				$result3 = $conn->query($query3);
+				$object = mysqli_fetch_object($result3);
+				$ownerId = $object->ownerId;
 
 				//add predefined message to user's templates
 				$query4 ="INSERT INTO Message(ownerId, subject, content, templateName)
 							VALUES ('$ownerId', '$subject1', '$content1', '$template1')";
-				$result4 = $conn->query("$query4");
+				$result4 = $conn->query($query4);
 
 				$query5 ="INSERT INTO Message(ownerId, subject, content, templateName)
 							VALUES ('$ownerId', '$subject2', '$content2', '$template2')";
-				$result5 = $conn->query("$query5");
+				$result5 = $conn->query($query5);
 
 				$query6 ="INSERT INTO Message(ownerId, subject, content, templateName)
 							VALUES ('$ownerId', '$subject3', '$content3', '$template3')";
-				$result6 = $conn->query("$query6");
+				$result6 = $conn->query($query6);
 
 				$query7 ="INSERT INTO Message(ownerId, subject, content, templateName)
 							VALUES ('$ownerId', '$subject4', '$content4', '$template4')";
-				$result7 = $conn->query("$query7");
+				$result7 = $conn->query($query7);
 
 				//alerts user of successful registration
 				echo '<script language="javascript">';
