@@ -1,4 +1,8 @@
 <?php
+include('Email.php');
+require 'vendor/autoload.php';
+use PHPMailer\PHPMailer\PHPMailer;
+
 class Mail
 {
   private $mail;

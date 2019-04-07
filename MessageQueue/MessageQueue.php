@@ -1,14 +1,10 @@
 <?php
-  require 'vendor/autoload.php';
-  use PHPMailer\PHPMailer\PHPMailer;
-
   include('Database.php');
   include('QueueConfig.php');
   include('Message.php');
   include('Person.php');
   include('Carrier.php');
   include('Group.php');
-  include('Email.php');
   include('Mail.php');
 
   $mail = new Mail();
