@@ -56,8 +56,8 @@
 				//if successful, get ownerId from Person table
 				$query3 = "SELECT ownerId FROM Person WHERE emailAddress = ''$email'";
 				$result3 = $conn->query("$query3");
-				$object = mysqli_fetch_object($result3);
-				$ownerId = $object->ownerId;
+				$object = mysqli_fetch_assoc($result3);
+				$ownerId = $object['ownerId'];
 
 				//create predefined messages
 				$subject1 = "Weather Alert";
