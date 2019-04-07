@@ -7,6 +7,19 @@
 	$passwordCnf = filter_input(INPUT_POST, 'passwordNewCnf');
 	$phoneNum = filter_input(INPUT_POST, 'phone');
 	$hash = password_hash($password, PASSWORD_DEFAULT);
+	//create predefined messages
+	$subject1 = "Weather Alert";
+	$content1 = "Due to inclement conditions, some schedules may have changed.  Please check with your supervisor to confirm your shift.";
+	$template1 = "Weather Alert";
+	$subject2 = "Office Closure";
+	$content2 = "The office will be closed today, Month Day Year.";
+	$template2 = "Office Closure";
+	$subject3 = "Staff Meeting";
+	$content3 = "There will be a staff meeting at the end of shift today.  Attendance is required.";
+	$template3 = "Staff Meeting";
+	$subject4 = "Employee of the Month";
+	$content4 = "This month's winner of the Employee of the Month is, firstName lastName!!";
+	$template4 = "EOM Winner";
 
 	include ('../PHP/Database.php');
 	include ('../PHP/Validation.php');
@@ -54,24 +67,13 @@
 			if (mysqli_affected_rows($conn) > 0)
 			{
 				//if successful, get ownerId from Person table
-				$query3 = "SELECT ownerId FROM Person WHERE emailAddress = ''$email'";
+				echo '<script language="javascript">';
+				echo 'alert("Still Working.")';
+				echo '</script>';
+				$query3 = "SELECT ownerId FROM Person WHERE emailAddress = '$email'";
 				$result3 = $conn->query("$query3");
 				$object = mysqli_fetch_assoc($result3);
 				$ownerId = $object['ownerId'];
-
-				//create predefined messages
-				$subject1 = "Weather Alert";
-				$content1 = "Due to inclement conditions, some schedules may have changed.  Please check with your supervisor to confirm your shift.";
-				$template1 = "Weather Alert";
-				$subject2 = "Office Closure";
-				$content2 = "The office will be closed today, Month Day Year.";
-				$template2 = "Office Closure";
-				$subject3 = "Staff Meeting";
-				$content3 = "There will be a staff meeting at the end of shift today.  Attendance is required.";
-				$template3 = "Staff Meeting";
-				$subject4 = "Employee of the Month";
-				$content4 = "This month's winner of the Employee of the Month is, firstName lastName!!";
-				$template4 = "EOM Winner";
 
 				//add predefined message to user's templates
 				$query4 ="INSERT INTO Message(ownerId, subject, content, templateName)
