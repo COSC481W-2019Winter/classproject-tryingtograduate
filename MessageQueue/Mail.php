@@ -35,11 +35,10 @@ class Mail
     {
       $this->mail->addAddress($recipientAddresses[$i]);
     }
-    $this->mail->send();
-    $sent = "Sent:";
+    $sent = true;
     if(!$this->mail->send())
     {
-      $sent = "Error:" . $this
+      $sent = false;
     }
     return $sent;
   }
