@@ -27,7 +27,7 @@ class Mail
                           $content)
   {
     $this->mail->setFrom($senderAddress, $senderName);
-    $recipientCount = count($contactAddresses);
+    $recipientCount = count($recipientAddresses);
     for($i = 0; $i < $recipientCount; $i++)
     {
       $this->mail->addAddress($recipientAddresses[$i]);

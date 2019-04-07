@@ -319,7 +319,7 @@
         $logEntry .= $senderAddress;
         $logEntry .= " Send Status:";
 
-        $reportBody .= " Message with subject \"";
+        $reportBody = " Message with subject \"";
         $reportBody .= $subject;
         
 
