@@ -27,28 +27,19 @@ class Mail
                           $subject,
                           $content)
   {
-    try
+    $this->mail->setFrom($senderAddress, $senderName);
+    $this->mail->Subject = $subject;
+    $this->mail->Body = $content;
+    $recipientCount = count($recipientAddresses);
+    for($i = 0; $i < $recipientCount; $i++)
     {
-      $this->mail->setFrom($senderAddress, $senderName);
-      $recipientCount = count($recipientAddresses);
-      for($i = 0; $i < $recipientCount; $i++)
-      {
-        $this->mail->addAddress($recipientAddresses[$i]);
-      }
-      $this->mail->Subject = $subject;
-      $this->mail->Body = $content;
-      $this->mail->send();
-      $sent = true;
+      $this->mail->addAddress($recipientAddresses[$i]);
     }
-    catch (Exception $e)
+    $this->mail->send();
+    $sent = "Sent:";
+    if(!$this->mail->send())
     {
-      $sent = false;
-      echo $e->errorMessage();
-    } 
-    catch (\Exception $e)
-    {
-      $sent = false;
-      echo $e->getMessage();
+      $sent = "Error:" . $this
     }
     return $sent;
   }
