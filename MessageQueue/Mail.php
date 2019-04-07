@@ -4,7 +4,7 @@ class Mail
   private $mail;
 
   public function __construct()
-  {
+  { 
     $this->mail = new PHPMailer;
     $this->mail->isSMTP();
     $this->mail->Username = SMTPUSER;
