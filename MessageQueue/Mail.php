@@ -2,6 +2,7 @@
 include('Email.php');
 require 'vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class Mail
 {
@@ -26,19 +27,28 @@ class Mail
                           $subject,
                           $content)
   {
-    $this->mail->setFrom($senderAddress, $senderName);
-    $recipientCount = count($recipientAddresses);
-    for($i = 0; $i < $recipientCount; $i++)
+    try
     {
-      $this->mail->addAddress($recipientAddresses[$i]);
+      $this->mail->setFrom($senderAddress, $senderName);
+      $recipientCount = count($recipientAddresses);
+      for($i = 0; $i < $recipientCount; $i++)
+      {
+        $this->mail->addAddress($recipientAddresses[$i]);
+      }
+      $this->mail->Subject = $subject;
+      $this->mail->Body = $content;
+      $this->mail->send();
+      $sent = true;
     }
-    $this->mail->Subject = $subject;
-    $this->mail->Body = $content;
-
-    $sent = true;
-    if(!$this->mail->send())
+    catch (Exception $e)
     {
       $sent = false;
+      echo $e->errorMessage();
+    } 
+    catch (\Exception $e)
+    {
+      $sent = false;
+      echo $e->getMessage();
     }
     return $sent;
   }
