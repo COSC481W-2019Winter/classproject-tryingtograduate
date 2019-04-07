@@ -74,21 +74,12 @@
 
 				//add predefined message to user's templates
 				$query4 ="INSERT INTO Message(ownerId, subject, content, templateName)
-							VALUES ('$ownerId', '$subject1', '$content1', '$template1')";
+							VALUES ('$ownerId', '$subject1', '$content1', '$template1'),
+										 ('$ownerId', '$subject2', '$content2', '$template2'),
+										 ('$ownerId', '$subject3', '$content3', '$template3'),
+										 ('$ownerId', '$subject4', '$content4', '$template4')";
 				$result4 = $conn->query($query4);
-
-				$query5 ="INSERT INTO Message(ownerId, subject, content, templateName)
-							VALUES ('$ownerId', '$subject2', '$content2', '$template2')";
-				$result5 = $conn->query($query5);
-
-				$query6 ="INSERT INTO Message(ownerId, subject, content, templateName)
-							VALUES ('$ownerId', '$subject3', '$content3', '$template3')";
-				$result6 = $conn->query($query6);
-
-				$query7 ="INSERT INTO Message(ownerId, subject, content, templateName)
-							VALUES ('$ownerId', '$subject4', '$content4', '$template4')";
-				$result7 = $conn->query($query7);
-
+				
 				//alerts user of successful registration
 				echo '<script language="javascript">';
 				echo 'alert("You have registered successfully!!")';
