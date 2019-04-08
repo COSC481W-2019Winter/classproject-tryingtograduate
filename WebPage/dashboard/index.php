@@ -21,6 +21,10 @@
 				var x = document.getElementById('glist').value;
 				document.cookie = "selectedGroup="+x;
 			}
+			//PHP will need to call this method after SEND is clicked to clear the cookie
+			function clearCookie(){
+				document.cookie = selectedGroup+'=; Max-Age=-99999999;';
+			}
 		</script>
 	</head>
 	<body>
@@ -154,8 +158,6 @@
 	$tempName = $_POST['tempName'];
 	$tempSubject = $_POST['tempSubject'];
 	$tempMsg = $_POST['message'];
-	$groupId = '29';
-	$messageId = '51';
 	//check to see if SAVE button has been clicked		
 	if(isset($_POST['addMsgButton']))
 	{
@@ -170,8 +172,8 @@
 		else //if template does not exist
 		{
 			//Inserts new record into Message table from sql statement
-			mysqli_query($conn, "INSERT INTO Message(ownerId, groupId, subject, content, templateName)
-				VALUES ('$UniqueId','$groupId', '$tempSubject', '$tempMsg', '$tempName')");
+			mysqli_query($conn, "INSERT INTO Message(ownerId, subject, content, templateName)
+				VALUES ('$UniqueId', '$tempSubject', '$tempMsg', '$tempName')");
 			//Check the status of the query
 			if (mysqli_affected_rows($conn) > 0)
 			{
@@ -226,6 +228,7 @@
 				}
 		}else{
 			//alert the user if they have not yet selected a group
+			//code needs to die here so that page is not refreshed b/c user will lose their message
 			echo '<script language="javascript">';
 			echo 'alert("Please Select a Group")';
 			echo '</script>';
