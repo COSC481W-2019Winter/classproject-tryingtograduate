@@ -67,7 +67,7 @@
 			if (mysqli_affected_rows($conn) > 0)
 			{
 				//if successful, get ownerId from Person table
-				$query3 = "SELECT ubiqueId FROM Person WHERE emailAddress = '$email'";
+				$query3 = "SELECT uniqueId FROM Person WHERE emailAddress = '$email'";
 				$result3 = $conn->query($query3);
 				$object = mysqli_fetch_object($result3);
 				$ownerId = $object->uniqueId;
