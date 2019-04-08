@@ -68,7 +68,6 @@
 					if (mysqli_affected_rows($conn) > 0){
 						$object3 = mysqli_fetch_assoc($result3);
 						$ownerId = $object3['max'];
-						//$ownerId = 14;
 					}
 					
 					//add predefined message to user's templates
