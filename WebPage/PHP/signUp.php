@@ -67,10 +67,10 @@
 			if (mysqli_affected_rows($conn) > 0)
 			{
 				//if successful, get ownerId from Person table
-				$query3 = "SELECT ownerId FROM Person WHERE emailAddress = '$email'";
+				$query3 = "SELECT ubiqueId FROM Person WHERE emailAddress = '$email'";
 				$result3 = $conn->query($query3);
 				$object = mysqli_fetch_object($result3);
-				$ownerId = $object->ownerId;
+				$ownerId = $object->uniqueId;
 
 				//add predefined message to user's templates
 				$query4 ="INSERT INTO Message(ownerId, subject, content, templateName)
@@ -79,7 +79,7 @@
 										 ('$ownerId', '$subject3', '$content3', '$template3'),
 										 ('$ownerId', '$subject4', '$content4', '$template4')";
 				$result4 = $conn->query($query4);
-				
+
 				//alerts user of successful registration
 				echo '<script language="javascript">';
 				echo 'alert("You have registered successfully!!")';
