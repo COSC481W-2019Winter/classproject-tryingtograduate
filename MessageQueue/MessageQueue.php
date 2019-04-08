@@ -192,6 +192,8 @@
       $groupQuery =
       "SELECT
           uniqueId,
+          firstName,
+          lastName,
           emailAddress,
           phoneNumber
         from
@@ -334,7 +336,7 @@
           $reportBody .= "\" was not sent";
         }
         $reportBody .=" successfully.";
-        
+
         echo $logEntry;
 
         $senderGroup = array();
