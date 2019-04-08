@@ -11,6 +11,9 @@
 
   $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 
+  // Place holder group for reporting send completion to user.
+  $reportGroup = new Group(0, SERVICE_NAME, 0);
+
   if(!$conn)
   {
     die('Unable to connect: ' . mysql_error($conn));
@@ -289,6 +292,7 @@
         $message = getNextMessage();
 
         $messageId = $message->getId();
+        
         $senderAddress = $message->getUser()->getEmail();
 
         $fullName = $message->getUser()->getFirstName();
@@ -330,14 +334,17 @@
           $reportBody .= "\" was not sent";
         }
         $reportBody .=" successfully.";
+        
         echo $logEntry;
 
-        $sender = array();
-        $sender[0] = $senderAddress;
-        $mail->sendMail("jpeck3@emich.edu",
-                        "Carrier Pigeon",
-                        $sender,
-                        "Carrier Pigeon Message Report",
+        $senderGroup = array();
+        $senderGroup[0] = $message->getUser();
+        $reportGroup->setMembers($sender);
+
+        $mail->sendMail(SERVICE_EMAIL,
+                        SERVICE_EMAIL,
+                        $reportGroup,
+                        SERVICE_SUBJECT,
                         $reportBody);
 
         $allowExit = true;

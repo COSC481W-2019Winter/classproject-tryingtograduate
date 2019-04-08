@@ -37,7 +37,7 @@ class Mail
     for($i = 0; $i < $memberCount; $i++)
     {
       $contactName = $members[$i]->getFirstName();
-      $contactName .= " "
+      $contactName .= " ";
       $contactName .= $members[$i]->getLastName();
       $this->mail->ClearAllRecipients();
       $this->mail->addAddress($group[$i]->getAddress(), $contactName);
