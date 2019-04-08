@@ -17,10 +17,7 @@
 	$subject3 = "Staff Meeting";
 	$content3 = "There will be a staff meeting at the end of shift today.  Attendance is required.";
 	$template3 = "Staff Meeting";
-	$subject4 = "Employee of the Month";
-	$content4 = "This month's winner of the Employee of the Month is, firstName lastName!!";
-	$template4 = "EOM Winner";
-
+	
 	include ('../PHP/Database.php');
 	include ('../PHP/Validation.php');
 
@@ -66,19 +63,7 @@
 			//checks to see if the user was actually added to the Person table
 			if (mysqli_affected_rows($conn) > 0)
 			{
-				//if successful, get ownerId from Person table
-				$query3 = "SELECT uniqueId FROM Person WHERE emailAddress = '$email'";
-				$result3 = $conn->query($query3);
-				$object = mysqli_fetch_object($result3);
-				$ownerId = $object->uniqueId;
 
-				//add predefined message to user's templates
-				$query4 ="INSERT INTO Message(ownerId, subject, content, templateName)
-							VALUES ('$ownerId', '$subject1', '$content1', '$template1'),
-										 ('$ownerId', '$subject2', '$content2', '$template2'),
-										 ('$ownerId', '$subject3', '$content3', '$template3'),
-										 ('$ownerId', '$subject4', '$content4', '$template4')";
-				$result4 = $conn->query($query4);
 
 				//alerts user of successful registration
 				echo '<script language="javascript">';
