@@ -17,7 +17,7 @@
 	$subject3 = "Staff Meeting";
 	$content3 = "There will be a staff meeting at the end of shift today.  Attendance is required.";
 	$template3 = "Staff Meeting";
-	
+
 	include ('../PHP/Database.php');
 	include ('../PHP/Validation.php');
 
@@ -63,7 +63,21 @@
 			//checks to see if the user was actually added to the Person table
 			if (mysqli_affected_rows($conn) > 0)
 			{
-
+					//if successful, get ownerId from Person table
+					$result3 = mysqli_query($conn, "SELECT MAX(uniqueId) AS max FROM Person");
+					if (mysqli_affected_rows($conn) > 0){
+						$object3 = mysqli_fetch_assoc($result3);
+						$ownerId = $object3['max'];
+						//$ownerId = 14;
+					}
+					
+					//add predefined message to user's templates
+					$query4 = mysqli_query($conn, "INSERT INTO Message(ownerId, subject, content, templateName)
+						VALUES ('$ownerId', '$subject1', '$content1', '$template1');");
+						$query5 = mysqli_query($conn, "INSERT INTO Message(ownerId, subject, content, templateName)
+						VALUES ('$ownerId', '$subject2', '$content2', '$template2');");
+						$query6 = mysqli_query($conn, "INSERT INTO Message(ownerId, subject, content, templateName)
+						VALUES ('$ownerId', '$subject3', '$content3', '$template3');");
 
 				//alerts user of successful registration
 				echo '<script language="javascript">';
