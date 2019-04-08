@@ -23,7 +23,7 @@ class Mail
 
   public function sendMail($senderAddress,
                           $senderName,
-                          $group,
+                          $groupMembers,
                           $subject,
                           $content)
   {
@@ -32,15 +32,14 @@ class Mail
     $this->mail->setFrom($senderAddress, $senderName);
     $this->mail->Subject = $subject;
     $this->mail->Body = $content;
-    $members = $group->getMembers();
-    $memberCount = count($members);
+    $memberCount = count($groupMembers);
     for($i = 0; $i < $memberCount; $i++)
     {
-      $contactName = $members[$i]->getFirstName();
+      $contactName = $groupMembers[$i]->getFirstName();
       $contactName .= " ";
-      $contactName .= $members[$i]->getLastName();
+      $contactName .= $groupMembers[$i]->getLastName();
       $this->mail->ClearAllRecipients();
-      $this->mail->addAddress($group[$i]->getAddress(), $contactName);
+      $this->mail->addAddress($groupMembers[$i]->getAddress(), $contactName);
       if(!$this->mail->send())
       {
         $sent = false;

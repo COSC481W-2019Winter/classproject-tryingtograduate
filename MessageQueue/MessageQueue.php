@@ -11,9 +11,6 @@
 
   $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 
-  // Place holder group for reporting send completion to user.
-  $reportGroup = new Group(0, SERVICE_NAME, 0);
-
   if(!$conn)
   {
     die('Unable to connect: ' . mysql_error($conn));
@@ -302,13 +299,13 @@
         $fullName .= $message->getUser()->getLastName();
 
         $groupId = $message->getGroup()->getId();
-        $group = $message->getGroup()->getMembers();
+        $groupMembers = $message->getGroup()->getMembers();
         $subject = $message->getSubject();
         $content = $message->getContent();
         
         $success = $mail->sendMail($senderAddress,
                                   $fullName,
-                                  $group,
+                                  $groupMembers,
                                   $subject,
                                   $content);
 
@@ -341,11 +338,10 @@
 
         $senderGroup = array();
         $senderGroup[0] = $message->getUser();
-        $reportGroup->setMembers($sender);
 
         $mail->sendMail(SERVICE_EMAIL,
-                        SERVICE_EMAIL,
-                        $reportGroup,
+                        SERVICE_NAME,
+                        $senderGroup,
                         SERVICE_SUBJECT,
                         $reportBody);
 
