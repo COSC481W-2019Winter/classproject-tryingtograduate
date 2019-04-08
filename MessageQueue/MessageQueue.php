@@ -6,11 +6,6 @@
   include('Carrier.php');
   include('Group.php');
   include('Mail.php');
-  
-  // required for Mail.php
-  include('Email.php');
-  require_once 'vendor/autoload.php';
-  use PHPMailer\PHPMailer\PHPMailer;
 
   $mail = new Mail();
 
@@ -194,6 +189,8 @@
       $groupQuery =
       "SELECT
           uniqueId,
+          firstName,
+          lastName,
           emailAddress,
           phoneNumber
         from
@@ -209,6 +206,8 @@
         (
           select
               uniqueId,
+              firstName,
+              lastName,
               emailAddress,
               phoneNumber
             from
@@ -224,7 +223,8 @@
       while($members = mysqli_fetch_array($groupResult))
       {
         $currPerson = new Person($members['uniqueId'],
-                                null, null,
+                                $members['firstName'],
+                                $members['lastName'],
                                 $members['emailAddress'],
                                 null, null, null,
                                 $members['phoneNumber'],
@@ -291,6 +291,7 @@
         $message = getNextMessage();
 
         $messageId = $message->getId();
+        
         $senderAddress = $message->getUser()->getEmail();
 
         $fullName = $message->getUser()->getFirstName();
@@ -298,20 +299,13 @@
         $fullName .= $message->getUser()->getLastName();
 
         $groupId = $message->getGroup()->getId();
-        $group = $message->getGroup()->getMembers();
-        $recipients = array();
-        $groupLength = count($group);
-        for($i = 0; $i < $groupLength; $i++)
-        {
-          // TODO: build logic to determine whether to send SMS instead of email.
-          $recipients[$i] = $group[$i]->getEmail();
-        }
+        $groupMembers = $message->getGroup()->getMembers();
         $subject = $message->getSubject();
         $content = $message->getContent();
         
         $success = $mail->sendMail($senderAddress,
                                   $fullName,
-                                  $recipients,
+                                  $groupMembers,
                                   $subject,
                                   $content);
 
@@ -324,7 +318,7 @@
         $logEntry .= $senderAddress;
         $logEntry .= " Send Status:";
 
-        $reportBody .= " Message with subject \"";
+        $reportBody = " Message with subject \"";
         $reportBody .= $subject;
         
 
@@ -339,14 +333,16 @@
           $reportBody .= "\" was not sent";
         }
         $reportBody .=" successfully.";
+
         echo $logEntry;
 
-        $sender = array();
-        $sender[0] = $senderAddress;
-        $mail->sendMail("jpeck3@emich.edu",
-                        "Carrier Pigeon",
-                        $sender,
-                        "Carrier Pigeon Message Report",
+        $senderGroup = array();
+        $senderGroup[0] = $message->getUser();
+
+        $mail->sendMail(SERVICE_EMAIL,
+                        SERVICE_NAME,
+                        $senderGroup,
+                        SERVICE_SUBJECT,
                         $reportBody);
 
         $allowExit = true;
