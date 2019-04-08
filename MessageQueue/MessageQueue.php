@@ -204,6 +204,8 @@
         (
           select
               uniqueId,
+              firstName,
+              lastName,
               emailAddress,
               phoneNumber
             from
@@ -219,7 +221,8 @@
       while($members = mysqli_fetch_array($groupResult))
       {
         $currPerson = new Person($members['uniqueId'],
-                                null, null,
+                                $members['firstName'],
+                                $members['lastName'],
                                 $members['emailAddress'],
                                 null, null, null,
                                 $members['phoneNumber'],
@@ -294,19 +297,12 @@
 
         $groupId = $message->getGroup()->getId();
         $group = $message->getGroup()->getMembers();
-        $recipients = array();
-        $groupLength = count($group);
-        for($i = 0; $i < $groupLength; $i++)
-        {
-          // TODO: build logic to determine whether to send SMS instead of email.
-          $recipients[$i] = $group[$i]->getEmail();
-        }
         $subject = $message->getSubject();
         $content = $message->getContent();
         
         $success = $mail->sendMail($senderAddress,
                                   $fullName,
-                                  $recipients,
+                                  $group,
                                   $subject,
                                   $content);
 

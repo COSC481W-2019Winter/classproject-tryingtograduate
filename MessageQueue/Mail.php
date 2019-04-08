@@ -2,7 +2,6 @@
 include('Email.php');
 require 'vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
 class Mail
 {
@@ -16,6 +15,7 @@ class Mail
     $this->mail->Password = SMTPPASS;
     $this->mail->Host = SMTPHOST;
     $this->mail->SMTPAuth = true;
+    $this->mail->SMTPKeepAlive = true;
     $this->mail->SMTPSecure = 'tls';
     $this->mail->Port = 587;
     $this->mail->isHTML(false);
@@ -23,27 +23,30 @@ class Mail
 
   public function sendMail($senderAddress,
                           $senderName,
-                          $recipientAddresses,
+                          $group,
                           $subject,
                           $content)
   {
+    $sent = true;
+
     $this->mail->setFrom($senderAddress, $senderName);
     $this->mail->Subject = $subject;
     $this->mail->Body = $content;
-    $recipientCount = count($recipientAddresses);
-    for($i = 0; $i < $recipientCount; $i++)
+    $members = $group->getMembers();
+    $memberCount = count($members);
+    for($i = 0; $i < $memberCount; $i++)
     {
-      $this->mail->addAddress($recipientAddresses[$i]);
-    }
-    $sent = true;
-    if(!$this->mail->send())
-    {
-      $sent = false;
+      $contactName = $members[$i]->getFirstName();
+      $contactName .= " "
+      $contactName .= $members[$i]->getLastName();
+      $this->mail->ClearAllRecipients();
+      $this->mail->addAddress($group[$i]->getAddress(), $contactName);
+      if(!$this->mail->send())
+      {
+        $sent = false;
+      }
     }
     return $sent;
   }
 }
-
-
-
 ?>
