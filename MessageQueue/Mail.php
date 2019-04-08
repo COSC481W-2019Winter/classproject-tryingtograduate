@@ -39,7 +39,7 @@ class Mail
       $contactName .= " ";
       $contactName .= $groupMembers[$i]->getLastName();
       $this->mail->ClearAllRecipients();
-      $this->mail->addAddress($groupMembers[$i]->getAddress(), $contactName);
+      $this->mail->addAddress($groupMembers[$i]->getEmail(), $contactName);
       if(!$this->mail->send())
       {
         $sent = false;
