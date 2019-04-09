@@ -70,8 +70,19 @@ create table Queue
 
 insert into `Carrier`
   values
-    (1,'Verizon','@vzw.com'),
-    (2,'Sprint','@messaging.sprintpcs.com'),
-    (3,'T-mobile','@tmomail.net'),(4,'AT&T','@txt.att.net'),
-    (5,'Cricket','@mms.cricketwireless.net')
+  (1,'Verizon','@vzw.com'),
+  (2,'Sprint','@messaging.sprintpcs.com'),
+  (3,'T-mobile','@tmomail.net'),
+	(4,'AT&T','@txt.att.net'),
+  (5,'Cricket','@mms.cricketwireless.net'),
+	(6, 'Virgin Mobile', '@vmobl.com'),
+	(7, 'Metro PCS', '@mymetropcs.com'),
+	(8, 'Boost Mobile', '@sms.myboostmobile.com'),
+	(9, 'Google Fi', '@msg.fi.google.com'),
+	(10, 'U.S. Cellular', '@email.uscc.net'),
+	(11, 'Ting', '@email.uscc.net'),
+	(12, 'XFinity Mobile', '@vtext.com'),
+	(13, 'Consumer Cellular', '@mailmymobile.net'),
+	(14, 'C-Spire', '@cspire1.com'),
+	(15, 'Page Plus', '@vtext.com'),
 ;
