@@ -85,4 +85,5 @@ insert into `Carrier`
 	(13, 'Consumer Cellular', '@mailmymobile.net'),
 	(14, 'C-Spire', '@cspire1.com'),
 	(15, 'Page Plus', '@vtext.com'),
+	(99, 'Select Carrier', noEmail)
 ;
