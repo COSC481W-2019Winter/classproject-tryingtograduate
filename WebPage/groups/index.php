@@ -143,7 +143,7 @@
 								<label>Phone Number:</label>
 								<input type="text" name="newCphone" placeholder="###-###-####">
 								<select id="carrier" name="carrier">
-									<option>Select Carrier</option>
+									<option value="">Select Carrier</option>
 									<option value="1">Verizon</option>
 									<option value="2">Sprint</option>
 									<option value="3">T-mobile</option>
@@ -180,7 +180,7 @@
 							echo 		"<label>Phone Number:</label>";
 							echo 		"<input type=\"text\" name=\"editCphone\" value=\"" .$editPhone. "\">";
 							echo 		"<select id=\"carrier\" name=\"editCarrier\">";
-							echo 			"<option>Select Carrier</option>";
+							echo 			"<option value=\"\">Select Carrier</option>";
 							echo 			"<option value=\"1\" ";
 							if($editCarrier == 1){
 								 echo "selected=\"selected\">Verizon</option>";
