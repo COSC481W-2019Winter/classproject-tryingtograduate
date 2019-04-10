@@ -94,7 +94,7 @@
 			e.preventDefault();
 			document.getElementById("messageAlert").innerHTML = "Invalid email";
 		}
-		else if (!phoneRegex.test(phonenum)) {
+		else if (!(phonenum == null || phonenum == "") && !phoneRegex.test(phonenum)) {
 			e.preventDefault();
 			document.getElementById("messageAlert").innerHTML = "Invalid phone number";
 		}
