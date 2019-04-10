@@ -36,7 +36,7 @@
 	if (confirmPassword($password, $passwordCnf) && passwordValidation($password))
 	{
 		//Sets a variable ($query) equal to the mysql query we run to test for existing email in Person table
-		$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$eMail'";
+		$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$eMail' AND ownerId IS NOT NULL";
 
 		//Sets a variable ($query2) equal to the mysql query we run to add a user to the Person table
 		$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash, phoneNumber)
