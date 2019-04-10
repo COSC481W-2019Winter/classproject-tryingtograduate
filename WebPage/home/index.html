@@ -4,7 +4,7 @@
 		<title>Carrier Pigeon</title>
 		<link rel="stylesheet" type="text/css" href="../CSS/homeStyle.css">
 	</head>
-	<body onload="fill()"> 
+	<body onload="fill()">   
 		<h1 id = "Company" style = "text-align: center" > Carrier Pigeon </h1>
 		<p id="messageAlert" style = "text-align: center"></p>
 		<table id = "tables" class = "center" CELLPADDING="30" CELLSPACING="30">
@@ -54,12 +54,12 @@
 	{
 		var emailRegex = new RegExp('^[.0-9A-Z_a-z]+@[.0-9A-Z_a-z]+.[a-zA-Z]{3}$');
 		var userName = document.getElementById("usernameEmail").value;
-		var pass = document.getElementById("pass").value;
+		var pass = document.getElementById("passwordEst").value;
 		if ((userName == null || userName == "") || !emailRegex.test(userName)) {
 			e.preventDefault();
 			document.getElementById("messageAlert").innerHTML = "Invalid username";
 		}
-		else if (pass == null || userName == "") {
+		else if (pass == null || pass == "") {
 			e.preventDefault();
 			document.getElementById("messageAlert").innerHTML = "Please enter a password";
 		}
@@ -94,10 +94,17 @@
 			e.preventDefault();
 			document.getElementById("messageAlert").innerHTML = "Invalid email";
 		}
-		else if ((phonenum == null || phonenum == "") || !phoneRegex.test(phonenum)) {
+		else if (!(phonenum == null || phonenum == "") && !phoneRegex.test(phonenum)) {
 			e.preventDefault();
 			document.getElementById("messageAlert").innerHTML = "Invalid phone number";
 		}
+		else{
+			document.cookie = "fname=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+			document.cookie = "lname=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+			document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+			document.cookie = "phonenum=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		}
+
 	});
 	
 	function fill(){
