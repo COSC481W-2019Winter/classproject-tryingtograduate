@@ -11,10 +11,14 @@
 		<script>
 			function newGroupFunc() {
 				var x = document.getElementById("newGroup");
-				if (x.style.display === "none") {
+				if (x.style.display == "none") {
 					x.style.display = "block";
+					var button = document.getElementById("addGroup");
+					button.value="CANCEL";
 				} else {
 					x.style.display = "none";
+					var button = document.getElementById("addGroup");
+					button.value="Add Group";
 				}
 			}
 			function newContactFunc() {
@@ -23,18 +27,29 @@
 					alert("Please select a group first.");
 				} else {
 					var x = document.getElementById("newContact");
-					if (x.style.display === "none") {
+					if (x.style.display == "none") {
 						x.style.display = "block";
+						var button = document.getElementById("editGroup");
+						button.value="CANCEL";
 					} else {
 						x.style.display = "none";
+						var button = document.getElementById("editGroup");
+						button.value="Add Contact";
 					}
 				}
 			}
-			function groupPickFunc(){
-				var x = document.getElementById('glist').value;
-				var group = document.getElementById('groupPicked');
-				group.value = x;
-				alert(x);
+
+			function validate() {
+				if(!document.newContact.newCemail.value && !document.newContact.newCphone.value){
+					alert("Please enter an email or a phone number.");
+					return false;
+				}else if (document.newContact.newCphone.value && document.newContact.carrier.value == 99){
+					alert("Please select a Carrier.");
+					return false;
+				} else {
+					return true;
+				}
+
 			}
 		</script>
 	</head>
@@ -65,7 +80,7 @@
 	?>
 		<h3 id = "user" style = "text-align: left" ><span id = "user"></span></h3>
 		<h1 id = "Company" style = "text-align: center" >Manage Groups</h1>
-		<button style="position: fixed; top: 0; right: 0; width: 200px;" class="button button0" onclick="window.location.href ='../dashboard/index.php'" >
+		<button style="position: absolute; top: 0; right: 0; width: 200px;" class="button button0" onclick="window.location.href ='../dashboard/index.php'" >
 		Exit to Main</button>
 		</br>
         <div id="all">
@@ -116,8 +131,8 @@
 					</form>
 
 
-            <button class="button" id="addGroup" onclick="newGroupFunc()">Add Group</button>
-            <button class="button" id="editGroup" onclick="newContactFunc()">Add Contact</button>
+            <input type="submit" class="button" id="addGroup" onclick="newGroupFunc()" value="Add Group">
+            <input type="submit" class="button" id="editGroup" onclick="newContactFunc()" value="Add Contact">
 						<form style="float: right; width: 20%;" action="" method="post">
             	<input style="width: 100%;"type=submit class="button" id="exit" name="delGroup" value="Delete Group">
 						</form>
@@ -128,12 +143,11 @@
 								<input type="text" name="newGName" placeholder="Group Name">
 								<input type="hidden" id="uEmail" name="uEmail">
 								<input class="button" id="addGbutton" type="submit" name="addGtoDB" value="ADD" onclick="newGroupFunc">
-								<button id="cancel" onclick="newGroupFunc">CANCEL</button>
 							</form>
 						</div>
 
 						<div id="newContact">
-							<form class="newContact" action = "" method = "post">
+							<form name="newContact" class="newContact" action = "" method = "post" onsubmit="return(validate());">
 								<label>First name:</label>
 								<input type="text" name="newFname" placeholder="First Name">
 								<label>Last name:</label>
@@ -143,17 +157,29 @@
 								<label>Phone Number:</label>
 								<input type="text" name="newCphone" placeholder="###-###-####">
 								<select id="carrier" name="carrier">
-									<option value="">Select Carrier</option>
-									<option value="1">Verizon</option>
-									<option value="2">Sprint</option>
-									<option value="3">T-mobile</option>
-									<option value="4">AT&T</option>
-									<option value="5">Cricket</option>
+									<option value="99">Select Carrier</option>
+									<?php
+									session_start();
+									// Create connection
+									include ('../PHP/Database.php');
+									// Create connection
+									$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+									$sql = "SELECT carrierId, carrierName FROM Carrier WHERE NOT carrierId = 99";
+									$result = $conn->query($sql);
+									if ($result->num_rows > 0) {
+											// output data of each row
+											while($row = $result->fetch_assoc()) {
+												echo "<option value=\"". $row["carrierId"]. "\">". $row["carrierName"]."</option>";
+											}
+									}
+									$conn->close();
+									?>
 								</select>
 								<input class="button" id="addCbutton" type="submit" name="addCtoDB" value="ADD" onclick= "newContactFunc">
-								<button id="cancel" onclick="newContactFunc">CANCEL</button>
 							</form>
+
 						</div>
+
 						<!-- TERRIBLE CODE TO ALLOW A USER TO EDIT CONTACTS-->
 						<?php
 						$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
@@ -180,43 +206,25 @@
 							echo 		"<label>Phone Number:</label>";
 							echo 		"<input type=\"text\" name=\"editCphone\" value=\"" .$editPhone. "\">";
 							echo 		"<select id=\"carrier\" name=\"editCarrier\">";
-							echo 			"<option value=\"\">Select Carrier</option>";
-							echo 			"<option value=\"1\" ";
-							if($editCarrier == 1){
-								 echo "selected=\"selected\">Verizon</option>";
-							}else{
-								 echo ">Verizon</option>";
+							echo 			"<option value=\"99\">Select Carrier</option>";
+							$sql = "SELECT carrierId, carrierName FROM Carrier WHERE NOT carrierId = 99";
+							$result = $conn->query($sql);
+							if ($result->num_rows > 0) {
+									// output data of each row
+									while($row = $result->fetch_assoc()) {
+										if($editCarrier == $row["carrierId"]){
+											echo "<option value=\"". $row["carrierId"]. "\" selected=\"selected\">". $row["carrierName"]."</option>";
+										} else{
+											echo "<option value=\"". $row["carrierId"]. "\">". $row["carrierName"]."</option>";
+										}
+									}
 							}
-							echo 			"<option value=\"2\" ";
-							if($editCarrier == 2){
-								echo "selected=\"selected\">Sprint</option>";
-							}else{
-								echo ">Sprint</option>";
-							}
-							echo 			"<option value=\"3\" ";
-							if($editCarrier == 3){
-								echo "selected=\"selected\">T-mobile</option>";
-							}else{
-								echo ">T-mobile</option>";
-							}
-							echo 			"<option value=\"4\" ";
-							if($editCarrier == 4){
-								echo "selected=\"selected\">AT&T</option>";
-							}else{
-								echo ">AT&T</option>";
-							}
-							echo 			"<option value=\"5\" ";
-							if($editCarrier == 5){
-								echo "selected=\"selected\">Cricket</option>";
-							}else{
-								echo ">Cricket</option>";
-							}
-							echo 		"</select>";
+							echo "</select>";
 							// Allow users to add contact to new group.
 							echo 		"<select id=\"updateGroups\" name=\"updateGroups\">";
 							echo      "<option value=\"0\">Assign to Group</optiom>";
-							$sql = "SELECT groupId, groupName FROM Groups WHERE ownerId = $UserId";
-							$result = $conn->query($sql);
+							$sql2 = "SELECT groupId, groupName FROM Groups WHERE ownerId = $UserId";
+							$result = $conn->query($sql2);
 							if ($result->num_rows > 0) {
 									// output data of each row
 									while($row = $result->fetch_assoc()) {
@@ -341,9 +349,6 @@
 				$newGroup = mysqli_fetch_array($query);
 				$_SESSION['currentGroup']=$newGroup[0];
 
-				echo '<script language="javascript">';
-				echo 'alert("Added successfully!!")';
-				echo '</script>';
 				// Re-route
 				echo '<script language="javascript">';
 				echo 'window.location.href ="../groups/"' ;
@@ -351,7 +356,9 @@
 			}
 			else
 			{
-				echo "Group not added";
+				echo '<script language="javascript">';
+				echo 'alert("Group not added.")';
+				echo '</script>';
 			}
 		}
 	}
@@ -369,46 +376,53 @@
 	if(isset($_POST['addCtoDB']))
 	{
 		$selectedGroup=$_SESSION['currentGroup'];
-		//Test to see if the email entered already exists in the table
-		$query2 = mysqli_query($conn, "SELECT * FROM Person WHERE firstName = '$fname' AND lastName = '$lname' AND emailAddress = '$email' AND ownerId = '$UserId';");
+		//Check to make sure that an email or an phoneNumber exists.
+/**		if(!$email && !$phone){
+			echo '<script language="javascript">';
+			echo 'alert("Please enter an E-mail Address or a Phone Number.")';
+			echo '</script>';
+		} else{*/
 
-		if ($query2->num_rows != 0) //if username exists
-		{
-				echo '<script language="javascript">';
-				echo 'alert("Contact already Exists.")';
-				echo '</script>';
-		}
-		else //if email does not exist
-		{
-			//Inserts new record into table from sql statement
-			mysqli_query($conn, "INSERT INTO Person (firstName, lastName, emailAddress, phoneNumber, ownerId, carrierID)
-				VALUES ('$fname','$lname','$email','$phone','$UserId', '$carrier')");
+			//Test to see if the email entered already exists in the table
+			$query2 = mysqli_query($conn, "SELECT * FROM Person WHERE firstName = '$fname' AND lastName = '$lname' AND emailAddress = '$email' AND ownerId = '$UserId';");
 
-			$query3 = mysqli_query($conn, "SELECT uniqueId FROM Person
-				WHERE firstName = '$fname' AND lastName = '$lname' AND ownerId = '$UserId';");
-
-			$contactId = mysqli_fetch_array($query3);
-
-			mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId)
-				VALUES ('$contactId[0]','$UserId', '$selectedGroup')");
-
-
-			//Check the status of the query
-			if (mysqli_affected_rows($conn) > 0)
+			if ($query2->num_rows != 0) //if username exists
 			{
-				echo '<script language="javascript">';
-				echo 'alert("Added successfully!!")';
-				echo '</script>';
-				// Re-route
-				echo '<script language="javascript">';
-				echo 'window.location.href ="../groups/"' ;
-				echo '</script>';
+					echo '<script language="javascript">';
+					echo 'alert("Contact already Exists.")';
+					echo '</script>';
 			}
-			else
+			else //if email does not exist
 			{
-				echo "User not added";
+				//Inserts new record into table from sql statement
+				mysqli_query($conn, "INSERT INTO Person (firstName, lastName, emailAddress, phoneNumber, ownerId, carrierID)
+					VALUES ('$fname','$lname','$email','$phone','$UserId', '$carrier')");
+
+				$query3 = mysqli_query($conn, "SELECT uniqueId FROM Person
+					WHERE firstName = '$fname' AND lastName = '$lname' AND ownerId = '$UserId';");
+
+				$contactId = mysqli_fetch_array($query3);
+
+				mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId)
+					VALUES ('$contactId[0]','$UserId', '$selectedGroup')");
+
+
+				//Check the status of the query
+				if (mysqli_affected_rows($conn) > 0)
+				{
+					// Re-route
+					echo '<script language="javascript">';
+					echo 'window.location.href ="../groups/"' ;
+					echo '</script>';
+				}
+				else
+				{
+					echo '<script language="javascript">';
+					echo "alert(\"User not added.\")";
+					echo '</script>';
+				}
 			}
-		}
+	//	}
 
 	}
 
@@ -432,9 +446,6 @@
 		//Check the status of the query
 		if (mysqli_affected_rows($conn) > 0)
 		{
-			echo '<script language="javascript">';
-			echo 'alert("Deleted successfully!!")';
-			echo '</script>';
 			// Re-route
 			echo '<script language="javascript">';
 			echo 'window.location.href ="../groups/"' ;
@@ -442,7 +453,9 @@
 		}
 		else
 		{
-			echo "User not Deleted";
+			echo '<script language="javascript">';
+			echo "alert(\"User not deleted.\")";
+			echo '</script>';
 		}
 
 	}
@@ -470,9 +483,6 @@
 			//Check the status of the query
 			if (mysqli_affected_rows($conn) > 0)
 			{
-				echo '<script language="javascript">';
-				echo 'alert("Deleted successfully!!")';
-				echo '</script>';
 				// Re-route
 				echo '<script language="javascript">';
 				echo 'window.location.href ="../groups/"' ;
@@ -480,7 +490,9 @@
 			}
 			else
 			{
-				echo "Group not Deleted";
+				echo '<script language="javascript">';
+				echo 'alert("Group not deleted.")';
+				echo '</script>';
 			}
 		}
 	}
@@ -503,13 +515,13 @@
 		$sql = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE NOT uniqueId = $editId AND phoneNumber = '$phone' AND ownerId = $UserId;");
 		if ($sql->num_rows != 0) {
 			echo '<script language="javascript">';
-			echo 'alert("Contact already Exists with that Phone.")';
+			echo 'alert("Contact already exists with that Phone Number.")';
 			echo '</script>';
 		} else {
 			$sql = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE NOT uniqueId = $editId AND emailAddress = '$email' AND ownerId = $UserId;");
 		  if ($sql->num_rows != 0){
 				echo '<script language="javascript">';
-				echo 'alert("Contact already Exists with that phone number.")';
+				echo 'alert("Contact already exists with that email.")';
 				echo '</script>';
 			} else {
 				//Updates record into table from sql statement
@@ -521,30 +533,23 @@
 				if (mysqli_affected_rows($conn) > 0)
 				{
 					echo '<script language="javascript">';
-					echo 'alert("Edit successful!!")';
-					echo '</script>';
-
-					echo '<script language="javascript">';
 					echo 'window.location.href ="../groups/"' ;
 					echo '</script>';
-				} else {
-					echo '<script language="javascript">';
-					echo 'alert("No changes made to User information.")';
-					echo '</script>';
 				}
+
 				if($updateGroup != '0'){
 					// Check to see if contact is already in this group
 					$query2 = mysqli_query($conn, "SELECT * FROM Group_JT WHERE groupId = $updateGroup AND contactId = $editId;");
 
 					if ($query2->num_rows != 0) {
 						echo '<script language="javascript">';
-						echo 'alert("Contact already Exists in Group.")';
+						echo 'alert("Contact already exists in Group.")';
 						echo '</script>';
 					} else {
 						mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId) VALUES ('$editId','$UserId', '$updateGroup')");
 						if (mysqli_affected_rows($conn) > 0){
 							echo '<script language="javascript">';
-							echo 'alert("User Added to Group successfully!!")';
+							echo 'alert("User Added to New Group successfully!")';
 							echo '</script>';
 
 							echo '<script language="javascript">';
