@@ -5,6 +5,7 @@ input[type=text], input[type=password] {
     margin-top: auto;
     background: #f1f1f1;
     border: none;
+
 }
 .personIn {
     display: none;
