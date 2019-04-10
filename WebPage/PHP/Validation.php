@@ -56,4 +56,10 @@ function returnToHomepage()
 	echo 'window.location.href ="../home"';
 	echo '</script>';
 }
+
+//removes - from phone numbers
+function phoneNumReform($phone)
+{
+	return str_replace("-", "", $phone);
+}
 ?>
