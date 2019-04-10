@@ -4,11 +4,11 @@
 		<title>Carrier Pigeon</title>
 		<link rel="stylesheet" type="text/css" href="../CSS/homeStyle.css">
 	</head>
-	<body>
+	<body onload="fill()"> 
 		<h1 id = "Company" style = "text-align: center" > Carrier Pigeon </h1>
+		<p id="messageAlert" style = "text-align: center"></p>
 		<table id = "tables" class = "center" CELLPADDING="30" CELLSPACING="30">
 			<td id = "outter1">
-			
 				<div id = "SI">
 					<h3 style="text-align: center">Sign-In:</h3>
 					<form id = "Sign-In" action = "../PHP/signIn.php" method = "post">
@@ -16,7 +16,7 @@
 						<input id = "usernameEmail" type="text" name="usernameEmail" placeholder = "Someone@domain.com" />
 						<label><br>Password:</br></label>
 						<input id = "passwordEst" type="password" name="passwordEst" placeholder = "Password"/>
-						<input class = "button button1" type = "submit" name = "SignIn" value = "Sign-In" onclick = "passUser();" >
+						<input class = "button button1" type = "submit" name = "SignIn" value = "Sign-In">
 					</form>
 				</div>
 			</td>
@@ -48,3 +48,79 @@
 		</br></br>
 	</body>
 </html>
+<script>
+	document.getElementById("Sign-In").addEventListener("submit",
+	function(e)
+	{
+		var emailRegex = new RegExp('^[.0-9A-Z_a-z]+@[.0-9A-Z_a-z]+.[a-zA-Z]{3}$');
+		var userName = document.getElementById("usernameEmail").value;
+		var pass = document.getElementById("pass").value;
+		if ((userName == null || userName == "") || !emailRegex.test(userName)) {
+			e.preventDefault();
+			document.getElementById("messageAlert").innerHTML = "Invalid username";
+		}
+		else if (pass == null || userName == "") {
+			e.preventDefault();
+			document.getElementById("messageAlert").innerHTML = "Please enter a password";
+		}
+	});
+	
+	document.getElementById("Sign-Up").addEventListener("submit",
+	function(e)
+	{
+		var fname = document.getElementById("fname").value;
+		var lname = document.getElementById("lname").value;
+		var email = document.getElementById("email").value;
+		var phonenum = document.getElementById("phone").value;
+		
+		document.cookie = "fname="+fname;
+		document.cookie = "lname="+lname;
+		document.cookie = "email="+email;
+		document.cookie = "phonenum="+phonenum;
+		
+		var emailRegex = new RegExp('^[.0-9A-Z_a-z]+@[.0-9A-Z_a-z]+.[a-zA-Z]{3}$');
+		var phoneRegex = new RegExp('^[0-9]{3}\-[0-9]{3}\-[0-9]{4}$');
+		var nameRegex = new RegExp('^[a-zA-Z0-9]+$');
+		
+		if ((fname == null || fname == "") || !nameRegex.test(fname)) {
+			e.preventDefault();
+			document.getElementById("messageAlert").innerHTML = "Invalid first name";
+		}
+		else if ((lname == null || lname == "") || !nameRegex.test(lname)) {
+			e.preventDefault();
+			document.getElementById("messageAlert").innerHTML = "Invalid last name";
+		}
+		else if ((email == null || email == "") || !emailRegex.test(email)) {
+			e.preventDefault();
+			document.getElementById("messageAlert").innerHTML = "Invalid email";
+		}
+		else if ((phonenum == null || phonenum == "") || !phoneRegex.test(phonenum)) {
+			e.preventDefault();
+			document.getElementById("messageAlert").innerHTML = "Invalid phone number";
+		}
+	});
+	
+	function fill(){
+    if (document.cookie != "")
+	{
+		cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++)
+		{
+            cookie = cookies[i].trim().split("=");
+			
+            if (cookie[0] == 'fname' && cookie[1] != null) {
+                document.getElementById('fname').value = cookie[1];
+            }
+            else if (cookie[0] == 'lname' && cookie[1] != null) {
+                document.getElementById('lname').value = cookie[1];
+            }
+			else if (cookie[0] == 'email' && cookie[1] != null) {
+                document.getElementById('email').value = cookie[1];
+            }
+			else if (cookie[0] == 'phonenum' && cookie[1] != null) {
+                document.getElementById('phone').value = cookie[1];
+            }
+        }
+    }
+}
+</script>

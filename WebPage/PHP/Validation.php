@@ -1,5 +1,6 @@
 <?php
 
+//compare password and confirm password
 function confirmPassword($password, $passwordCnf)
 {
 	if (!strcmp($password, $passwordCnf) == 0)
@@ -15,9 +16,10 @@ function confirmPassword($password, $passwordCnf)
 	return true;
 }
 
+//ensure password follows a policy
 function passwordValidation($password) 
 {
-	//check if password is proper format
+	//check if password is proper format and clean input
 	$lowercase = preg_match('@[a-z]@', $password);
 	$uppercase = preg_match('@[A-Z]@', $password);
 	$number = preg_match('@[0-9]@', $password);
@@ -37,12 +39,21 @@ function passwordValidation($password)
 	return true;
 }
 
-//rerout the user from this php file back to homepage to try again
-function returnToHomepage()
+//state if invalid username or password on signin
+function invlidUserOrPass()
 {
-		echo '<script language="javascript">';
-		echo 'window.location.href ="../home"' ;
-		echo '</script>';
+	returnToHomepage();
+	echo '<script language="javascript">';
+	echo 'document.getElementById("messageAlert").innerHTML = "Invalid username or password.";';
+	echo '</script>';
+	return false;
 }
 
+//reroute the user to home page
+function returnToHomepage()
+{
+	echo '<script language="javascript">';
+	echo 'window.location.href ="../home"';
+	echo '</script>';
+}
 ?>
