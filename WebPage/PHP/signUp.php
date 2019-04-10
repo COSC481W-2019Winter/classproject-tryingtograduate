@@ -79,6 +79,17 @@
 				$query6 = mysqli_query($conn, "INSERT INTO Message(ownerId, subject, content, templateName)
 				VALUES ('$ownerId', '$subject3', '$content3', '$template3');");
 
+				// unset cookies
+				if (isset($_SERVER['HTTP_COOKIE'])) {
+					$cookies = explode(';', $_SERVER['HTTP_COOKIE']);
+					foreach($cookies as $cookie) {
+						$parts = explode('=', $cookie);
+						$name = trim($parts[0]);
+						setcookie($name, '', time()-1000);
+						setcookie($name, '', time()-1000, '/');
+					}
+				}
+				
 				//alerts user of successful registration
 				echo '<script language="javascript">';
 				echo 'alert("You have registered successfully!!")';
