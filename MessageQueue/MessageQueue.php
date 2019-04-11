@@ -152,7 +152,7 @@
                        $phoneNumber,
                        null, true, null);
 
-    if($carrierId != 99)
+    if($carrierId != 99 && $carrierId != null)
     {
       $carrierQuery =
       "SELECT
