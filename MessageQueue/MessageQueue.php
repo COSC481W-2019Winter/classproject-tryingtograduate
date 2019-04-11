@@ -74,6 +74,28 @@
     return $result;
   }
 
+  function getCarrierSuffix($carrierId)
+  {
+    $carrierQuery =
+    "SELECT
+        carrierName,
+        emailAddress
+      FROM
+        Carrier
+      WHERE
+        carrierId = '$carrierId'
+    ;";
+      
+    $carrierResult = mysqli_query($conn, $carrierQuery);
+    $rawCarrier = mysqli_fetch_array($carrierResult);
+
+    $carrier = new Carrier($carrierId,
+                          $rawCarrier['carrierName'],
+                          $rawCarrier['emailAddress']);
+
+     return $carrier;
+  }
+
   function getNextMessage()
   {
     global $conn;
@@ -84,9 +106,7 @@
           uniqueId,
           firstName,
           lastName,
-          emailAddress,
-          phoneNumber,
-          carrierId,
+          emailAddress
           Message.groupId AS groupId,
           groupName,
           subject,
@@ -119,9 +139,7 @@
               uniqueId,
               firstName,
               lastName,
-              emailAddress,
-              phoneNumber,
-              carrierId
+              emailAddress
             FROM
               Person
           ) AS Owner
@@ -138,7 +156,6 @@
     $lastName = $rawMessage['lastName'];
     $emailAddress = $rawMessage['emailAddress'];
     $phoneNumber = $rawMessage['phoneNumber'];
-    $carrierId = $rawMessage['carrierId'];
     $groupId = $rawMessage['groupId'];
     $groupName = $rawMessage['groupName'];
     $subject = $rawMessage['subject'];
@@ -151,28 +168,6 @@
                        null, null, null,
                        $phoneNumber,
                        null, true, null);
-
-    if($carrierId != 99 && $carrierId != null)
-    {
-      $carrierQuery =
-      "SELECT
-          carrierName,
-          emailAddress
-        FROM
-          Carrier
-        WHERE
-          carrierId = '$carrierId'
-      ;";
-      
-      $carrierResult = mysqli_query($conn, $carrierQuery);
-      $rawCarrier = mysqli_fetch_array($carrierResult);
-
-      $carrier = new Carrier($carrierId,
-                  $rawCarrier['carrierName'],
-                  $rawCarrier['emailAddress']);
-
-      $user->setCarrier($carrier);
-    }
 
     $result = new Message($messageId,
                           $user,
@@ -192,7 +187,8 @@
           firstName,
           lastName,
           emailAddress,
-          phoneNumber
+          phoneNumber,
+          carrierId
         from
         (
           select
@@ -209,7 +205,8 @@
               firstName,
               lastName,
               emailAddress,
-              phoneNumber
+              phoneNumber,
+              carrierId
             from
               Person
         ) as Contact
@@ -229,6 +226,14 @@
                                 null, null, null,
                                 $members['phoneNumber'],
                                 null, false, $ownerId);
+
+        $carrierId = $members['carrierId'];
+
+        if($carrierId != 99 && $carrierId != null)
+        {
+          $carrier = getCarrierSuffix($carrierId);
+          $currPerson->setCarrier($carrier);
+        }
 
         array_push($groupMembers, $currPerson);
       }
@@ -303,7 +308,7 @@
         $subject = $message->getSubject();
         $content = $message->getContent();
         
-        $success = $mail->sendMail($senderAddress,
+        $results = $mail->sendMail($senderAddress,
                                   $fullName,
                                   $groupMembers,
                                   $subject,
@@ -316,25 +321,20 @@
         $logEntry .= $messageId; 
         $logEntry .= " UserId: ";
         $logEntry .= $senderAddress;
-        $logEntry .= " Send Status:";
+        $logEntry .= " Send Status:\n";
 
         $reportBody = " Message with subject \"";
         $reportBody .= $subject;
-        
-
-        if($success)
-        {
-          $logEntry .= " Success\n";
-          $reportBody .= "\" was sent";
-        }
-        else
-        {
-          $logEntry .= " Failure\n";
-          $reportBody .= "\" was not sent";
-        }
-        $reportBody .=" successfully.";
+        $reportBody .= "\"\n";
 
         echo $logEntry;
+        
+        $resultCount = count($results);
+        for($i = 0; $i < $resultCount; $i++)
+        {
+          echo $results[$i];
+          $reportBody .= $results[$i];
+        }
 
         $senderGroup = array();
         $senderGroup[0] = $message->getUser();
