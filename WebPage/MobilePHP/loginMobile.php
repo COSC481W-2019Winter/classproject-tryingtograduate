@@ -18,7 +18,7 @@
 	if ($result->num_rows != 0)
 		{
 			//query and store query result in variable $queryHash then fetch stored password hash
-			$queryHash = "SELECT passwordHash FROM Person WHERE emailAddress = '$username'";
+			$queryHash = "SELECT passwordHash FROM Person WHERE emailAddress = '$username' AND ownerId IS NULL";
 			$resultHash = $conn->query($queryHash);
 			$resultHashRow = $resultHash->fetch_assoc();
 			$hash = $resultHashRow['passwordHash'];
