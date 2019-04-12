@@ -68,6 +68,7 @@ class Mail
         if(!$this->mail->send())
         {
           array_push($results, $this->reportFail($contactName, $emailAddress));
+          array_push($results, $this->mail->ErrorInfo());
         }
         else
         {
@@ -76,7 +77,8 @@ class Mail
       }
       if($phoneNumber != null && $carrier != null)
       {
-        $sms = $phoneNumber . $carrier->getEmail();
+        $sms = preg_replace('/[^0-9]/', '', $phoneNumber);
+        $sms .= $carrier->getEmail();
         $this->mail->ClearAllRecipients();
         $this->mail->addAddress($sms, $contactName);
         if(!$this->mail->send())
