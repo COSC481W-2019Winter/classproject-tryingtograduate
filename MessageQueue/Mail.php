@@ -69,11 +69,11 @@ class Mail
         $this->mail->addAddress($emailAddress, $contactName);
         if(!$this->mail->send())
         {
-          array_push($results, this->reportFail($contactName, $emailaddress));
+          array_push($results, $this->reportFail($contactName, $emailaddress));
         }
         else
         {
-          array_push($results, this->reportsuccess($contactName, $emailaddress));
+          array_push($results, $this->reportsuccess($contactName, $emailaddress));
         }
       }
       if($phoneNumber != null && $carrierSuffix != null)
