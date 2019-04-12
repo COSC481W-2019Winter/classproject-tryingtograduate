@@ -346,9 +346,9 @@
         else
         {
           echo GENRAL_FAILURE;
-          $reportBody = GENREAL_FAILURE;
+          $reportBody = GENERAL_FAILURE;
         }
-        
+
         $senderGroup = array();
         $senderGroup[0] = $message->getUser();
 
