@@ -75,7 +75,7 @@ class Mail
           array_push($results, $this->reportSuccess($contactName, $emailAddress));
         }
       }
-      if($phoneNumber != null && $carrier != null)
+      if($carrier != null)
       {
         $sms = preg_replace('/[^0-9]/', '', $phoneNumber);
         $sms .= $carrier->getEmail();

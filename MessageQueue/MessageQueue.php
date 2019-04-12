@@ -345,8 +345,8 @@
         }
         else
         {
-          echo GENERAL_FAILURE;
-          $reportBody = GENERAL_FAILURE;
+          echo GENERAL_FAILURE . "\n";
+          $reportBody = GENERAL_FAILURE . "\n";
         }
 
         $senderGroup = array();
