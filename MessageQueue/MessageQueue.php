@@ -117,6 +117,8 @@
 
   function getCarrierSuffix($carrierId)
   {
+    global $conn;
+    
     $carrierQuery =
     "SELECT
         carrierName,
