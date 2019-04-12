@@ -79,9 +79,6 @@ class Mail
       {
         $sms = preg_replace('/[^0-9]/', '', $phoneNumber);
         $sms .= $carrier->getEmail();
-
-        array_push($results, $sms);
-        
         $this->mail->ClearAllRecipients();
         $this->mail->addAddress($sms, $contactName);
         if(!$this->mail->send())
