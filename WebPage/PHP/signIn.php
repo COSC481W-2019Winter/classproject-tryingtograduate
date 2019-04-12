@@ -27,10 +27,10 @@
 	if ($result->num_rows != 0)
 	{
 		//query and store query result in variable $queryHash then fetch stored password hash
-		$queryHash = "SELECT passwordHash FROM Person WHERE emailAddress = '$username' AND ownerId IS NULL";
+		/*$queryHash = "SELECT passwordHash FROM Person WHERE emailAddress = '$username' AND ownerId IS NULL";
 		$resultHash = $conn->query($queryHash);
 		$resultHashRow = $resultHash->fetch_assoc();
-		$hash = $resultHashRow['passwordHash'];
+		$hash = $resultHashRow['passwordHash'];*/
 		//routs the user to the Message Dashboard if username and password were found in same row of table
 		echo '<script language="javascript">';
 		echo 'window.location.href ="../dashboard"' ;
