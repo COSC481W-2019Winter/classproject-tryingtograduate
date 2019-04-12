@@ -345,7 +345,7 @@
         }
         else
         {
-          echo GENRAL_FAILURE;
+          echo GENERAL_FAILURE;
           $reportBody = GENERAL_FAILURE;
         }
 
