@@ -158,9 +158,6 @@
 	$tempName = $_POST['tempName'];
 	$tempSubject = $_POST['tempSubject'];
 	$tempMsg = $_POST['message'];
-	$tempName = return str_replace(";", "", $tempName);
-	$tempSubject = return str_replace(";", "", $tempSubject);
-	$tempMsg = return str_replace(";", "", $tempMsg);
 	
 	
 	//check to see if SAVE button has been clicked		
