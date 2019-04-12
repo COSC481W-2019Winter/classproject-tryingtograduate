@@ -35,25 +35,25 @@
 		// Create connection
 		$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 		//get first name	
-		$queryC = "SELECT firstName FROM Person WHERE emailAddress = '$UserEmail'";
+		$queryC = "SELECT firstName FROM Person WHERE emailAddress = '$UserEmail' AND ownerId IS NULL";
 		$resultC = $conn->query($queryC);
 		$idC = mysqli_fetch_object($resultC);
 		$FirstNm = $idC->firstName;	
 		//get last name
-		$queryD = "SELECT lastName FROM Person WHERE emailAddress = '$UserEmail'";
+		$queryD = "SELECT lastName FROM Person WHERE emailAddress = '$UserEmail' AND ownerId IS NULL";
 		$resultD = $conn->query($queryD);
 		$idD = mysqli_fetch_object($resultD);
 		$LastNm = $idD->lastName;	
 		//get uniqueId of current user from Person
-		$queryA = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail'";
+		$queryA = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail' AND ownerId IS NULL";
 		$resultA = $conn->query($queryA);
 		$idA = mysqli_fetch_object($resultA);
 		$UniqueId = $idA->uniqueId;
 		//get ownerId of current user from Person
-		$queryB = "SELECT ownerId FROM Person WHERE emailAddress = '$UserEmail'";
+		/*$queryB = "SELECT ownerId FROM Person WHERE emailAddress = '$UserEmail'";
 		$resultB = $conn->query($queryB);
 		$idB = mysqli_fetch_object($resultB);
-		$OwnerId = $idB->ownerId;
+		$OwnerId = $idB->ownerId;*/
 		echo "Logged in as:  ", $FirstNm, " ", $LastNm;
 		//use $UniquiId established above to output current users template list from Message
 		$result = $conn->query("SELECT messageId, templateName FROM Message WHERE ownerId = $UniqueId AND templateName IS NOT NULL");

@@ -62,12 +62,12 @@
 		// Create connection
 		$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 		//get first name
-		$queryC = "SELECT firstName FROM Person WHERE emailAddress = '$UserEmail'";
+		$queryC = "SELECT firstName FROM Person WHERE emailAddress = '$UserEmail' AND ownerId IS NULL";
 		$resultC = $conn->query($queryC);
 		$idC = mysqli_fetch_object($resultC);
 		$FirstNm = $idC->firstName;
 		//get last name
-		$queryD = "SELECT lastName FROM Person WHERE emailAddress = '$UserEmail'";
+		$queryD = "SELECT lastName FROM Person WHERE emailAddress = '$UserEmail'  AND ownerId IS NULL";
 		$resultD = $conn->query($queryD);
 		$idD = mysqli_fetch_object($resultD);
 		$LastNm = $idD->lastName;
@@ -102,7 +102,7 @@
 								// Create connection
 								$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 
-								$sql = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail' limit 1";
+								$sql = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail'  AND ownerId IS NULL limit 1";
 								$result = $conn->query($sql);
 								$id = mysqli_fetch_object($result);
 								$UserId = $id->uniqueId;
@@ -318,7 +318,7 @@
 	$UserEmail = $_SESSION['currentUserEmail'];
 
 	//Get user ID from Session
-	$sql = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail' limit 1";
+	$sql = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail' AND ownerId IS NULL limit 1";
 	$result = $conn->query($sql);
 	$id = mysqli_fetch_object($result);
 	$UserId = $id->uniqueId;
@@ -376,12 +376,6 @@
 	if(isset($_POST['addCtoDB']))
 	{
 		$selectedGroup=$_SESSION['currentGroup'];
-		//Check to make sure that an email or an phoneNumber exists.
-/**		if(!$email && !$phone){
-			echo '<script language="javascript">';
-			echo 'alert("Please enter an E-mail Address or a Phone Number.")';
-			echo '</script>';
-		} else{*/
 
 			//Test to see if the email entered already exists in the table
 			$query2 = mysqli_query($conn, "SELECT * FROM Person WHERE firstName = '$fname' AND lastName = '$lname' AND emailAddress = '$email' AND ownerId = '$UserId';");
@@ -513,13 +507,13 @@
 	{
 		//We need to make sure that the email/Phone number being changed doesn't already exist in the Database.
 		$sql = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE NOT uniqueId = $editId AND phoneNumber = '$phone' AND ownerId = $UserId;");
-		if ($sql->num_rows != 0) {
+		if ($sql->num_rows != 0 && $phone) {
 			echo '<script language="javascript">';
 			echo 'alert("Contact already exists with that Phone Number.")';
 			echo '</script>';
 		} else {
 			$sql = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE NOT uniqueId = $editId AND emailAddress = '$email' AND ownerId = $UserId;");
-		  if ($sql->num_rows != 0){
+		  if ($sql->num_rows != 0 && $email){
 				echo '<script language="javascript">';
 				echo 'alert("Contact already exists with that email.")';
 				echo '</script>';
