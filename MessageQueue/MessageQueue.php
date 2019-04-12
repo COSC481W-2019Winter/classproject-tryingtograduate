@@ -335,8 +335,8 @@
         $resultCount = count($results);
         for($i = 0; $i < $resultCount; $i++)
         {
-          echo $results[$i];
-          $reportBody .= $results[$i];
+          echo $results[$i] . "\n";
+          $reportBody .= $results[$i] . "\n";
         }
 
         $senderGroup = array();

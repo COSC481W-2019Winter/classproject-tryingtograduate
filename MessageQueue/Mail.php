@@ -27,7 +27,6 @@ class Mail
     $result .= $contactName;
     $result .= ' at ';
     $result .= $address;
-    $result .= '\n';
     return $result;
   }
 
@@ -37,7 +36,6 @@ class Mail
     $result .= $contactName;
     $result .= ' at ';
     $result .= $address;
-    $result .= '\n';
     return $result;
   }
 
