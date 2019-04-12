@@ -83,11 +83,11 @@ class Mail
         $this->mail->addAddress($sms, $contactName);
         if(!$this->mail->send())
         {
-          array_push($results, this->reportFail($contactName, $sms));
+          array_push($results, $this->reportFail($contactName, $sms));
         }
         else
         {
-          array_push($results, this->reportsuccess($contactName, $sms));
+          array_push($results, $this->reportsuccess($contactName, $sms));
         }
       }
     }
