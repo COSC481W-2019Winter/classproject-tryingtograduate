@@ -66,12 +66,10 @@
 		var fname = document.getElementById("fname").value;
 		var lname = document.getElementById("lname").value;
 		var email = document.getElementById("email").value;
-		var phonenum = document.getElementById("phone").value;
 		
 		document.cookie = "fname="+fname;
 		document.cookie = "lname="+lname;
 		document.cookie = "email="+email;
-		document.cookie = "phonenum="+phonenum;
 		
 		var emailRegex = new RegExp('^[.0-9A-Z_a-z]+@[.0-9A-Z_a-z]+.[a-zA-Z]{3}$');
 		var phoneRegex = new RegExp('^[0-9]{3}\-[0-9]{3}\-[0-9]{4}$');
@@ -88,10 +86,6 @@
 		else if ((email == null || email == "") || !emailRegex.test(email)) {
 			e.preventDefault();
 			document.getElementById("messageAlert").innerHTML = "Invalid email";
-		}
-		else if (!(phonenum == null || phonenum == "") && !phoneRegex.test(phonenum)) {
-			e.preventDefault();
-			document.getElementById("messageAlert").innerHTML = "Invalid phone number";
 		}
 	});
 	
@@ -111,9 +105,6 @@
             }
 			else if (cookie[0] == 'email' && cookie[1] != null) {
                 document.getElementById('email').value = cookie[1];
-            }
-			else if (cookie[0] == 'phonenum' && cookie[1] != null) {
-                document.getElementById('phone').value = cookie[1];
             }
         }
     }

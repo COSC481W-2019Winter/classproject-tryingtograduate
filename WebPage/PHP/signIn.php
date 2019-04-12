@@ -4,20 +4,25 @@
 	$username = filter_input(INPUT_POST, 'usernameEmail');
 	$passWordEst = filter_input(INPUT_POST, 'passwordEst');
 	$_SESSION['currentUserEmail'] = $username;
+	
 	//include files
 	include ('../PHP/Database.php');
 	include ('../PHP/Validation.php');
+	
 	// Create connection
 	$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+	
 	// Check connection
 	if ($conn->connect_error)
 	{
 		echo "could not establish connection to db2...";
 		die("Connection failed: " . $conn->connect_error);
 	}
+	
 	//Sets aand run query then store in result
 	$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$username' AND ownerId IS NULL";
 	$result = $conn->query("$query");
+	
 	//tests the result to see if the query yielded any rows from our Person table
 	if ($result->num_rows != 0)
 	{
