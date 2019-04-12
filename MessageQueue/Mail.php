@@ -61,7 +61,7 @@ class Mail
       $emailAddress = $groupMembers[$i]->getEmail();
 
       $phoneNumber = $groupMembers[$i]->getPhone();
-      $carrierSuffix = $groupMembers[$i]->getCarrier()->getEmail();
+      $carrier = $groupMembers[$i]->getCarrier();
 
       if($emailAddress != null)
       {
@@ -76,9 +76,9 @@ class Mail
           array_push($results, $this->reportsuccess($contactName, $emailaddress));
         }
       }
-      if($phoneNumber != null && $carrierSuffix != null)
+      if($phoneNumber != null && $carrier != null)
       {
-        $sms = $phoneNumber . $carrierSuffix;
+        $sms = $phoneNumber . $carrier->getEmail();
         $this->mail->ClearAllRecipients();
         $this->mail->addAddress($sms, $contactName);
         if(!$this->mail->send())

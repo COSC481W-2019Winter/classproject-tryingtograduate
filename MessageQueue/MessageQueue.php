@@ -9,6 +9,8 @@
 
   $mail = new Mail();
 
+  $now = new DateTime();
+
   $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 
   if(!$conn)
@@ -72,6 +74,44 @@
     }
     //echo $count . " message(s) in queue.\n\n";
     return $result;
+  }
+
+  function removeQueuedMessage($messageId)
+  {
+    global $conn;
+
+    $delQuery =
+    "DELETE 
+        FROM
+        Queue
+      WHERE
+        messageId = '$messageId'
+    ;";
+
+    $updtQuery =
+    "UPDATE
+        Message
+      SET
+        lastSent = sysdate()
+      WHERE
+        messageId = '$messageId'
+    ;";
+
+    $dateQuery =
+    "SELECT
+        lastSent
+      FROM
+        Message
+      WHERE
+        messageId = '$messageId'
+    ;";
+
+    $delResult = mysqli_query($conn, $delQuery);
+    $updtResult = mysqli_query($conn, $updtQuery);
+    $dateResult = mysqli_query($conn, $dateQuery);
+    $rawDate = mysqli_fetch_array($dateResult);
+    return $rawDate['lastSent'];
+
   }
 
   function getCarrierSuffix($carrierId)
@@ -155,7 +195,6 @@
     $firstName = $rawMessage['firstName'];
     $lastName = $rawMessage['lastName'];
     $emailAddress = $rawMessage['emailAddress'];
-    $phoneNumber = $rawMessage['phoneNumber'];
     $groupId = $rawMessage['groupId'];
     $groupName = $rawMessage['groupName'];
     $subject = $rawMessage['subject'];
@@ -165,8 +204,8 @@
                        $firstName,
                        $lastName,
                        $emailAddress,
-                       null, null, null,
-                       $phoneNumber,
+                       null, null,
+                       null, null,
                        null, true, null);
 
     $result = new Message($messageId,
@@ -177,7 +216,8 @@
 
     if($groupId == null)
     {
-      die('No group assigned to message');
+      echo $now->format('Y-m-d H:i:s') . "Message: " . $messageId . " Error: No group assigned to message\n";
+      removeQueuedMessage($messageId);
     }
     else
     {
@@ -246,44 +286,6 @@
       $result->setGroup($group);
     }
     return $result;
-  }
-
-  function removeQueuedMessage($messageId)
-  {
-    global $conn;
-
-    $delQuery =
-    "DELETE 
-        FROM
-        Queue
-      WHERE
-        messageId = '$messageId'
-    ;";
-
-    $updtQuery =
-    "UPDATE
-        Message
-      SET
-        lastSent = sysdate()
-      WHERE
-        messageId = '$messageId'
-    ;";
-
-    $dateQuery =
-    "SELECT
-        lastSent
-      FROM
-        Message
-      WHERE
-        messageId = '$messageId'
-    ;";
-
-    $delResult = mysqli_query($conn, $delQuery);
-    $updtResult = mysqli_query($conn, $updtQuery);
-    $dateResult = mysqli_query($conn, $dateQuery);
-    $rawDate = mysqli_fetch_array($dateResult);
-    return $rawDate['lastSent'];
-
   }
 
   while(!$forceExit)
