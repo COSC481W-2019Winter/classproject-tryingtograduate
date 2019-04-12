@@ -20,7 +20,7 @@
                                 $vCodeExp = null,
                                 $passwdHash = null,
                                 $phone = null,
-                                $carrier = null
+                                $carrier = null,
                                 $ownerId = null)
     {
       $this->id = $id;

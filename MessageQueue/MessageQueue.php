@@ -210,7 +210,7 @@
                        $emailAddress,
                        null, null,
                        null, null,
-                       null, true, null);
+                       null, null);
 
     $result = new Message($messageId,
                           $user,
@@ -263,26 +263,26 @@
 
       $groupMembers = array();
       $groupResult = mysqli_query($conn, $groupQuery);
-      $currPerson = null;
+      $currMember = null;
       while($members = mysqli_fetch_array($groupResult))
       {
-        $currPerson = new Person($members['uniqueId'],
+        $currMember = new Person($members['uniqueId'],
                                 $members['firstName'],
                                 $members['lastName'],
                                 $members['emailAddress'],
                                 null, null, null,
                                 $members['phoneNumber'],
-                                null, false, $ownerId);
+                                null, $ownerId);
 
         $carrierId = $members['carrierId'];
 
         if($carrierId != 99 && $carrierId != null)
         {
           $carrier = getCarrierSuffix($carrierId);
-          $currPerson->setCarrier($carrier);
+          $currMember->setCarrier($carrier);
         }
 
-        array_push($groupMembers, $currPerson);
+        array_push($groupMembers, $currMember);
       }
 
       $group = new Group($groupId,
