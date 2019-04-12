@@ -106,7 +106,7 @@
           uniqueId,
           firstName,
           lastName,
-          emailAddress
+          emailAddress,
           Message.groupId AS groupId,
           groupName,
           subject,
