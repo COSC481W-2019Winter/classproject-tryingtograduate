@@ -132,11 +132,16 @@
     $carrierResult = mysqli_query($conn, $carrierQuery);
     $rawCarrier = mysqli_fetch_array($carrierResult);
 
-    $carrier = new Carrier($carrierId,
-                          $rawCarrier['carrierName'],
-                          $rawCarrier['emailAddress']);
+    $name = $rawCarrier['carrierName'];
+    $suffix = $rawCarrier['emailAddress'];
 
-     return $carrier;
+    $carrier = new Carrier($carrierId, $name, $suffix);
+
+    echo $carrierId . "\n";
+    echo $name . "\n";
+    echo $suffix . "\n";
+
+    return $carrier;
   }
 
   function getNextMessage()
