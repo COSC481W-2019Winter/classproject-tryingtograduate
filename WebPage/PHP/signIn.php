@@ -42,6 +42,9 @@
 		else
 		{
 			//password not found, alert and return to home
+			echo '<script language="javascript">';
+			echo 'alert("failed when running password_verify.")';
+			echo '</script>';
 			invlidUserOrPass();
 		}
 	}
