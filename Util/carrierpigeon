@@ -20,7 +20,7 @@ case "$1" in
 start)
   printf "%-50s" "Starting $NAME..."
   cd $DAEMON_PATH
-  PID=`$DAEMON $DAEMONOPTS > $LOGFILE 2> $LOGFILE & echo $!`
+  PID=`$DAEMON $DAEMONOPTS >> $LOGFILE 2>> $LOGFILE & echo $!`
   #echo "Saving PID" $PID " to " $PIDFILE
         if [ -z $PID ]; then
             printf "%s\n" "Fail"
