@@ -9,6 +9,7 @@
 
   $mail = new Mail();
 
+  date_default_timezone_set('UTC');
   $now = new DateTime();
 
   $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
