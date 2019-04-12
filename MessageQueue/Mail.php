@@ -79,16 +79,17 @@ class Mail
       {
         $sms = preg_replace('/[^0-9]/', '', $phoneNumber);
         $sms .= $carrier->getEmail();
+        echo $sms . "\n";
         $this->mail->ClearAllRecipients();
         $this->mail->addAddress($sms, $contactName);
         if(!$this->mail->send())
         {
-          array_push($results, $this->reportFail($contactName, $sms));
+          array_push($results, $this->reportFail($contactName, $phoneNumber));
           array_push($results, $this->mail->ErrorInfo());
         }
         else
         {
-          array_push($results, $this->reportsuccess($contactName, $sms));
+          array_push($results, $this->reportsuccess($contactName, $phoneNumber));
         }
       }
     }
