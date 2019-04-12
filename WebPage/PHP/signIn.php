@@ -20,7 +20,7 @@
 	}
 
 	//Sets aand run query then store in result
-	$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$username' AND ownerId IS NULL";
+	$query = "SELECT emailAddress, passwordHash FROM Person WHERE emailAddress = '$username' AND passwordHash = '$passWordEst' AND ownerId IS NULL";
 	$result = $conn->query("$query");
 
 	//tests the result to see if the query yielded any rows from our Person table
