@@ -3,4 +3,5 @@
   const SERVICE_EMAIL = "jpeck3@emich.edu";
   const SERVICE_NAME = "Carrier Pigeon";
   const SERVICE_SUBJECT = "Carrier Pigeon Message Report";
+  const GENERAL_FAILURE = "Failed";
 ?>

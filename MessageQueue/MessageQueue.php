@@ -118,7 +118,7 @@
   function getCarrierSuffix($carrierId)
   {
     global $conn;
-    
+
     $carrierQuery =
     "SELECT
         carrierName,
@@ -333,14 +333,22 @@
         $reportBody .= "\"\n";
 
         echo $logEntry;
-        
-        $resultCount = count($results);
-        for($i = 0; $i < $resultCount; $i++)
-        {
-          echo $results[$i] . "\n";
-          $reportBody .= $results[$i] . "\n";
-        }
 
+        $resultCount = count($results);
+        if($resultCount > 0)
+        {
+          for($i = 0; $i < $resultCount; $i++)
+          {
+            echo $results[$i] . "\n";
+            $reportBody .= $results[$i] . "\n";
+          }
+        }
+        else
+        {
+          echo GENRAL_FAILURE;
+          $reportBody = GENREAL_FAILURE;
+        }
+        
         $senderGroup = array();
         $senderGroup[0] = $message->getUser();
 
