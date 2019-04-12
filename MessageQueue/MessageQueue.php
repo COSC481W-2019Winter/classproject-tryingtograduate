@@ -137,10 +137,6 @@
 
     $carrier = new Carrier($carrierId, $name, $suffix);
 
-    echo $carrierId . "\n";
-    echo $name . "\n";
-    echo $suffix . "\n";
-
     return $carrier;
   }
 
