@@ -220,7 +220,10 @@
 
     if($groupId == null)
     {
-      echo $now->format('Y-m-d H:i:s') . "Message: " . $messageId . " Error: No group assigned to message\n";
+      echo $now->format('Y-m-d H:i:s');
+      echo "Message: ";
+      echo $messageId;
+      echo " Error: No group assigned to message\n";
       removeQueuedMessage($messageId);
     }
     else

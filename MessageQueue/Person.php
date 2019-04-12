@@ -10,7 +10,6 @@
     private $passwdHash;
     private $phone;
     private $carrier;
-    private $isUser;
     private $ownerId;
 
     public function __construct($id,
@@ -21,8 +20,7 @@
                                 $vCodeExp = null,
                                 $passwdHash = null,
                                 $phone = null,
-                                $carrier = null,
-                                $isUser,
+                                $carrier = null
                                 $ownerId = null)
     {
       $this->id = $id;
@@ -34,7 +32,6 @@
       $this->passwdHash = $passwdHash;
       $this->carrier = $carrier;
       $this->phone = $phone;
-      $this->isUser = $isUser;
       $this->ownerId = $ownerId;
     }
 
@@ -60,26 +57,17 @@
 
     public function setVerCode($vCode)
     {
-      if($this->isUser)
-      {
-        $this->vCode = $vCode;
-      }
+      $this->vCode = $vCode;
     }
 
     public function setVerCodeExp($vCodeExp)
     {
-      if($this->isUser)
-      {
         $this->vCodeExp = $vCodeExp;
-      }
     }
 
     public function setPasswdHash($passwdHash)
     {
-      if($this->isUser)
-      {
-        $this->passwdHash = $passwdHash;
-      }
+      $this->passwdHash = $passwdHash;
     }
 
     public function setPhone($phone)
@@ -89,26 +77,12 @@
 
     public function setCarrier($carrier)
     {
-      if($this->isUser && $this->phone)
-      {
-        $this->carrier = $carrier;
-      }
-    }
-
-    public function setIsUser($isUser)
-    {
-      if($ownerId == null)
-      {
-        $this->isUser = $isUser;
-      }
+      $this->carrier = $carrier;
     }
 
     public function setOwner($ownerId)
     {
-      if(!$this->isUser)
-      {
-        $this->ownerId = $ownerId;
-      }
+      $this->ownerId = $ownerId;
     }
 
     public function getId()
@@ -154,11 +128,6 @@
     public function getCarrier()
     {
       return $this->carrier;
-    }
-
-    public function isUser()
-    {
-      return $this->isUser;
     }
 
     public function getOwner()
