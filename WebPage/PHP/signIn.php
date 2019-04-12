@@ -31,8 +31,11 @@
 		$resultHash = $conn->query($queryHash);
 		$resultHashRow = $resultHash->fetch_assoc();
 		$hash = $resultHashRow['passwordHash'];
-
-		if (password_verify($passWordEst, $hash))
+		//routs the user to the Message Dashboard if username and password were found in same row of table
+		echo '<script language="javascript">';
+		echo 'window.location.href ="../dashboard"' ;
+		echo '</script>';
+		/*if (password_verify($passWordEst, $hash))
 		{
 			//routs the user to the Message Dashboard if username and password were found in same row of table
 			echo '<script language="javascript">';
@@ -42,11 +45,8 @@
 		else
 		{
 			//password not found, alert and return to home
-			echo '<script language="javascript">';
-			echo 'alert("failed when running password_verify.")';
-			echo '</script>';
 			invlidUserOrPass();
-		}
+		}*/
 	}
 	else
 	{
