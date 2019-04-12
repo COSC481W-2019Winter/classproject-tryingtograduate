@@ -72,14 +72,14 @@ class Mail
         }
         else
         {
-          array_push($results, $this->reportsuccess($contactName, $emailAddress));
+          array_push($results, $this->reportSuccess($contactName, $emailAddress));
         }
       }
       if($phoneNumber != null && $carrier != null)
       {
         $sms = preg_replace('/[^0-9]/', '', $phoneNumber);
         $sms .= $carrier->getEmail();
-        echo $sms . "\n";
+        array_push($results, $sms);
         $this->mail->ClearAllRecipients();
         $this->mail->addAddress($sms, $contactName);
         if(!$this->mail->send())
@@ -89,7 +89,7 @@ class Mail
         }
         else
         {
-          array_push($results, $this->reportsuccess($contactName, $phoneNumber));
+          array_push($results, $this->reportSuccess($contactName, $phoneNumber));
         }
       }
     }
