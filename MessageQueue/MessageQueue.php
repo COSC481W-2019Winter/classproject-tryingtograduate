@@ -83,17 +83,16 @@
 
     $delQueueEntryQuery =
     "DELETE 
-        FROM
+      FROM
         Queue
       WHERE
         messageId = '$messageId'
     ;";
 
     $delMessageEntryQuery =
-    "UPDATE
+    "DELETE
+      FROM
         Message
-      SET
-        lastSent = sysdate()
       WHERE
         messageId = '$messageId'
     ;";
