@@ -44,10 +44,10 @@ function passwordValidation($password)
 //state if invalid username or password on signin
 function invlidUserOrPass()
 {
-	returnToHomepage();
 	echo '<script language="javascript">';
-	echo 'document.getElementById("messageAlert").innerHTML = "Invalid username or password.";';
+	echo 'alert("Invalid username or password.")';
 	echo '</script>';
+	returnToHomepage();
 	return false;
 }
 
@@ -63,7 +63,7 @@ function returnToHomepage()
 function redirectToVerificationPage()
 {
 	echo '<script language="javascript">';
-	echo 'window.location.href ="../Verification"';
+	echo 'window.location.href ="../Verification/index.php"';
 	echo '</script>';
 }
 
@@ -72,32 +72,32 @@ function sendMail($sendTo)
 {	
 	//set up email for delivery
 	$mail = new PHPMailer;
-	$mail->isSMTP();
-	$mail->Username = SMTPUSER;
-	$mail->Password = SMTPPASS;
-	$mail->Host = SMTPHOST;
-	$mail->SMTPAuth = SMTPAUTH;
-	$mail->SMTPKeepAlive = SMTPKEEPALIVE;
-	$mail->SMTPSecure = SMTPSECURE;
-	$mail->Port = SMTPPORT;
-	$mail->isHTML(false);
+	$mail = isSMTP();
+	$mail = Username = SMTPUSER;
+	$mail = Password = SMTPPASS;
+	$mail = Host = SMTPHOST;
+	$mail = SMTPAuth = SMTPAUTH;
+	$mail = SMTPKeepAlive = SMTPKEEPALIVE;
+	$mail = SMTPSecure = SMTPSECURE;
+	$mail = Port = SMTPPORT;
+	$mail = isHTML(false);
 
 	//set mail contents
 	$code = rand(0, 9999);
 	const $subject = "Verification Email";
 	const $body = "Your unique code for sign-up is: ".$code;
 	const $fromName = "Carrier Pidgen";
-	const $fromAddress = "mhankerd@emich.edu"
+	const $fromAddress = "mhankerd@emich.edu";
 	$mail = setFrom($senderAddress, $senderName);
 	$mail = Subject = $subject;
 	$mail = Body = $content;
 	$mail = addAddress($sendTo);
 	
 	//send mail
-	$results = $mail->sendMail($senderAddress,
-							  $fullName,
-							  $groupMembers,
-							  $subject,
-							  $content);
+	$mail->sendMail($senderAddress,
+						$fullName,
+						$groupMembers,
+						$subject,
+						$content);
 }
 ?>
