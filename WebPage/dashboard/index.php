@@ -63,8 +63,6 @@
 		</br>
 		<h1 id = "Company" style = "text-align: center" >Message Dashboard</h1>
 		<h2 id = "user" style = "text-align: center" ><span id = "user"></span></h2>
-		<button id = "topRight" class = "button button0" onclick = "window.location.href ='../groups/index.php'" >
-		Edit Groups</button>
 		</br>
 		<!navigation bar starts here>
 		<div id = "wrapper">
@@ -147,6 +145,8 @@
 			Sign-Out</button></td>
 			<td><button class = "button buttonC" onclick = "window.location.href = '../dashboard/index.php'">
 			Cancel</button></td>
+			<td><button id class = "button button0" onclick = "window.location.href ='../groups/index.php'" >
+			Edit Groups</button></td>
 		</td>
 		</table>
 		
