@@ -70,7 +70,7 @@ create table Queue
 
 insert into `Carrier`
   values
-  (1,'Verizon','@vzw.com'),
+  (1,'Verizon','@vtext.com'),
   (2,'Sprint','@messaging.sprintpcs.com'),
   (3,'T-mobile','@tmomail.net'),
 	(4,'AT&T','@txt.att.net'),
