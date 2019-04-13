@@ -6,6 +6,7 @@
 	$password = filter_input(INPUT_POST, 'passwordNew');
 	$passwordCnf = filter_input(INPUT_POST, 'passwordNewCnf');
 	$hash = password_hash($password, PASSWORD_DEFAULT);
+	
 	//create predefined messages
 	$subject1 = "Weather Alert";
 	$content1 = "Due to inclement conditions, some schedules may have changed.  Please check with your supervisor to confirm your shift.";
@@ -88,14 +89,9 @@
 						setcookie($name, '', time()-1000, '/');
 					}
 				}
-				
-				//alerts user of successful registration
-				echo '<script language="javascript">';
-				echo 'alert("You have registered successfully!!")';
-				echo '</script>';
 
-				//rerouts user to homepage to sign in with new credentials
-				returnToHomepage();
+				//reroute user to verification
+				redirectToVerificationPage();
 			}
 			else
 			{
@@ -105,7 +101,7 @@
 			}
 		}
 	}
-
+	
 	//Close connection
 	$conn->close();
 ?>
