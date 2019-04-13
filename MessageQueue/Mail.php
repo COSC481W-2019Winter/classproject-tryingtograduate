@@ -71,6 +71,7 @@ class Mail
         if(!$this->mail->send())
         {
           array_push($results, $this->reportFail($contactName, $emailAddress));
+          array_push($results, $this->mail->ErrorInfo);
         }
         else
         {
@@ -89,6 +90,7 @@ class Mail
         if(!$this->mail->send())
         {
           array_push($results, $this->reportFail($contactName, $phoneNumber));
+          array_push($results, $this->mail->ErrorInfo);
         }
         else
         {
