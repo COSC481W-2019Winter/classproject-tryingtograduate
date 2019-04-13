@@ -47,7 +47,12 @@ class Mail
   {
     $results = array();
 
-    $this->mail->setFrom($senderAddress, $senderName);
+    $this->mail->clearReplyTos();
+    $this->mail->addReplyTo($senderAddress, $senderName);
+
+    $from = "For " . $senderName;
+    $this->mail->setFrom(SERVICE_EMAIL, $from);
+
     $this->mail->Subject = $subject;
     $this->mail->Body = $content;
     $memberCount = count($groupMembers);
