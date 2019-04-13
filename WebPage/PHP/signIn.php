@@ -33,7 +33,6 @@
 		$hash = $resultHashRow['passwordHash'];
 		if (password_verify($passWordEst, $hash))
 		{
-			die;
 			//routs the user to the Message Dashboard if username and password were found in same row of table
 			echo '<script language="javascript">';
 			echo 'window.location.href ="../dashboard"' ;

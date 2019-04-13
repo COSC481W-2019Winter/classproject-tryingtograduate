@@ -1,4 +1,6 @@
 <?php
+require 'vendor/autoload.php';
+use PHPMailer\PHPMailer\PHPMailer;
 
 //compare password and confirm password
 function confirmPassword($password, $passwordCnf)
