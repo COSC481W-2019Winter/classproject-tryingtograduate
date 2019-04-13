@@ -35,7 +35,7 @@
 			<b>A verification code has been sent to the email you provided.</b></br>  
 			<b>Please enter the code below and click submit to verify your email.</b>
 			</br></br>
-			<input id = "code" name = "code" type="textbox" name="code" style="text-align: center" placeholder = "######"/>
+			<input id = "code" name = "code" type="textbox" name="code" placeholder = "######"/>
 			</br><input id = "subCode" class = "button2" type = "submit" name = "subCode" value = "SUBMIT">
 			</form>
 		</div>
