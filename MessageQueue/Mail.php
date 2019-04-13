@@ -50,7 +50,7 @@ class Mail
     $this->mail->clearReplyTos();
     $this->mail->addReplyTo($senderAddress, $senderName);
 
-    $from = "For " . $senderName;
+    $from = SERVICE_NAME . " on behalf of " . $senderName;
     $this->mail->setFrom(SERVICE_EMAIL, $from);
 
     $this->mail->Subject = $subject;
