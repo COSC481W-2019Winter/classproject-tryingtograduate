@@ -312,8 +312,7 @@
 
         removeQueuedMessage($message->getId());
 
-        //$logEntry = $now->format('Y-m-d H:i:s');
-        $logEntry = $now->getTimestamp();
+        $logEntry = $now->format('Y-m-d H:i:s');
         $logEntry .= " MessageId: ";
         $logEntry .= $messageId; 
         $logEntry .= " UserId: ";
