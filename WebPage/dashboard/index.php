@@ -136,7 +136,7 @@
 			echo $body;
 			}
 		?></textarea>
-		</br></br>
+		</br>
 		<table class = "center">
 		<td>
 			<tr><td><input id = "send" name = "send" class = "button buttonA" type = "submit" value = "Send">
