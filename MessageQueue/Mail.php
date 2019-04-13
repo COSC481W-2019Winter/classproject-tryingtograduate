@@ -14,10 +14,10 @@ class Mail
     $this->mail->Username = SMTPUSER;
     $this->mail->Password = SMTPPASS;
     $this->mail->Host = SMTPHOST;
-    $this->mail->SMTPAuth = true;
-    $this->mail->SMTPKeepAlive = true;
-    $this->mail->SMTPSecure = 'tls';
-    $this->mail->Port = 587;
+    $this->mail->SMTPAuth = SMTPAUTH;
+    $this->mail->SMTPKeepAlive = SMTPKEEPALIVE;
+    $this->mail->SMTPSecure = SMTPSECURE;
+    $this->mail->Port = SMTPPORT;
     $this->mail->isHTML(false);
   }
 
@@ -65,10 +65,12 @@ class Mail
       {
         $this->mail->ClearAllRecipients();
         $this->mail->addAddress($emailAddress, $contactName);
+
+        sleep(SMTPDELAY);
+
         if(!$this->mail->send())
         {
           array_push($results, $this->reportFail($contactName, $emailAddress));
-          array_push($results, $this->mail->ErrorInfo);
         }
         else
         {
@@ -81,10 +83,12 @@ class Mail
         $sms .= $carrier->getEmail();
         $this->mail->ClearAllRecipients();
         $this->mail->addAddress($sms, $contactName);
+
+        sleep(SMTPDELAY);
+        
         if(!$this->mail->send())
         {
           array_push($results, $this->reportFail($contactName, $phoneNumber));
-          array_push($results, $this->mail->ErrorInfo);
         }
         else
         {
