@@ -90,6 +90,9 @@
 					}
 				}
 
+				//call email verification
+				sendMail($eMail);
+				
 				//reroute user to verification
 				redirectToVerificationPage();
 			}
