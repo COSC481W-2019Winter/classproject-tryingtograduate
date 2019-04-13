@@ -163,6 +163,11 @@
 	//check to see if SAVE button has been clicked		
 	if(isset($_POST['addMsgButton']))
 	{
+		//remove ; from user input
+		$tempName = str_replace(";", "", $tempName);
+		$tempSubject = str_replace(";", "", $tempSubject);
+		$tempMsg = str_replace(";", "", $tempMsg);
+		
 		//Test to see if the template information entered already exists in the table
 		$query2 = mysqli_query($conn, "SELECT * FROM Message WHERE templateName = '$tempName' AND ownerId = '$UniqueId';");
 		if ($query2->num_rows != 0) //if template exists
@@ -197,6 +202,10 @@
 	}
 	//Code activated when SEND button is clicked
 	if(isset($_POST['send'])){
+		
+		//remove ; from user input
+		$tempSubject = str_replace(";", "", $tempSubject);
+		$tempMsg = str_replace(";", "", $tempMsg);
 		
 		//Get groupId based on group selection
 		$selectedGroup = $_COOKIE['selectedGroup'];
