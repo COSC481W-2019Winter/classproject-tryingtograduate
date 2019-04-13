@@ -81,7 +81,7 @@
   {
     global $conn;
 
-    $delQuery =
+    $delQueueEntryQuery =
     "DELETE 
         FROM
         Queue
@@ -89,7 +89,7 @@
         messageId = '$messageId'
     ;";
 
-    $updtQuery =
+    $delMessageEntryQuery =
     "UPDATE
         Message
       SET
@@ -98,21 +98,8 @@
         messageId = '$messageId'
     ;";
 
-    $dateQuery =
-    "SELECT
-        lastSent
-      FROM
-        Message
-      WHERE
-        messageId = '$messageId'
-    ;";
-
-    $delResult = mysqli_query($conn, $delQuery);
-    $updtResult = mysqli_query($conn, $updtQuery);
-    $dateResult = mysqli_query($conn, $dateQuery);
-    $rawDate = mysqli_fetch_array($dateResult);
-    return $rawDate['lastSent'];
-
+    $delResult = mysqli_query($conn, $delQueueEntryQuery);
+    $updtResult = mysqli_query($conn, $delMessageEntryQuery);
   }
 
   function getCarrierSuffix($carrierId)
@@ -323,9 +310,10 @@
                                   $subject,
                                   $content);
 
-        $sendDate = removeQueuedMessage($message->getId());
+        removeQueuedMessage($message->getId());
 
-        $logEntry = $sendDate;
+        //$logEntry = $now->format('Y-m-d H:i:s');
+        $logEntry = $now->getTimestamp();
         $logEntry .= " MessageId: ";
         $logEntry .= $messageId; 
         $logEntry .= " UserId: ";
@@ -334,8 +322,11 @@
 
         $reportBody = " Message with subject \"";
         $reportBody .= $subject;
-        $reportBody .= "\"\n";
-
+        $reportBody .= "\"\n\n";
+        $reportBody .= "MessageId: ";
+        $reportBody .= $messageId;
+        $reportBody .= "\n\n";
+ 
         echo $logEntry;
 
         $resultCount = count($results);
@@ -343,8 +334,8 @@
         {
           for($i = 0; $i < $resultCount; $i++)
           {
-            echo $results[$i] . "\n";
-            $reportBody .= $results[$i] . "\n";
+            echo "\t" . $results[$i] . "\n";
+            $reportBody .= "\t" . $results[$i] . "\n";
           }
         }
         else
