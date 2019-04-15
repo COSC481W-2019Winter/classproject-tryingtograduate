@@ -29,11 +29,7 @@ function sendVerificationMail($sendTo)
         $mail->addAddress($sendTo);
 
         //send mail
-        $mail->sendMail($senderAddress,
-                        $fullName,
-                        $groupMembers,
-                        $subject,
-                        $content);
+        $mail->sendMail();
 }
 
 //compare password and confirm password

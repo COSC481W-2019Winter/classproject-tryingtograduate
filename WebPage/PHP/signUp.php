@@ -17,6 +17,7 @@
 	$subject3 = "Staff Meeting";
 	$content3 = "There will be a staff meeting at the end of shift today.  Attendance is required.";
 	$template3 = "Staff Meeting";
+	$code = rand(0, 999999);
 
 	//include files
 	include ('../PHP/Database.php');
@@ -58,6 +59,9 @@
 		}
 		else  //if no matching email exists, run second query
 		{
+			//call email verification
+			sendVerificationMail($eMail, $code);
+			
 			//runs the second query and stores the result in $result2
 			$result2 = $conn->query($query2);
 
@@ -89,9 +93,6 @@
 						setcookie($name, '', time()-1000, '/');
 					}
 				}
-
-				//call email verification
-				sendMail($eMail);
 				
 				//reroute user to verification
 				redirectToVerificationPage();
