@@ -1,1 +1,6 @@
+deployment-config.json
 WebPage/index.html
+WebPage/deployment-config.json
+WebPage/PHP/vendor/**
+MessageQueue/.phpunit.result.cache
+MessageQueue/vendor/**

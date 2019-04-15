@@ -1,0 +1,6 @@
+{
+    "name": "jpeck/message-queue",
+    "require": {
+        "phpmailer/phpmailer": "^6.0"
+    }
+}

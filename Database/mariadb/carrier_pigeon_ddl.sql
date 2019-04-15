@@ -1,6 +1,6 @@
-drop database if exists carrier_pidgeon;
-create database carrier_pidgeon;
-use carrier_pidgeon;
+drop database if exists Wi2017_436_kbledsoe3;
+create database Wi2017_436_kbledsoe3;
+use Wi2017_436_kbledsoe3;
 
 drop table if exists Queue;
 drop table if exists Message;
@@ -23,11 +23,9 @@ create table Person
   lastName varchar(80) not null,
   emailAddress varchar(80) not null,
   verifyCode int,
-  verifyCodeExp int,
-  passwordHash varchar(80),
+  passwordHash varchar(500),
   phoneNumber varchar(15),
   carrierID int,
-  isUser bool,
   ownerId int,
   foreign key (carrierId) references Carrier (carrierId)
 );
@@ -55,13 +53,11 @@ create table Message
 (
   messageId int not null auto_increment primary key,
   ownerId int not null,
-  groupId int not null,
+  groupId int,
   subject varchar(80) not null,
   content longtext,
-  lastSent date,
   templateName varchar(80),
-  foreign key (ownerId) references Person (uniqueId),
-  foreign key (groupId) references Groups (groupId)
+  foreign key (ownerId) references Person (uniqueId)
 );
 
 create table Queue
@@ -69,3 +65,23 @@ create table Queue
   taskNum int not null auto_increment primary key,
   messageId int not null
 );
+
+insert into `Carrier`
+  values
+  (1,'Verizon','@vtext.com'),
+  (2,'Sprint','@messaging.sprintpcs.com'),
+  (3,'T-mobile','@tmomail.net'),
+	(4,'AT&T','@txt.att.net'),
+  (5,'Cricket','@mms.cricketwireless.net'),
+	(6, 'Virgin Mobile', '@vmobl.com'),
+	(7, 'Metro PCS', '@mymetropcs.com'),
+	(8, 'Boost Mobile', '@sms.myboostmobile.com'),
+	(9, 'Google Fi', '@msg.fi.google.com'),
+	(10, 'U.S. Cellular', '@email.uscc.net'),
+	(11, 'Ting', '@email.uscc.net'),
+	(12, 'XFinity Mobile', '@vtext.com'),
+	(13, 'Consumer Cellular', '@mailmymobile.net'),
+	(14, 'C-Spire', '@cspire1.com'),
+	(15, 'Page Plus', '@vtext.com'),
+	(99, 'Select Carrier', 'noEmail')
+;

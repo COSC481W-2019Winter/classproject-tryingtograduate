@@ -1,11 +1,11 @@
 
-
 input[type=text], input[type=password] {
     width: 25%;
     padding: 10px 10px 10px 10px;
     margin-top: auto;
     background: #f1f1f1;
     border: none;
+
 }
 .personIn {
     display: none;
@@ -32,14 +32,18 @@ input[type=text], input[type=password] {
 
 #newGroup{
   display: none;
-  position: absolute;
   width: 100%;
-
-
 }
-#newGName{
+
+#newContact{
+  display: none;
+  width: 100%;
+}
+
+#newGName, #newFname, #newLname, #newCphone, #newCemail{
   width: 40%;
 }
+
 
 #addGbutton{
   background-color: #0079a6;
@@ -59,6 +63,25 @@ input[type=text], input[type=password] {
   background-color: #2a2825;
 }
 
+#addCbutton{
+  background-color: #0079a6;
+  border: 1px solid #2a2825;
+  border-radius: 12px;
+  font-size: 20px;
+  color: white;
+  padding: 5px 5px;
+  text-align: center;
+  margin: 20px 0;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;
+  width: 15%;
+}
+#addCbutton:hover{
+  background-color: #2a2825;
+}
+
+
 #cancel{
   background-color: #0079a6;
   border: 1px solid #2a2825;
@@ -77,6 +100,7 @@ input[type=text], input[type=password] {
   background-color: #2a2825;
 }
 
+
 #addGroup {
     width: 15%;
     float: left;
@@ -87,27 +111,31 @@ input[type=text], input[type=password] {
     margin: auto;
     height: 60%;
     position: relative;
-    opacity: .9;
 }
 
 #editGroup {
     width: 15%;
 }
 
-
 #exit {
-    width: 15%;
+    width: 100%;
     float: right;
 }
 
-#contactlist{
-  width: 100%;
-  background-color: gray;
-  position: absolute;
-  text-align: center;
+#contactList {
+    width: 100%;
+    border-collapse: collapse;
+    opacity: .9;
+    position: relative;
+    background-color: #2a2825;
+    text-align: center;
 }
-thead{
-  margin: auto;
-  width: 25%;
-  border: black;
+#deleteContact:hover{
+  background-color: #2a2825;
+}
+#topRight{
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 200px;
 }

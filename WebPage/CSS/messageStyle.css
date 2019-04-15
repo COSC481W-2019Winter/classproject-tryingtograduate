@@ -1,3 +1,52 @@
+body{
+  background-image: url("../background1.jpg");
+  font-size: 14pt;
+  font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;
+  color: white;
+}
+.savemessage{
+  font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;	
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+}
+#addMsgButton{
+  background-color: #0079a6;
+  border: 1px solid #2a2825;
+  border-radius: 12px;
+  font-size: 20px;
+  color: white;
+  padding: 5px 5px;
+  text-align: center;
+  margin: 20px 0;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;
+  width: 15%;
+}
+#addMsgButton:hover{
+  background-color: #2a2825;
+}
+#cancel{
+  background-color: #0079a6;
+  border: 1px solid #2a2825;
+  border-radius: 12px;
+  font-size: 20px;
+  color: white;
+  padding: 5px 5px;
+  text-align: center;
+  margin: 20px 0;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;
+  width: 15%;
+}
+#cancel:hover{
+  background-color: #2a2825;
+}
+#saveMessage{
+  display: none;
+}
 #Company{
   font-size: 60pt;
   text-shadow:
@@ -34,18 +83,19 @@
 .button:hover{
 	background-color: #2a2825;
 }
-body{
-	background-image: url("../background1.jpg");
-	font-size: 14pt;
-	font-family: "Eras ITC", "Eras Light ITC",  sans-serif ;
-	color: white;
-}
+
 #message{
 	border: 2px solid black;
 	width: 65%;
 	height: 300px;
 	text-align: left;
 	display: block;
+}
+#tempSubject, #tempName{
+	border: 2px solid black;
+	width: 57%;
+	text-align: left;
+	height: 20px;
 }
 p{
 	display: inline-block;
@@ -80,6 +130,18 @@ https://www.w3schools.com/howto/howto_css_dropdown_navbar.asp */
 /* The dropdown container */
 .dropdown {
   overflow: hidden;
+}
+/*remove dropdown arrow from Select Group/Message*/
+select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+}
+/*remove dropdown arrow from Select Group/Message*/
+/* For IE10 */
+select::-ms-expand {
+  display: none;
 }
 
 /* Dropdown button */
@@ -127,3 +189,4 @@ https://www.w3schools.com/howto/howto_css_dropdown_navbar.asp */
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
