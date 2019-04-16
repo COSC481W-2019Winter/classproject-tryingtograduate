@@ -223,7 +223,7 @@
 				
 				//Select messageId from Message table for message saved when Send was clicked
 				//Query will look for max message ID because the message saved will be the last in the list
-				$results2 = mysqli_query($conn, "SELECT MAX(messageId) AS max FROM Message");
+				$results2 = mysqli_query($conn, "SELECT MAX(messageId) AS max FROM Message WHERE ownerId = '$UniqueId'");
 				if (mysqli_affected_rows($conn) > 0) //if rows are more than 0, max found in tables
 				{
 					//Get the associated value (in this case we asked for something specific rather than a row)
