@@ -1,36 +1,4 @@
 <?php
-require 'vendor/autoload.php';
-use PHPMailer\PHPMailer\PHPMailer;
-
-//method to send verification email code
-function sendVerificationMail($sendTo)
-{
-        //set up email for delivery
-        $mail = new PHPMailer;
-        $mail->isSMTP();
-        $mail->Username = SMTPUSER;
-        $mail->Password = SMTPPASS;
-        $mail->Host = SMTPHOST;
-        $mail->SMTPAuth = SMTPAUTH;
-        $mail->SMTPKeepAlive = SMTPKEEPALIVE;
-        $mail->SMTPSecure = SMTPSECURE;
-        $mail->Port = SMTPPORT;
-        $mail->isHTML(false);
-
-        //set mail contents
-        $code = rand(0, 9999);
-        $subject = "Verification Email";
-        $body = "Your unique code for sign-up is: ".$code;
-        $fromName = "Carrier Pidgen";
-        $fromAddress = "mhankerd@emich.edu";
-        $mail->setFrom($senderAddress, $senderName);
-        $mail->Subject = $subject;
-        $mail->Body = $content;
-        $mail->addAddress($sendTo);
-
-        //send mail
-        $mail->sendMail();
-}
 
 //compare password and confirm password
 function confirmPassword($password, $passwordCnf)
