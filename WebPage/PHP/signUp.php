@@ -6,6 +6,8 @@
 	$password = filter_input(INPUT_POST, 'passwordNew');
 	$passwordCnf = filter_input(INPUT_POST, 'passwordNewCnf');
 	$hash = password_hash($password, PASSWORD_DEFAULT);
+	$code = rand(0, 999999);
+	$ownerId = 1;
 	
 	//create predefined messages
 	$subject1 = "Weather Alert";
@@ -17,7 +19,7 @@
 	$subject3 = "Staff Meeting";
 	$content3 = "There will be a staff meeting at the end of shift today.  Attendance is required.";
 	$template3 = "Staff Meeting";
-	$code = rand(0, 999999);
+	
 
 	//include files
 	include ('../PHP/Database.php');
@@ -40,8 +42,8 @@
 		$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$eMail' AND ownerId IS NULL";
 
 		//Sets a variable ($query2) equal to the mysql query we run to add a user to the Person table
-		$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash)
-					VALUES ('$fName', '$lName', '$eMail', '$hash')";
+		$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash, verifyCode, ownerId)
+					VALUES ('$fName', '$lName', '$eMail', '$hash', '$code', '$ownerId')";
 
 		//runs the query and stores the result in a variable called $result
 		$result = $conn->query($query);
@@ -59,12 +61,29 @@
 		}
 		else  //if no matching email exists, run second query
 		{
-			//call email verification
-			sendVerificationMail($eMail, $code);
-			
 			//runs the second query and stores the result in $result2
 			$result2 = $conn->query($query2);
-
+			
+			//creates new group for verification email
+			$query3 ="INSERT INTO Groups(groupName, ownerId) VALUES ('$code', '$ownerId');";
+			$result3 = $conn->query($query3);
+			
+			//get group id
+			$query4 = "SELECT groupId FROM Groups WHERE groupName = '$code' AND ownerId = '$ownerId';";
+			$result4 = mysqli_query($conn, $query4);
+			$row = $result4->fetch_assoc();
+			$group_id = $row['groupId'];
+			
+			//get user id
+			$query5 = "SELECT * FROM Person WHERE emailAddress='$eMail';";
+			$result5 = mysqli_query($conn, $query5);
+			$row = $result5->fetch_assoc();
+			$user_id = $row['uniqueId'];
+			
+			//creates new Group_JT for verification email
+			$query6 = "INSERT INTO Group_JT(groupOwnerId, groupId, contactId) VALUES ('$ownerId', '$group_id', '$user_id');";
+			$result6 = mysqli_query($conn, $query6);
+			
 			//checks to see if the user was actually added to the Person table
 			if (mysqli_affected_rows($conn) > 0)
 			{
