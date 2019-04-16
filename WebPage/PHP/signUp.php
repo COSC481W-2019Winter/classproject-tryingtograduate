@@ -1,8 +1,10 @@
 <?php
 	//SignUp Variables passed from html "name" field of input tag
+	session_start();
 	$fName = filter_input(INPUT_POST, 'fname');
 	$lName = filter_input(INPUT_POST, 'lname');
 	$eMail = filter_input(INPUT_POST, 'email');
+	$_SESSION['currentUserEmail'] = $eMail;
 	$password = filter_input(INPUT_POST, 'passwordNew');
 	$passwordCnf = filter_input(INPUT_POST, 'passwordNewCnf');
 	$hash = password_hash($password, PASSWORD_DEFAULT);
@@ -98,6 +100,7 @@
 				//use the stored messageId to insert a job into the Queue
 				mysqli_query($conn, "INSERT INTO Queue(messageId)VALUES ('$msId')");
 			}
+
 			
 			//checks to see if the user was actually added to the Person table
 			if (mysqli_affected_rows($conn) > 0)
