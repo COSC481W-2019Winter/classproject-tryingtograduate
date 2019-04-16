@@ -66,6 +66,11 @@ create table Queue
   messageId int not null
 );
 
+insert into `Person`
+  (uniqueId, firstName, lastName, emailAddress)
+  values
+  (1, 'carrier', 'pigeon', 'carrierpigeon@tryingtograduate.com');
+
 insert into `Carrier`
   values
   (1,'Verizon','@vtext.com'),
