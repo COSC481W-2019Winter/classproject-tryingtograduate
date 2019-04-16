@@ -42,10 +42,10 @@ function passwordValidation($password)
 //state if invalid username or password on signin
 function invlidUserOrPass()
 {
-	returnToHomepage();
 	echo '<script language="javascript">';
-	echo 'document.getElementById("messageAlert").innerHTML = "Invalid username or password.";';
+	echo 'alert("Invalid username or password.")';
 	echo '</script>';
+	returnToHomepage();
 	return false;
 }
 
@@ -57,9 +57,11 @@ function returnToHomepage()
 	echo '</script>';
 }
 
-//removes - from phone numbers
-function phoneNumReform($phone)
+//reroute the user to verification page
+function redirectToVerificationPage()
 {
-	return str_replace("-", "", $phone);
+	echo '<script language="javascript">';
+	echo 'window.location.href ="../Verification/index.php"';
+	echo '</script>';
 }
 ?>

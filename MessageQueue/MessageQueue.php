@@ -19,16 +19,21 @@
     die('Unable to connect: ' . mysql_error($conn));
   }
 
+  // Global state for signalling
   $allowExit = true;
   $forceExit = false;
 
+  // Polling interval
   declare(ticks = 1);
 
+  // Polling function call
   register_tick_function('checkExit');
 
+  // System signal listeners
   pcntl_signal(SIGTERM, "signalHandler");
   pcntl_signal(SIGHUP, "signalHandler");
 
+  // System signal handler
   function signalHandler($signal)
   {
     global $allowExit, $forceExit;
@@ -43,6 +48,7 @@
     } 
   }
 
+  // Polling function
   function checkExit()
   {
     global $allow_exit, $force_exit;
@@ -53,6 +59,7 @@
     }
   }
 
+  // Queue polling function
   function hasMessage()
   {
     global $conn;
@@ -83,17 +90,16 @@
 
     $delQueueEntryQuery =
     "DELETE 
-        FROM
+      FROM
         Queue
       WHERE
         messageId = '$messageId'
     ;";
 
     $delMessageEntryQuery =
-    "UPDATE
+    "DELETE
+      FROM
         Message
-      SET
-        lastSent = sysdate()
       WHERE
         messageId = '$messageId'
     ;";
@@ -191,6 +197,7 @@
     $subject = $rawMessage['subject'];
     $content = $rawMessage['content'];
 
+    // Create the user
     $user = new Person($ownerId,
                        $firstName,
                        $lastName,
@@ -199,12 +206,14 @@
                        null, null,
                        null, null);
 
+    // Create the message
     $result = new Message($messageId,
                           $user,
                           null,
                           $subject,
                           $content);
 
+    // Handle bad error where message was queue without a group
     if($groupId == null)
     {
       echo $now->format('Y-m-d H:i:s');
@@ -213,7 +222,7 @@
       echo " Error: No group assigned to message\n";
       removeQueuedMessage($messageId);
     }
-    else
+    else // Query for group members
     {
       $groupQuery =
       "SELECT
@@ -248,30 +257,66 @@
           contactId = uniqueId
       ;";
 
+      $removeMembers =
+        "DELETE
+          FROM
+            Group_JT
+          WHERE
+            groupId = '$groupId'
+        ;";
+
+      $removeGroup =
+        "DELETE
+          FROM
+            Groups
+          WHERE
+            groupId = '$groupId'
+        ;";
+
       $groupMembers = array();
       $groupResult = mysqli_query($conn, $groupQuery);
       $currMember = null;
-      while($members = mysqli_fetch_array($groupResult))
-      {
+
+      // Special handling for validation emails 
+      if($ownerId == 1)
+      {  
+        $removeResults = mysqli_query($conn, $removeMembers);
+        $removeResults = mysqli_query($conn, $removeGroup);
+
         $currMember = new Person($members['uniqueId'],
-                                $members['firstName'],
-                                $members['lastName'],
-                                $members['emailAddress'],
-                                null, null, null,
-                                $members['phoneNumber'],
-                                null, $ownerId);
-
-        $carrierId = $members['carrierId'];
-
-        if($carrierId != 99 && $carrierId != null)
-        {
-          $carrier = getCarrierSuffix($carrierId);
-          $currMember->setCarrier($carrier);
-        }
+                        $members['firstName'],
+                        $members['lastName'],
+                        $members['emailAddress'],
+                        null, null, null,
+                        null, null, $ownerId);
 
         array_push($groupMembers, $currMember);
       }
+      else // Build array of contacts
+      {
+        while($members = mysqli_fetch_array($groupResult))
+        {
+          $currMember = new Person($members['uniqueId'],
+                                  $members['firstName'],
+                                  $members['lastName'],
+                                  $members['emailAddress'],
+                                  null, null, null,
+                                  $members['phoneNumber'],
+                                  null, $ownerId);
 
+          $carrierId = $members['carrierId'];
+
+          if($carrierId != 99 && $carrierId != null)
+          {
+            $carrier = getCarrierSuffix($carrierId);
+            $currMember->setCarrier($carrier);
+          }
+
+          array_push($groupMembers, $currMember);
+        }
+      }
+
+      // Create the Group and assign it to the message
       $group = new Group($groupId,
                          $groupName,
                          $ownerId,
@@ -282,19 +327,27 @@
     return $result;
   }
 
+  // Has the system signalled stop?
   while(!$forceExit)
   {
+    // Are there messages to process?
     if(hasMessage())
     {
+      // Continue processing message until the queue is empty
+      // or the system signals stop
       while(hasMessage() && !$forceExit)
       {
+        // Don't allow the system to interupt
+        // while processing a message.
         $allowExit = false;
+        // Process message
         $message = getNextMessage();
 
         $messageId = $message->getId();
         
         $senderAddress = $message->getUser()->getEmail();
 
+        // Build users full name
         $fullName = $message->getUser()->getFirstName();
         $fullName .= " ";
         $fullName .= $message->getUser()->getLastName();
@@ -304,14 +357,17 @@
         $subject = $message->getSubject();
         $content = $message->getContent();
         
+        // Send Message
         $results = $mail->sendMail($senderAddress,
                                   $fullName,
                                   $groupMembers,
                                   $subject,
                                   $content);
 
+        // Done processing message, remove message
         removeQueuedMessage($message->getId());
 
+        // Log results and report results to user
         $logEntry = $now->format('Y-m-d H:i:s');
         $logEntry .= " MessageId: ";
         $logEntry .= $messageId; 
@@ -343,6 +399,7 @@
           $reportBody = GENERAL_FAILURE . "\n";
         }
 
+        // Send report to user
         $senderGroup = array();
         $senderGroup[0] = $message->getUser();
 
@@ -352,9 +409,12 @@
                         SERVICE_SUBJECT,
                         $reportBody);
 
+        // Done with current message
+        // allow system to interupt us
         $allowExit = true;
       }
     }
+    // No messages to process, sleep
     else
     {
       sleep(SLEEP_INTERVAL);

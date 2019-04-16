@@ -41,9 +41,6 @@
 		else
 		{
 			//password not found, alert and return to home
-			echo '<script language="javascript">';
-			echo 'window.location.href ="../dashboard"' ;
-			echo '</script>';
 			invlidUserOrPass();
 		}
 	}

@@ -23,7 +23,6 @@ create table Person
   lastName varchar(80) not null,
   emailAddress varchar(80) not null,
   verifyCode int,
-  verifyCodeExp int,
   passwordHash varchar(500),
   phoneNumber varchar(15),
   carrierID int,
@@ -57,7 +56,6 @@ create table Message
   groupId int,
   subject varchar(80) not null,
   content longtext,
-  lastSent datetime,
   templateName varchar(80),
   foreign key (ownerId) references Person (uniqueId)
 );
@@ -67,6 +65,11 @@ create table Queue
   taskNum int not null auto_increment primary key,
   messageId int not null
 );
+
+insert into `Person`
+  (uniqueId, firstName, lastName, emailAddress)
+  values
+  (1, 'carrier', 'pigeon', 'carrierpigeon@tryingtograduate.com');
 
 insert into `Carrier`
   values

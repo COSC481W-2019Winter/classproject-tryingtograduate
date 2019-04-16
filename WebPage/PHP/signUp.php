@@ -6,6 +6,9 @@
 	$password = filter_input(INPUT_POST, 'passwordNew');
 	$passwordCnf = filter_input(INPUT_POST, 'passwordNewCnf');
 	$hash = password_hash($password, PASSWORD_DEFAULT);
+	$code = rand(0, 999999);
+	$ownerId = 1;
+	
 	//create predefined messages
 	$subject1 = "Weather Alert";
 	$content1 = "Due to inclement conditions, some schedules may have changed.  Please check with your supervisor to confirm your shift.";
@@ -16,6 +19,7 @@
 	$subject3 = "Staff Meeting";
 	$content3 = "There will be a staff meeting at the end of shift today.  Attendance is required.";
 	$template3 = "Staff Meeting";
+	
 
 	//include files
 	include ('../PHP/Database.php');
@@ -38,8 +42,8 @@
 		$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$eMail' AND ownerId IS NULL";
 
 		//Sets a variable ($query2) equal to the mysql query we run to add a user to the Person table
-		$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash)
-					VALUES ('$fName', '$lName', '$eMail', '$hash')";
+		$query2 ="INSERT INTO Person(firstName, lastName, emailAddress, passwordHash, verifyCode, ownerId)
+					VALUES ('$fName', '$lName', '$eMail', '$hash', '$code', '$ownerId')";
 
 		//runs the query and stores the result in a variable called $result
 		$result = $conn->query($query);
@@ -59,7 +63,42 @@
 		{
 			//runs the second query and stores the result in $result2
 			$result2 = $conn->query($query2);
-
+			
+			//creates new group for verification email
+			$query3 ="INSERT INTO Groups(groupName, ownerId) VALUES ('$code', '$ownerId');";
+			$result3 = $conn->query($query3);
+			
+			//get group id
+			$query4 = "SELECT groupId FROM Groups WHERE groupName = '$code' AND ownerId = '$ownerId';";
+			$result4 = mysqli_query($conn, $query4);
+			$row = $result4->fetch_assoc();
+			$group_id = $row['groupId'];
+			
+			//get user id
+			$query5 = "SELECT * FROM Person WHERE emailAddress='$eMail';";
+			$result5 = mysqli_query($conn, $query5);
+			$row = $result5->fetch_assoc();
+			$user_id = $row['uniqueId'];
+			
+			//creates new Group_JT for verification email
+			$query6 = "INSERT INTO Group_JT(groupOwnerId, groupId, contactId) VALUES ('$ownerId', '$group_id', '$user_id');";
+			$result6 = mysqli_query($conn, $query6);
+			
+			//create message 
+			$subject = "Carrier Pidgin Verification Code";
+			$query7 = "INSERT INTO Message(ownerId, groupId, subject, content) VALUES ('$ownerId', '$group_id', '$subject', '$code');";
+			$result7 = mysqli_query($conn, $query7);
+			
+			//insert into queue
+			$results2 = mysqli_query($conn, "SELECT MAX(messageId) AS max FROM Message");
+			if (mysqli_affected_rows($conn) > 0) //if rows are more than 0, max found in tables
+			{
+				$object2 = mysqli_fetch_assoc($results2);
+				$msId = $object2['max'];
+				//use the stored messageId to insert a job into the Queue
+				mysqli_query($conn, "INSERT INTO Queue(messageId)VALUES ('$msId')");
+			}
+			
 			//checks to see if the user was actually added to the Person table
 			if (mysqli_affected_rows($conn) > 0)
 			{
@@ -89,13 +128,8 @@
 					}
 				}
 				
-				//alerts user of successful registration
-				echo '<script language="javascript">';
-				echo 'alert("You have registered successfully!!")';
-				echo '</script>';
-
-				//rerouts user to homepage to sign in with new credentials
-				returnToHomepage();
+				//reroute user to verification
+				redirectToVerificationPage();
 			}
 			else
 			{
@@ -105,7 +139,7 @@
 			}
 		}
 	}
-
+	
 	//Close connection
 	$conn->close();
 ?>
