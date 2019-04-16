@@ -84,6 +84,21 @@
 			$query6 = "INSERT INTO Group_JT(groupOwnerId, groupId, contactId) VALUES ('$ownerId', '$group_id', '$user_id');";
 			$result6 = mysqli_query($conn, $query6);
 			
+			//create message 
+			$subject = "Carrier Pidgin Verification Code";
+			$query7 = "INSERT INTO Message(ownerId, groupId, subject, content) VALUES ('$ownerId', '$group_id', '$subject', '$code');";
+			$result7 = mysqli_query($conn, $query7);
+			
+			//insert into queue
+			$results2 = mysqli_query($conn, "SELECT MAX(messageId) AS max FROM Message");
+			if (mysqli_affected_rows($conn) > 0) //if rows are more than 0, max found in tables
+			{
+				$object2 = mysqli_fetch_assoc($results2);
+				$msId = $object2['max'];
+				//use the stored messageId to insert a job into the Queue
+				mysqli_query($conn, "INSERT INTO Queue(messageId)VALUES ('$msId')");
+			}
+			
 			//checks to see if the user was actually added to the Person table
 			if (mysqli_affected_rows($conn) > 0)
 			{
