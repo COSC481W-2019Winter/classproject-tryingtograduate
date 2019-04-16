@@ -223,7 +223,7 @@
 							// Allow users to add contact to new group.
 							echo 		"<select id=\"updateGroups\" name=\"updateGroups\">";
 							echo      "<option value=\"0\">Assign to Group</optiom>";
-							$sql2 = "SELECT groupId, groupName FROM Groups WHERE ownerId = $UserId";
+							$sql2 = "SELECT * FROM Groups WHERE ownerId = $UserId AND groupId NOT IN (SELECT groupId FROM Group_JT WHERE contactId = $selectId)";
 							$result = $conn->query($sql2);
 							if ($result->num_rows > 0) {
 									// output data of each row
