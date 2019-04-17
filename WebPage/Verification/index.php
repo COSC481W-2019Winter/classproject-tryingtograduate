@@ -46,14 +46,14 @@
 		$query1 = "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'";
 		$result1 = $conn->query($query1);
 		//extract $niqueId to use in next query
-		$id1 = mysqli_fetch_object($result1);
-		$UniqueId = $id1->uniqueId;
+		//$id1 = mysqli_fetch_object($result1);
+		//$UniqueId = $id1->uniqueId;
 		
 		//if query results in a row found
 		if ($result1->num_rows != 0)
 		{
 			//run query to update Person table with NULL values for verifyCode and ownerId for current user
-			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE uniqueId = '$UniqueId'";
+			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'";
 			$result2 = $conn->query($query2);
 			echo '<script language="javascript">';
 			echo 'alert("Email Verified Successfully!")';
