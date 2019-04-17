@@ -3,6 +3,7 @@
 <html>
 	<head>
 		<?php
+		session start();
 		//Variables needed to access current user in Person
 		$UserEmail = $_SESSION['currentUserEmail'];
 		include ('../PHP/Database.php');
@@ -41,13 +42,25 @@
 		</div>
 	</body>
 </html>
+<!***************** None of this PHP code has been tested but it will get us started on PART C ****************>
 <?php
 //Variables needed to save the code entered
+/*
 	$code = $_POST['code'];
-
 	//check to see if SUBMIT button has been clicked		
 	if(isset($_POST['subCode']))
 	{
-	 	
-	}
+		//query to check if code entered matches the verifyCode in same row as uniqueId of current user
+		$query1 = "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$userEmail'";
+		$result1 = $conn->query($query1);
+		//if query results in a row found
+		if ($result1->num_rows != 0)
+		{
+			//run query to update Person table with NULL values for verifyCode and ownerId for current user
+			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE uniqueId = '$UniqueId'";
+			$result2 = $conn->query($query2);
+		}
+	}*/
+//Close connection
+$conn->close();
 ?>
