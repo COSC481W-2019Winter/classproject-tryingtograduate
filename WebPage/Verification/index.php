@@ -2,7 +2,20 @@
 <!Verification code>
 <html>
 	<head>
-		<?php session_start(); ?>
+		<?php 
+		session_start();
+		//include files
+		include ('../PHP/Database.php');
+		include ('../PHP/Validation.php');
+		// Create connection
+		$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+		// Check connection
+		if ($conn->connect_error)
+		{
+			echo "could not establish connection to db2...";
+			die("Connection failed: " . $conn->connect_error);
+		}
+		?>
 		<title>Carrier Pigeon</title>
 		<link rel="stylesheet" type="text/css" href="../CSS/homeStyle.css">
 	</head>
@@ -42,6 +55,7 @@
 			//run query to update Person table with NULL values for verifyCode and ownerId for current user
 			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE uniqueId = '$UniqueId'";
 			$result2 = $conn->query($query2);
+			returnToHomepage();
 		}
 	}
 //Close connection
