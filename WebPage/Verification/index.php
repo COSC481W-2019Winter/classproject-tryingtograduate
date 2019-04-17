@@ -43,13 +43,15 @@
 		$UserEmail = $POST['email'];
 		$code = $_POST['code'];
 		//query to check if code entered matches the verifyCode in same row as uniqueId of current user
-		mysqli_query($conn, "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$UserEmail';");
-	
+		$result1 = mysqli_query($conn, "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'");
+		echo '<script language="javascript">';
+		echo 'alert("working after query but before checking rows!")';
+		echo '</script>';
 		//if query results in a row found
 		if (mysqli_affected_rows($conn) > 0)
 		{
 			echo '<script language="javascript">';
-			echo 'alert("Still working!")';
+			echo 'alert("Still working after checking rows but before deletions")';
 			echo '</script>';
 			//run query to update Person table with NULL values for verifyCode and ownerId for current user
 			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'";
