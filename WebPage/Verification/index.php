@@ -26,7 +26,7 @@
 			<b>Please enter the code below and click submit to verify your email.</b>
 			</br></br>
 			<label><br>Email:</label>
-			<input id = "email" type="textbox" name="email" placeholder = "youremail@domain.com" />
+			<input id = "email" type="textbox" class = "resizedTextbox2" name="email" placeholder = "youremail@domain.com" />
 			<label><br>Code:</label>
 			<input id = "code" name = "code" type="textbox" name="code" placeholder = "######"/>
 			</br><input id = "subCode" class = "button2" type = "submit" name = "subCode" value = "SUBMIT">
