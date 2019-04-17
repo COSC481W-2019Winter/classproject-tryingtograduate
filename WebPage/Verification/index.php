@@ -44,15 +44,9 @@
 		
 		//query to check if code entered matches the verifyCode in same row as uniqueId of current user
 		$result1 = mysqli_query($conn, "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'");
-		echo '<script language="javascript">';
-		echo 'alert("working after query but before looking for a match")';
-		echo '</script>';
 		//if query results in a row found
 		if ($result1->num_rows != 0) 
 		{
-			echo '<script language="javascript">';
-			echo 'alert("Still working after checking rows but before deletions")';
-			echo '</script>';
 			//run query to update Person table with NULL values for verifyCode and ownerId for current user
 			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'";
 			$result2 = $conn->query($query2);
@@ -66,7 +60,10 @@
 		else
 		{
 			echo '<script language="javascript">';
-			echo 'alert("did not find a email code match")';
+			echo 'alert("Did not find email and code match. Please try again.")';
+			echo '</script>';
+			echo '<script language="javascript">';
+			echo 'window.location.href ="../Verification/index.php"';
 			echo '</script>';
 		}
 	}
