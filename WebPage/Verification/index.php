@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<?php
-		session start();
+		session_start();
 		//Variables needed to access current user in Person
 		$UserEmail = $_SESSION['currentUserEmail'];
 		include ('../PHP/Database.php');
