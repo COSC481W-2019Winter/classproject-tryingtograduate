@@ -61,8 +61,6 @@
 			$result2 = $conn->query($query2);
 		}
 	}*/
-
 //Close connection
 $conn->close();
->>>>>>> master
 ?>
