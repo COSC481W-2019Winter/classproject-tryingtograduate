@@ -3,6 +3,8 @@
 	$username = filter_input(INPUT_POST, "username");
 	$passWordEst = filter_input(INPUT_POST, "password");
 
+
+
 	include ('../PHP/Database.php');
 	// Create connection
 	$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
@@ -23,6 +25,7 @@
 			$resultHashRow = $resultHash->fetch_assoc();
 			$hash = $resultHashRow['passwordHash'];
 			$userId = $resultHashRow['uniqueId'];
+
 
 			if (password_verify($passWordEst, $hash))
 			{

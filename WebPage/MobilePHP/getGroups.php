@@ -6,13 +6,13 @@ include ('../PHP/Database.php');
 $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 
 $groups = array();
-$groupqry= "SELECT groupName FROM Groups WHERE ownerId = $userId";
+$groupqry = "SELECT groupName FROM Groups WHERE ownerId = '$userId'";
 
 $resultGroups = $conn->prepare($groupqry);
 $resultGroups->execute();
 $resultGroups->bind_result($groupName);
 
-while ($stmt->fetch()){
+while ($resultGroups->fetch()){
   $temp = ['groupName'=>$groupName];
 
   array_push($groups, $temp);
@@ -20,6 +20,6 @@ while ($stmt->fetch()){
 
 echo json_encode($groups);
 
-
+$conn->close();
 
 ?>
