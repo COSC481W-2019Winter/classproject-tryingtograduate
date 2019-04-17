@@ -22,7 +22,7 @@
 	<body>
 		<h1 id = "Company" style = "text-align: center" > User Verification </h1>
 		<div class = "center" style = "text-align: center">
-			<form>
+			<form name="verify" action = "" method = "post">
 			<b>A verification code has been sent to the email you provided.</b></br>  
 			<b>Please enter the code below and click submit to verify your email.</b>
 			</br></br>
@@ -43,7 +43,7 @@
 	if(isset($_POST['subCode']))
 	{
 		//query to check if code entered matches the verifyCode in same row as uniqueId of current user
-		$query1 = "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$userEmail'";
+		$query1 = "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'";
 		$result1 = $conn->query($query1);
 		//extract $niqueId to use in next query
 		$id1 = mysqli_fetch_object($result1);
@@ -56,6 +56,12 @@
 			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE uniqueId = '$UniqueId'";
 			$result2 = $conn->query($query2);
 			returnToHomepage();
+		}
+		else
+		{
+			echo '<script language="javascript">';
+			echo 'alert("Code still needs troubleshooting")';
+			echo '</script>';
 		}
 	}
 //Close connection
