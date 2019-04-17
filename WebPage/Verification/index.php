@@ -36,22 +36,22 @@
 	</body>
 </html>
 <?php
-	//Variables needed to save the code entered
-	$UserEmail = $POST['email'];
-	$code = $_POST['code'];
 	//check to see if SUBMIT button has been clicked		
 	if(isset($_POST['subCode']))
 	{
+		//Variables needed to save the code entered
+		$UserEmail = $POST['email'];
+		$code = $_POST['code'];
 		//query to check if code entered matches the verifyCode in same row as uniqueId of current user
 		$query1 = "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'";
 		$result1 = $conn->query($query1);
-		//extract $niqueId to use in next query
-		//$id1 = mysqli_fetch_object($result1);
-		//$UniqueId = $id1->uniqueId;
 		
 		//if query results in a row found
-		if ($result1->num_rows != 0)
+		if ($result1->num_rows > 0)
 		{
+			echo '<script language="javascript">';
+			echo 'alert("Still working!")';
+			echo '</script>';
 			//run query to update Person table with NULL values for verifyCode and ownerId for current user
 			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'";
 			$result2 = $conn->query($query2);
