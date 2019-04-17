@@ -55,6 +55,9 @@
 			//run query to update Person table with NULL values for verifyCode and ownerId for current user
 			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE uniqueId = '$UniqueId'";
 			$result2 = $conn->query($query2);
+			echo '<script language="javascript">';
+			echo 'alert("Email Verified Successfully!")';
+			echo '</script>';
 			returnToHomepage();
 		}
 		else
