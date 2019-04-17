@@ -45,10 +45,10 @@
 		//query to check if code entered matches the verifyCode in same row as uniqueId of current user
 		$result1 = mysqli_query($conn, "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'");
 		echo '<script language="javascript">';
-		echo 'alert("working after query but before checking rows!")';
+		echo 'alert("working after query but before looking for a match")';
 		echo '</script>';
 		//if query results in a row found
-		if (mysqli_affected_rows($conn) > 0)
+		if ($query1->num_rows != 0) 
 		{
 			echo '<script language="javascript">';
 			echo 'alert("Still working after checking rows but before deletions")';
@@ -64,7 +64,7 @@
 		else
 		{
 			echo '<script language="javascript">';
-			echo 'alert("Code still needs troubleshooting")';
+			echo 'alert("did not find a email code match")';
 			echo '</script>';
 		}
 	}
