@@ -54,6 +54,8 @@ class Mail
 
     $this->mail->Subject = $subject;
     $this->mail->Body = $content;
+
+    // Loop over array of contacts and send message individually
     $memberCount = count($groupMembers);
     for($i = 0; $i < $memberCount; $i++)
     {
@@ -65,6 +67,7 @@ class Mail
       $phoneNumber = $groupMembers[$i]->getPhone();
       $carrier = $groupMembers[$i]->getCarrier();
 
+      // If contact has an email address send messages to address
       if($emailAddress != null)
       {
         $this->mail->ClearAllRecipients();
@@ -72,16 +75,18 @@ class Mail
 
         sleep(SMTPDELAY);
 
+        // If email failed to send log details
         if(!$this->mail->send())
         {
           array_push($results, $this->reportFail($contactName, $emailAddress));
           array_push($results, $this->mail->ErrorInfo);
         }
-        else
+        else // email successfully sent
         {
           array_push($results, $this->reportSuccess($contactName, $emailAddress));
         }
       }
+      // If contact has a phone number and carrier send message via SMS
       if($carrier != null && $phoneNumber != null)
       {
         $sms = preg_replace('/[^0-9]/', '', $phoneNumber);
@@ -91,12 +96,13 @@ class Mail
 
         sleep(SMTPDELAY);
         
+        // If SMS failed to send log details
         if(!$this->mail->send())
         {
           array_push($results, $this->reportFail($contactName, $phoneNumber));
           array_push($results, $this->mail->ErrorInfo);
         }
-        else
+        else // SMS successfully sent
         {
           array_push($results, $this->reportSuccess($contactName, $phoneNumber));
         }

@@ -213,7 +213,7 @@
                           $subject,
                           $content);
 
-    // Handle bad error where message was queue without a group
+    // Handle bad error where message was queued without a group
     if($groupId == null)
     {
       echo $now->format('Y-m-d H:i:s');
@@ -394,7 +394,7 @@
             $reportBody .= "\t" . $results[$i] . "\n";
           }
         }
-        else
+        else // Extreme bad edge case where Mail did not return a result
         {
           echo GENERAL_FAILURE . "\n";
           $reportBody = GENERAL_FAILURE . "\n";
