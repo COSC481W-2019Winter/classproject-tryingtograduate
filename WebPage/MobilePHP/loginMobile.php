@@ -18,22 +18,23 @@
 	if ($result->num_rows != 0)
 		{
 			//query and store query result in variable $queryHash then fetch stored password hash
-			$queryHash = "SELECT passwordHash FROM Person WHERE emailAddress = '$username' AND ownerId IS NULL";
+			$queryHash = "SELECT passwordHash, uniqueId FROM Person WHERE emailAddress = '$username' AND ownerId IS NULL";
 			$resultHash = $conn->query($queryHash);
 			$resultHashRow = $resultHash->fetch_assoc();
 			$hash = $resultHashRow['passwordHash'];
+			$userId = $resultHashRow['uniqueId'];
 
 			if (password_verify($passWordEst, $hash))
 			{
 				//routs the user to the Message Dashboard if username and password were found in same row of table
-				echo "1";
+				echo $userId;
 			}
 			else
 			{
 				echo "0";
 			}
 		} else {
-      echo "0";
+      echo "-1";
     }
 
 
