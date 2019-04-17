@@ -2,25 +2,7 @@
 <!Verification code>
 <html>
 	<head>
-		<?php
-		session_start();
-		//Variables needed to access current user in Person
-		$UserEmail = $_SESSION['currentUserEmail'];
-		include ('../PHP/Database.php');
-		// Create connection
-		$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
-		//get first name	
-		$queryC = "SELECT firstName FROM Person WHERE emailAddress = '$UserEmail'";
-		$resultC = $conn->query($queryC);
-		$idC = mysqli_fetch_object($resultC);
-		$FirstNm = $idC->firstName;	
-		//get last name
-		$queryD = "SELECT lastName FROM Person WHERE emailAddress = '$UserEmail'";
-		$resultD = $conn->query($queryD);
-		$idD = mysqli_fetch_object($resultD);
-		$LastNm = $idD->lastName;	
-		echo "Hello: ", $FirstNm, " ", $LastNm;
-		?>
+		<?php session_start(); ?>
 		<title>Carrier Pigeon</title>
 		<link rel="stylesheet" type="text/css" href="../CSS/homeStyle.css">
 	</head>
