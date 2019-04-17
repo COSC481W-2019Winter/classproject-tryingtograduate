@@ -43,11 +43,10 @@
 		$UserEmail = $POST['email'];
 		$code = $_POST['code'];
 		//query to check if code entered matches the verifyCode in same row as uniqueId of current user
-		$query1 = "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'";
-		$result1 = $conn->query($query1);
-		
+		mysqli_query($conn, "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'");
+	
 		//if query results in a row found
-		if ($result1->num_rows > 0)
+		if (mysqli_affected_rows($conn) > 0)
 		{
 			echo '<script language="javascript">';
 			echo 'alert("Still working!")';
