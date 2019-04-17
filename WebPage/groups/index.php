@@ -223,7 +223,7 @@
 							// Allow users to add contact to new group.
 							echo 		"<select id=\"updateGroups\" name=\"updateGroups\">";
 							echo      "<option value=\"0\">Assign to Group</optiom>";
-							$sql2 = "SELECT groupId, groupName FROM Groups WHERE ownerId = $UserId";
+							$sql2 = "SELECT * FROM Groups WHERE ownerId = $UserId AND groupId NOT IN (SELECT groupId FROM Group_JT WHERE contactId = $selectId)";
 							$result = $conn->query($sql2);
 							if ($result->num_rows > 0) {
 									// output data of each row
@@ -263,9 +263,7 @@
 											WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId;";
 								}
 								echo "<tr><th>Name</th><th>Phone Number</th><th>E-mail Address</th>";
-								if($selectedGroup == 'all'){
-									echo "<th>Edit</th>";
-								}
+								echo "<th>Edit</th>";
 								echo "<th>Delete</th></tr>";
 								$result = $conn->query($sql);
 								if ($result->num_rows > 0) {
@@ -273,13 +271,13 @@
 									while($row = $result->fetch_assoc()) {
 										echo "<tr><td>". $row["firstName"]. " ". $row["lastName"]. "</td><td>". $row["phoneNumber"]. "</td><td>". $row["emailAddress"]. "</td>";
 													// EDIT BUTTONS WITH VALUES AND STYLING
-										if($selectedGroup == 'all'){
+
 											echo "<td><form name=\"editContact\" action=\"\" method=\"post\">
 									 			 	<input type=\"hidden\" id=\"editID\" name=\"editID\" value=". $row["uniqueId"]. ">
 									 		 	 	<input class=\"button\" id=\"editContact\" type=\"submit\" name=\"editContact\" value=\"EDIT\"
 									 		 	 	style=\"width: 55%; box-shadow: 0; padding: 0; margin: 0;\"></form></td>";
 
-										}
+
 												 // DELETE BUTTONS WITH VALUES AND STYLING
 								  	echo "<td><form name=\"delContact\" action=\"\" method=\"post\">
 								 				 	<input type=\"hidden\" id=\"delID\" name=\"delID\" value=". $row["uniqueId"]. ">
@@ -314,7 +312,7 @@
 
 
 	//SignUp Variables
-	$newGroupName = $_POST['newGName'];
+	$newGroupName = str_replace(";", "", $_POST['newGName']);
 	$UserEmail = $_SESSION['currentUserEmail'];
 
 	//Get user ID from Session
@@ -366,10 +364,10 @@
 	//-------------------------
 	// CODE FOR NEW CONTACT
 	//-------------------------
-	$fname = $_POST['newFname'];
-	$lname = $_POST['newLname'];
-	$phone = $_POST['newCphone'];
-	$email = $_POST['newCemail'];
+	$fname = str_replace(";", "", $_POST['newFname']);
+	$lname = str_replace(";", "", $_POST['newLname']);
+	$phone = str_replace(";", "", $_POST['newCphone']);
+	$email = str_replace(";", "", $_POST['newCemail']);
 	$carrier = $_POST['carrier'];
 
 
@@ -494,10 +492,10 @@
 	//----------------------
 	// CODE TO EDIT CONTACTS
 	//----------------------
-	$fname = $_POST['editFname'];
-	$lname = $_POST['editLname'];
-	$phone = $_POST['editCphone'];
-	$email = $_POST['editCemail'];
+	$fname = str_replace(";", "", $_POST['editFname']);
+	$lname = str_replace(";", "", $_POST['editLname']);
+	$phone = str_replace(";", "", $_POST['editCphone']);
+	$email = str_replace(";", "", $_POST['editCemail']);
 	$carrier = $_POST['editCarrier'];
 	$editId = $_POST['editID'];
 	$updateGroup = $_POST['updateGroups'];
