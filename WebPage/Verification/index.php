@@ -42,10 +42,8 @@
 		</div>
 	</body>
 </html>
-<!***************** None of this PHP code has been tested but it will get us started on PART C ****************>
 <?php
-//Variables needed to save the code entered
-/*
+	//Variables needed to save the code entered
 	$code = $_POST['code'];
 	//check to see if SUBMIT button has been clicked		
 	if(isset($_POST['subCode']))
@@ -60,7 +58,7 @@
 			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE uniqueId = '$UniqueId'";
 			$result2 = $conn->query($query2);
 		}
-	}*/
+	}
 //Close connection
 $conn->close();
 ?>
