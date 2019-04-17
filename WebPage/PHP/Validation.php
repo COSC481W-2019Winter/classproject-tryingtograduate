@@ -57,6 +57,15 @@ function returnToHomepage()
 	echo '</script>';
 }
 
+//reroute the user to home page
+function notVerified()
+{
+	echo '<script language="javascript">';
+	echo 'alert("Please Verify your account before login")';
+	echo '</script>';
+	redirectToVerificationPage();
+}
+
 //reroute the user to verification page
 function redirectToVerificationPage()
 {
