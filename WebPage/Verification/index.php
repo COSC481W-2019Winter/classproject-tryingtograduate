@@ -5,7 +5,6 @@
 		<?php
 		session start();
 		//Variables needed to access current user in Person
-		session_start();
 		$UserEmail = $_SESSION['currentUserEmail'];
 		include ('../PHP/Database.php');
 		// Create connection
