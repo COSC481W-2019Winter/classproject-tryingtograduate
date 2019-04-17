@@ -19,11 +19,6 @@
 		$resultD = $conn->query($queryD);
 		$idD = mysqli_fetch_object($resultD);
 		$LastNm = $idD->lastName;	
-		//get uniqueId of current user from Person
-		$queryA = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail'";
-		$resultA = $conn->query($queryA);
-		$idA = mysqli_fetch_object($resultA);
-		$UniqueId = $idA->uniqueId;
 		echo "Hello: ", $FirstNm, " ", $LastNm;
 		?>
 		<title>Carrier Pigeon</title>
@@ -55,6 +50,10 @@
 		//query to check if code entered matches the verifyCode in same row as uniqueId of current user
 		$query1 = "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$userEmail'";
 		$result1 = $conn->query($query1);
+		//extract $niqueId to use in next query
+		$id1 = mysqli_fetch_object($result1);
+		$UniqueId = $id1->uniqueId;
+		
 		//if query results in a row found
 		if ($result1->num_rows != 0)
 		{
