@@ -36,6 +36,9 @@
 			<b>A verification code has been sent to the email you provided.</b></br>  
 			<b>Please enter the code below and click submit to verify your email.</b>
 			</br></br>
+			<label><br>Email:</label>
+			<input id = "email" type="textbox" name="email" placeholder = "youremail@domain.com" />
+			<label><br>Code:</label>
 			<input id = "code" name = "code" type="textbox" name="code" placeholder = "######"/>
 			</br><input id = "subCode" class = "button2" type = "submit" name = "subCode" onclick="removeday()" value = "SUBMIT">
 			</form>
@@ -44,6 +47,7 @@
 </html>
 <?php
 	//Variables needed to save the code entered
+	$UserEmail = $POST['email'];
 	$code = $_POST['code'];
 	//check to see if SUBMIT button has been clicked		
 	if(isset($_POST['subCode']))
