@@ -8,6 +8,7 @@
 	$password = filter_input(INPUT_POST, 'passwordNew');
 	$passwordCnf = filter_input(INPUT_POST, 'passwordNewCnf');
 	$hash = password_hash($password, PASSWORD_DEFAULT);
+	$_SESSION['currentUserEmail'] = $eMail;
 	$code = rand(0, 999999);
 	$ownerId = 1;
 	

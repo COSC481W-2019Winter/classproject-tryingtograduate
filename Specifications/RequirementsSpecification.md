@@ -77,6 +77,7 @@
 		- Required: Name, Email OR texable number (only one needs to be provided)
 		- If a texable number is provided, it may be necessary fo the user to select the mobile carrier providing the cell service.
 		- After the required information has been completed, the user will click the "Add" button at the bottom of the form.
+ - **Desirable:** 		
 	- Underneath this form will be a button labeled "Upload File"
 		- Clicking this button will prompt the user to upload a .csv file containing the user info they want to add
 			- This info will be parsed and added to a database.

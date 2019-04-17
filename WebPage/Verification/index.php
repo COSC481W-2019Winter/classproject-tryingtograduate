@@ -3,6 +3,7 @@
 <html>
 	<head>
 		<?php
+		session start();
 		//Variables needed to access current user in Person
 		session_start();
 		$UserEmail = $_SESSION['currentUserEmail'];
@@ -42,38 +43,27 @@
 		</div>
 	</body>
 </html>
+<!***************** None of this PHP code has been tested but it will get us started on PART C ****************>
 <?php
-	//git variables form person table
-	$queryVerifciationCode = "SELECT verifyCode FROM Person WHERE emailAddress = '$UserEmail';";
-	$resultVerificationCode = mysqli_query($conn, $queryVerifciationCode);
-	$codeRow = $resultVerificationCode->fetch_assoc();
-	$code = $codeRow['verifyCode'];
-	echo $code;
-
+//Variables needed to save the code entered
+/*
+	$code = $_POST['code'];
 	//check to see if SUBMIT button has been clicked		
-	if(isset($_POST['code']))
+	if(isset($_POST['subCode']))
 	{
-		echo $code;
-	 	if($_POST['code'] == $code)
+		//query to check if code entered matches the verifyCode in same row as uniqueId of current user
+		$query1 = "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$userEmail'";
+		$result1 = $conn->query($query1);
+		//if query results in a row found
+		if ($result1->num_rows != 0)
 		{
-			//set query and execute to update person parameters on click
-			$query = "UPDATE Person SET verifyCode = NULL, ownerId = NULL WHERE emailAddress = '$UserEmail'";
-			mysqli_query($conn, $query);
-			
-			//alert user of good verification and redirect to home
-			echo '<script language="javascript">';
-			echo 'alert("Verification Successful!")';
-			echo '</script>';
-			echo '<script language="javascript">';
-			echo 'window.location.href ="../home"';
-			echo '</script>';
+			//run query to update Person table with NULL values for verifyCode and ownerId for current user
+			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE uniqueId = '$UniqueId'";
+			$result2 = $conn->query($query2);
 		}
-		else
-		{
-			//if bad code, alert and stay on page
-			echo '<script language="javascript">';
-			echo 'alert("Verification failed!")';
-			echo '</script>';
-		}
-	}
+	}*/
+
+//Close connection
+$conn->close();
+>>>>>>> master
 ?>
