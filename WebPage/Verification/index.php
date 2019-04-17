@@ -30,7 +30,7 @@
 			<input id = "email" type="textbox" name="email" placeholder = "youremail@domain.com" />
 			<label><br>Code:</label>
 			<input id = "code" name = "code" type="textbox" name="code" placeholder = "######"/>
-			</br><input id = "subCode" class = "button2" type = "submit" name = "subCode" onclick="removeday()" value = "SUBMIT">
+			</br><input id = "subCode" class = "button2" type = "submit" name = "subCode" value = "SUBMIT">
 			</form>
 		</div>
 	</body>
