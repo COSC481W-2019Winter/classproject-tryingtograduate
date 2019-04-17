@@ -282,6 +282,7 @@
       {  
         $removeResults = mysqli_query($conn, $removeMembers);
         $removeResults = mysqli_query($conn, $removeGroup);
+        $members = mysqli_fetch_array($groupResult);
 
         $currMember = new Person($members['uniqueId'],
                         $members['firstName'],
