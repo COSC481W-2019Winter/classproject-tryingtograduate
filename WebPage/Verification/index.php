@@ -6,7 +6,6 @@
 		session_start();
 		//include files
 		include ('../PHP/Database.php');
-		include ('../PHP/Validation.php');
 		// Create connection
 		$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
 		// Check connection
@@ -49,7 +48,7 @@
 		echo 'alert("working after query but before looking for a match")';
 		echo '</script>';
 		//if query results in a row found
-		if ($query1->num_rows != 0) 
+		if ($result1->num_rows != 0) 
 		{
 			echo '<script language="javascript">';
 			echo 'alert("Still working after checking rows but before deletions")';
@@ -60,7 +59,9 @@
 			echo '<script language="javascript">';
 			echo 'alert("Email Verified Successfully!")';
 			echo '</script>';
-			returnToHomepage();
+			echo '<script language="javascript">';
+			echo 'window.location.href ="../home/index.html"';
+			echo '</script>';
 		}
 		else
 		{
