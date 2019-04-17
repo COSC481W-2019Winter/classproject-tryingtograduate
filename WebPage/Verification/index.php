@@ -42,6 +42,7 @@
 		//Variables needed to save the code entered
 		$UserEmail = $POST['email'];
 		$code = $_POST['code'];
+		$code = 523396;
 		//query to check if code entered matches the verifyCode in same row as uniqueId of current user
 		$result1 = mysqli_query($conn, "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'");
 		echo '<script language="javascript">';
