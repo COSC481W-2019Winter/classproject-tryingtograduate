@@ -1,6 +1,6 @@
 <?php
 	//SignUp Variables passed from html "name" field of input tag
-	session start();
+	session_start();
 	$fName = filter_input(INPUT_POST, 'fname');
 	$lName = filter_input(INPUT_POST, 'lname');
 	$eMail = filter_input(INPUT_POST, 'email');

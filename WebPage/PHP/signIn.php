@@ -19,35 +19,45 @@
 		die("Connection failed: " . $conn->connect_error);
 	}
 	
-	//Sets aand run query then store in result
-	$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$username' AND ownerId IS NULL";
-	$result = $conn->query("$query");
-	
-	//tests the result to see if the query yielded any rows from our Person table
-	if ($result->num_rows != 0)
+	//query to check if email is verified and if not redirect to verification
+	$query2 = "SELECT emailAddress FROM Person WHERE emailAddress = '$username' AND ownerId IS NOT NULL;";
+	$result2 = $conn->query("$query2");
+	if ($result2->num_rows != 0)
 	{
-		//query and store query result in variable $queryHash then fetch stored password hash
-		$queryHash = "SELECT passwordHash FROM Person WHERE emailAddress = '$username' AND ownerId IS NULL";
-		$resultHash = $conn->query($queryHash);
-		$resultHashRow = $resultHash->fetch_assoc();
-		$hash = $resultHashRow['passwordHash'];
-		if (password_verify($passWordEst, $hash))
-		{
-			//routs the user to the Message Dashboard if username and password were found in same row of table
-			echo '<script language="javascript">';
-			echo 'window.location.href ="../dashboard"' ;
-			echo '</script>';
-		}
-		else
-		{
-			//password not found, alert and return to home
-			invlidUserOrPass();
-		}
+		notVerified();
 	}
 	else
 	{
-		//username not found, alert and return to home.
-		invlidUserOrPass();
+		//Sets and run query then store in result
+		$query = "SELECT emailAddress FROM Person WHERE emailAddress = '$username' AND ownerId IS NULL";
+		$result = $conn->query("$query");
+		
+		//tests the result to see if the query yielded any rows from our Person table
+		if ($result->num_rows != 0)
+		{
+			//query and store query result in variable $queryHash then fetch stored password hash
+			$queryHash = "SELECT passwordHash FROM Person WHERE emailAddress = '$username' AND ownerId IS NULL";
+			$resultHash = $conn->query($queryHash);
+			$resultHashRow = $resultHash->fetch_assoc();
+			$hash = $resultHashRow['passwordHash'];
+			if (password_verify($passWordEst, $hash))
+			{
+				//routs the user to the Message Dashboard if username and password were found in same row of table
+				echo '<script language="javascript">';
+				echo 'window.location.href ="../dashboard"' ;
+				echo '</script>';
+			}
+			else
+			{
+				//password not found, alert and return to home
+				invlidUserOrPass();
+			}
+		}
+		else
+		{
+			//username not found, alert and return to home.
+			invlidUserOrPass();
+		}
 	}
 	//Close connection
 	$conn->close();
