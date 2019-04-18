@@ -36,10 +36,12 @@
   // System signal handler
   function signalHandler($signal)
   {
-    global $allowExit, $forceExit;
+    global $allowExit, $forceExit, $conn;
     
     if($allowExit)
     {
+      //Close connection
+      $conn->close();
       exit;
     }
     else
@@ -51,10 +53,12 @@
   // Polling function
   function checkExit()
   {
-    global $allow_exit, $force_exit;
+    global $allow_exit, $force_exit, $conn;
 
     if ($force_exit && $allow_exit)
     {
+      //Close connection
+      $conn->close();
       exit;
     }
   }

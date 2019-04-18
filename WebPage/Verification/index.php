@@ -2,29 +2,18 @@
 <!Verification code>
 <html>
 	<head>
-		<?php
+		<?php 
 		session_start();
-		//Variables needed to access current user in Person
-		$UserEmail = $_SESSION['currentUserEmail'];
+		//include files
 		include ('../PHP/Database.php');
 		// Create connection
 		$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
-		//get first name	
-		$queryC = "SELECT firstName FROM Person WHERE emailAddress = '$UserEmail'";
-		$resultC = $conn->query($queryC);
-		$idC = mysqli_fetch_object($resultC);
-		$FirstNm = $idC->firstName;	
-		//get last name
-		$queryD = "SELECT lastName FROM Person WHERE emailAddress = '$UserEmail'";
-		$resultD = $conn->query($queryD);
-		$idD = mysqli_fetch_object($resultD);
-		$LastNm = $idD->lastName;	
-		//get uniqueId of current user from Person
-		$queryA = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail'";
-		$resultA = $conn->query($queryA);
-		$idA = mysqli_fetch_object($resultA);
-		$UniqueId = $idA->uniqueId;
-		echo "Hello: ", $FirstNm, " ", $LastNm;
+		// Check connection
+		if ($conn->connect_error)
+		{
+			echo "could not establish connection to database";
+			die("Connection failed: " . $conn->connect_error);
+		}
 		?>
 		<title>Carrier Pigeon</title>
 		<link rel="stylesheet" type="text/css" href="../CSS/homeStyle.css">
@@ -32,31 +21,50 @@
 	<body>
 		<h1 id = "Company" style = "text-align: center" > User Verification </h1>
 		<div class = "center" style = "text-align: center">
-			<form>
+			<form name="verify" action = "" method = "post">
 			<b>A verification code has been sent to the email you provided.</b></br>  
 			<b>Please enter the code below and click submit to verify your email.</b>
 			</br></br>
+			<label><br>Email:</label>
+			<input id = "email" type="textbox" class = "resizedTextbox2" name="email" placeholder = "youremail@domain.com" />
+			<label><br>Code:</label>
 			<input id = "code" name = "code" type="textbox" name="code" placeholder = "######"/>
-			</br><input id = "subCode" class = "button2" type = "submit" name = "subCode" onclick="removeday()" value = "SUBMIT">
+			</br><input id = "subCode" class = "button2" type = "submit" name = "subCode" value = "SUBMIT">
 			</form>
 		</div>
 	</body>
 </html>
 <?php
-	//Variables needed to save the code entered
-	$code = $_POST['code'];
 	//check to see if SUBMIT button has been clicked		
 	if(isset($_POST['subCode']))
 	{
+		//Variables needed to save the code entered
+		$UserEmail = $_POST['email'];
+		$code = $_POST['code'];
+		
 		//query to check if code entered matches the verifyCode in same row as uniqueId of current user
-		$query1 = "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$userEmail'";
-		$result1 = $conn->query($query1);
+		$result1 = mysqli_query($conn, "SELECT uniqueId from Person WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'");
 		//if query results in a row found
-		if ($result1->num_rows != 0)
+		if ($result1->num_rows != 0) 
 		{
 			//run query to update Person table with NULL values for verifyCode and ownerId for current user
-			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE uniqueId = '$UniqueId'";
+			$query2 = "UPDATE Person SET ownerId = NULL, verifyCode = NULL WHERE verifyCode = '$code' AND emailAddress = '$UserEmail'";
 			$result2 = $conn->query($query2);
+			echo '<script language="javascript">';
+			echo 'alert("Email Verified Successfully!")';
+			echo '</script>';
+			echo '<script language="javascript">';
+			echo 'window.location.href ="../home/index.html"';
+			echo '</script>';
+		}
+		else
+		{
+			echo '<script language="javascript">';
+			echo 'alert("Did not find email and code match. Please try again.")';
+			echo '</script>';
+			echo '<script language="javascript">';
+			echo 'window.location.href ="../Verification/index.php"';
+			echo '</script>';
 		}
 	}
 //Close connection

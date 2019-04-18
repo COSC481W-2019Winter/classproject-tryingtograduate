@@ -33,7 +33,7 @@
 	// Check connection
 	if ($conn->connect_error)
 	{
-		echo "could not establish connection to db2...";
+		echo "could not establish connection to database";
 		die("Connection failed: " . $conn->connect_error);
 	}
 
