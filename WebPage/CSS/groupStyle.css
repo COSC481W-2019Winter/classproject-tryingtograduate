@@ -114,7 +114,7 @@ input[type=text], input[type=password] {
 }
 
 #editGroup {
-    width: 25%;
+    width: 15%;
 }
 
 #exit {
@@ -123,7 +123,6 @@ input[type=text], input[type=password] {
 }
 
 #contactList {
-    table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
     opacity: .9;

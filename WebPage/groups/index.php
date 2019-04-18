@@ -243,7 +243,7 @@
 						$conn->close();
 						?>
 
-						<table class="a" id="contactList">
+						<table id="contactList">
 							<?php
 							session_start();
 								//Variables created to access the database on Wi2017_436_kbledsoe3
