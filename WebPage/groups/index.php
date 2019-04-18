@@ -243,7 +243,7 @@
 						$conn->close();
 						?>
 
-						<table id="contactList">
+						<table class="a" id="contactList">
 							<?php
 							session_start();
 								//Variables created to access the database on Wi2017_436_kbledsoe3
@@ -263,8 +263,8 @@
 											WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId;";
 								}
 								echo "<tr><th>Name</th><th>Phone Number</th><th>E-mail Address</th>";
-								echo "<th>Edit</th>";
-								echo "<th>Delete</th></tr>";
+								echo "<th style=\"width: 15%;\">Edit</th>";
+								echo "<th style=\"width: 15%;\">Delete</th></tr>";
 								$result = $conn->query($sql);
 								if ($result->num_rows > 0) {
 								// output data of each row
