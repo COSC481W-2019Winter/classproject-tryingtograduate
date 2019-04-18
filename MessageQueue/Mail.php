@@ -7,20 +7,6 @@ class Mail
 {
   private $mail;
 
-  public function __construct()
-  { 
-    $this->mail = new PHPMailer;
-    $this->mail->isSMTP();
-    $this->mail->Username = SMTPUSER;
-    $this->mail->Password = SMTPPASS;
-    $this->mail->Host = SMTPHOST;
-    $this->mail->SMTPAuth = SMTPAUTH;
-    $this->mail->SMTPKeepAlive = SMTPKEEPALIVE;
-    $this->mail->SMTPSecure = SMTPSECURE;
-    $this->mail->Port = SMTPPORT;
-    $this->mail->isHTML(false);
-  }
-
   private function reportSuccess($contactName, $address)
   {
     $result = 'Message sent to ';
@@ -47,7 +33,18 @@ class Mail
   {
     $results = array();
 
-    $this->mail->clearReplyTos();
+    $this->mail = new PHPMailer;
+    $this->mail->isSMTP();
+    $this->mail->Username = SMTPUSER;
+    $this->mail->Password = SMTPPASS;
+    $this->mail->Host = SMTPHOST;
+    $this->mail->SMTPAuth = SMTPAUTH;
+    $this->mail->SMTPKeepAlive = SMTPKEEPALIVE;
+    $this->mail->SMTPSecure = SMTPSECURE;
+    $this->mail->Port = SMTPPORT;
+    $this->mail->isHTML(false);
+
+    # $this->mail->clearReplyTos();
     $this->mail->addReplyTo($senderAddress, $senderName);
 
     $this->mail->setFrom(SERVICE_EMAIL, $senderName);
@@ -108,6 +105,7 @@ class Mail
         }
       }
     }
+    $this->mail->smtpClose();
     return $results;
   }
 }
