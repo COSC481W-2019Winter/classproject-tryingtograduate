@@ -272,22 +272,28 @@
 										echo "<tr><td>". $row["firstName"]. " ". $row["lastName"]. "</td><td>". $row["phoneNumber"]. "</td><td>". $row["emailAddress"]. "</td>";
 													// EDIT BUTTONS WITH VALUES AND STYLING
 
-											echo "<td><form name=\"editContact\" action=\"\" method=\"post\">
+										echo "<td><form name=\"editContact\" action=\"\" method=\"post\">
 									 			 	<input type=\"hidden\" id=\"editID\" name=\"editID\" value=". $row["uniqueId"]. ">
 									 		 	 	<input class=\"button\" id=\"editContact\" type=\"submit\" name=\"editContact\" value=\"EDIT\"
 									 		 	 	style=\"width: 55%; box-shadow: 0; padding: 0; margin: 0;\"></form></td>";
 
+										if($selectedGroup=='all'){
+											 // DELETE BUTTONS WITH VALUES AND STYLING
+									  	echo "<td><form name=\"delContact\" action=\"\" method=\"post\">
+									 				 	<input type=\"hidden\" id=\"delID\" name=\"delID\" value=". $row["uniqueId"]. ">
+									 			 	 	<input class=\"button\" id=\"deleteContact\" type=\"submit\" name=\"deleteContact\" value=\"DELETE\"
+									 			 	 	style=\"width: 55%; box-shadow: 0; padding: 0; margin: 0;\"></form></td>";
+										} else {
+											echo "<td><form name=\"delContact\" action=\"\" method=\"post\">
+														<input type=\"hidden\" id=\"delID\" name=\"delID\" value=". $row["uniqueId"]. ">
+														<input class=\"button\" id=\"deleteContact\" type=\"submit\" name=\"deleteContact\" value=\"REMOVE\"
+														style=\"width: 55%; box-shadow: 0; padding: 0; margin: 0;\"></form></td>";
+										}
 
-												 // DELETE BUTTONS WITH VALUES AND STYLING
-								  	echo "<td><form name=\"delContact\" action=\"\" method=\"post\">
-								 				 	<input type=\"hidden\" id=\"delID\" name=\"delID\" value=". $row["uniqueId"]. ">
-								 			 	 	<input class=\"button\" id=\"deleteContact\" type=\"submit\" name=\"deleteContact\" value=\"DELETE\"
-								 			 	 	style=\"width: 55%; box-shadow: 0; padding: 0; margin: 0;\"></form></td>";
-
-								    	}
-									} else {
-									    echo "<tr><td>No contacts<td></tr>";
-									}
+								  }
+								} else {
+								    echo "<tr><td>No contacts<td></tr>";
+								}
 
 
 
