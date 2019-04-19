@@ -256,11 +256,11 @@
 
 								if($selectedGroup=='all'){
 									$sql = "SELECT Person.firstName, Person.lastName, Person.emailAddress, Person.phoneNumber, Person.uniqueId FROM Person
-													WHERE ownerId = '$UserId';";
+													WHERE ownerId = '$UserId' ORDER BY lastName;";
 								} else {
 
 									$sql = "SELECT Person.firstName, Person.lastName, Person.emailAddress, Person.phoneNumber, Person.uniqueId FROM Person, Group_JT
-											WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId;";
+											WHERE Group_JT.groupId = '$selectedGroup' AND Group_JT.contactId = Person.uniqueId ORDER BY lastName;";
 								}
 								echo "<tr><th>Name</th><th>Phone Number</th><th>E-mail Address</th>";
 								echo "<th style=\"width: 15%;\">Edit</th>";
