@@ -230,7 +230,7 @@
 		$tempSubject = str_replace(";", "", $tempSubject);
 		$tempMsg = str_replace(";", "", $tempMsg);
 		
-		if ($tempMsg == "" || $tempMsg == null || $tempSubject == "" || $tempSubject == null)
+		if ($tempMsg != "" || $tempMsg != null || $tempSubject != "" || $tempSubject != null)
 		{
 			//Get groupId based on group selection
 			$selectedGroup = $_COOKIE['selectedGroup'];
