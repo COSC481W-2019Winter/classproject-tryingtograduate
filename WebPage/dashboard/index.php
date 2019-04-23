@@ -255,8 +255,6 @@
 					$msId = $object2['max'];
 					//use the stored messageId to insert a job into the Queue
 					mysqli_query($conn, "INSERT INTO Queue(messageId)VALUES ('$msId')");
-					//reset cookie state to 0
-					$_COOKIE['selectedGroup'] = 0;
 					//Alert the user of successful message deployment
 					echo '<script language="javascript">';
 					echo 'alert("Your message has been added to the queue and will be sent shortly.")';
