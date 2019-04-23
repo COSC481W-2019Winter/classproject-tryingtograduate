@@ -23,11 +23,28 @@
 			}
 			//PHP will need to call this method after SEND is clicked to clear the cookie
 			function clearCookie(){
-				document.cookie = selectedGroup+'=; Max-Age=-99999999;';
+				document.cookie = "selectedGroup="+0;
 			}
+			
+			//when page loads, looks for selected group and sets value in dropdown
+			function fill()
+			{
+				if (document.cookie != "")
+				{
+					cookies = document.cookie.split(";");
+					for (var i = 0; i < cookies.length; i++)
+					{
+						cookie = cookies[i].trim().split("=");
+						if (cookie[0] == 'selectedGroup' && cookie[1] != null && cookie[1] != 0) {
+							document.getElementById('glist').value = cookie[1];
+						}
+					}
+				}
+			}
+			
 		</script>
 	</head>
-	<body>
+	<body onload="fill()">
 	<?php
 		//Variables needed to access current user in Person
 		$UserEmail = $_SESSION['currentUserEmail'];
@@ -113,7 +130,7 @@
 				<input type="text" style = "width:20%" placeholder="Message Name" id = "tempName" name = "tempName">
 				</br>
 				<input id="addMsgButton" name = "addMsgButton" type="submit" value="SAVE">
-				<button id = "cancel">CANCEL</button>
+				<button id = "cancel" name = "cancel" value = "cancel" type = "submit" onclick = "clearCookie(); window.location.href = '../dashboard/index.php'">CANCEL</button>
 		</div></br>
 		<label class = "savemessage">Subject:</label>
 		<input type="text" placeholder="Message Subject" id = "tempSubject", name = "tempSubject" value = "<?php 
@@ -143,7 +160,7 @@
 			</td></form><!end of form to save message as template>
 			<td><button class = "button buttonB" onclick = "window.location.href ='../home/index.html'" >
 			Sign-Out</button></td>
-			<td><button class = "button buttonC" onclick = "window.location.href = '../dashboard/index.php'">
+			<td><button id = "cancel2" name = "cancel2" value = "cancel" type = "submit" class = "button buttonC" onclick = "clearCookie(); window.location.href = '../dashboard/index.php'">
 			Cancel</button></td>
 			<td><button id class = "button button0" onclick = "window.location.href ='../groups/index.php'" >
 			Edit Groups</button></td>
@@ -159,6 +176,12 @@
 	$tempSubject = $_POST['tempSubject'];
 	$tempMsg = $_POST['message'];
 	
+	//if cancel button clicked
+	if(isset($_POST['cancel']) || isset($_POST['cancel2']))
+	{
+		if (isset($_COOKIE['selectedGroup']))
+			$_COOKIE['selectedGroup'] = 0;
+	}
 	
 	//check to see if SAVE button has been clicked		
 	if(isset($_POST['addMsgButton']))
@@ -232,6 +255,8 @@
 					$msId = $object2['max'];
 					//use the stored messageId to insert a job into the Queue
 					mysqli_query($conn, "INSERT INTO Queue(messageId)VALUES ('$msId')");
+					//reset cookie state to 0
+					$_COOKIE['selectedGroup'] = 0;
 					//Alert the user of successful message deployment
 					echo '<script language="javascript">';
 					echo 'alert("Your message has been added to the queue and will be sent shortly.")';
