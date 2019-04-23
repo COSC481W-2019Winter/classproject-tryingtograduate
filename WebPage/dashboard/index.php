@@ -23,11 +23,28 @@
 			}
 			//PHP will need to call this method after SEND is clicked to clear the cookie
 			function clearCookie(){
-				document.cookie = selectedGroup+'=; Max-Age=-99999999;';
+				document.cookie = "selectedGroup="+0;
 			}
+			
+			//when page loads, looks for selected group and sets value in dropdown
+			function fill()
+			{
+				if (document.cookie != "")
+				{
+					cookies = document.cookie.split(";");
+					for (var i = 0; i < cookies.length; i++)
+					{
+						cookie = cookies[i].trim().split("=");
+						if (cookie[0] == 'selectedGroup' && cookie[1] != null && cookie[1] != 0) {
+							document.getElementById('glist').value = cookie[1];
+						}
+					}
+				}
+			}
+			
 		</script>
 	</head>
-	<body>
+	<body onload="fill()">
 	<?php
 		//Variables needed to access current user in Person
 		$UserEmail = $_SESSION['currentUserEmail'];
@@ -113,7 +130,7 @@
 				<input type="text" style = "width:20%" placeholder="Message Name" id = "tempName" name = "tempName">
 				</br>
 				<input id="addMsgButton" name = "addMsgButton" type="submit" value="SAVE">
-				<button id = "cancel">CANCEL</button>
+				<button id = "cancel" name = "cancel" value = "cancel" type = "submit" onclick = "clearCookie(); window.location.href = '../dashboard/index.php'">CANCEL</button>
 		</div></br>
 		<label class = "savemessage">Subject:</label>
 		<input type="text" placeholder="Message Subject" id = "tempSubject", name = "tempSubject" value = "<?php 
@@ -143,7 +160,7 @@
 			</td></form><!end of form to save message as template>
 			<td><button class = "button buttonB" onclick = "window.location.href ='../home/index.html'" >
 			Sign-Out</button></td>
-			<td><button class = "button buttonC" onclick = "window.location.href = '../dashboard/index.php'">
+			<td><button id = "cancel2" name = "cancel2" value = "cancel" type = "submit" class = "button buttonC" onclick = "clearCookie(); window.location.href = '../dashboard/index.php'">
 			Cancel</button></td>
 			<td><button id class = "button button0" onclick = "window.location.href ='../groups/index.php'" >
 			Edit Groups</button></td>
@@ -159,6 +176,12 @@
 	$tempSubject = $_POST['tempSubject'];
 	$tempMsg = $_POST['message'];
 	
+	//if cancel button clicked
+	if(isset($_POST['cancel']) || isset($_POST['cancel2']))
+	{
+		if (isset($_COOKIE['selectedGroup']))
+			$_COOKIE['selectedGroup'] = 0;
+	}
 	
 	//check to see if SAVE button has been clicked		
 	if(isset($_POST['addMsgButton']))
@@ -207,42 +230,53 @@
 		$tempSubject = str_replace(";", "", $tempSubject);
 		$tempMsg = str_replace(";", "", $tempMsg);
 		
-		//Get groupId based on group selection
-		$selectedGroup = $_COOKIE['selectedGroup'];
-		$results = mysqli_query($conn, "SELECT groupId FROM Groups WHERE groupName = '$selectedGroup'");
-		if (mysqli_affected_rows($conn) > 0) //if rows are more than 0, selected group found in tables
+		if ($tempMsg != "" && $tempMsg != null && $tempSubject != "" && $tempSubject != null)
 		{
-				//Get the row as an object
-				$object = mysqli_fetch_object($results);
-				//Extract the information you want by using the column name
-				$grId = $object->groupId;
-				
-				//Insert message to Message Table when Send is clicked
-				mysqli_query($conn, "INSERT INTO Message(ownerId, groupId, subject, content)
-				VALUES ('$UniqueId','$grId', '$tempSubject', '$tempMsg')");
-				
-				//Select messageId from Message table for message saved when Send was clicked
-				//Query will look for max message ID because the message saved will be the last in the list
-				$results2 = mysqli_query($conn, "SELECT MAX(messageId) AS max FROM Message");
-				if (mysqli_affected_rows($conn) > 0) //if rows are more than 0, max found in tables
-				{
-					//Get the associated value (in this case we asked for something specific rather than a row)
-					$object2 = mysqli_fetch_assoc($results2);
-					//use the nickname max we created in our SELECT statement to grab the id number and store
-					$msId = $object2['max'];
-					//use the stored messageId to insert a job into the Queue
-					mysqli_query($conn, "INSERT INTO Queue(messageId)VALUES ('$msId')");
-					//Alert the user of successful message deployment
-					echo '<script language="javascript">';
-					echo 'alert("Your message has been added to the queue and will be sent shortly.")';
-					echo '</script>';
-				}
-		}else{
-			//alert the user if they have not yet selected a group
-			//code needs to die here so that page is not refreshed b/c user will lose their message
-			echo '<script language="javascript">';
-			echo 'alert("Please Select a Group")';
-			echo '</script>';
+			//Get groupId based on group selection
+			$selectedGroup = $_COOKIE['selectedGroup'];
+			$results = mysqli_query($conn, "SELECT groupId FROM Groups WHERE groupName = '$selectedGroup'");
+			if (mysqli_affected_rows($conn) > 0) //if rows are more than 0, selected group found in tables
+			{
+					//Get the row as an object
+					$object = mysqli_fetch_object($results);
+					//Extract the information you want by using the column name
+					$grId = $object->groupId;
+					
+					//Insert message to Message Table when Send is clicked
+					mysqli_query($conn, "INSERT INTO Message(ownerId, groupId, subject, content)
+					VALUES ('$UniqueId','$grId', '$tempSubject', '$tempMsg')");
+					
+					//Select messageId from Message table for message saved when Send was clicked
+					//Query will look for max message ID because the message saved will be the last in the list
+					$results2 = mysqli_query($conn, "SELECT MAX(messageId) AS max FROM Message");
+					if (mysqli_affected_rows($conn) > 0) //if rows are more than 0, max found in tables
+					{
+						//Get the associated value (in this case we asked for something specific rather than a row)
+						$object2 = mysqli_fetch_assoc($results2);
+						//use the nickname max we created in our SELECT statement to grab the id number and store
+						$msId = $object2['max'];
+						//use the stored messageId to insert a job into the Queue
+						mysqli_query($conn, "INSERT INTO Queue(messageId)VALUES ('$msId')");
+						//Alert the user of successful message deployment
+						echo '<script language="javascript">';
+						echo 'alert("Your message has been added to the queue and will be sent shortly.")';
+						echo '</script>';
+					}
+			}else{
+				//alert the user if they have not yet selected a group
+				//code needs to die here so that page is not refreshed b/c user will lose their message
+				echo '<script language="javascript">';
+				echo 'alert("Please Select a Group")';
+				echo '</script>';
+			}
+		}
+		else
+		{
+				//alert the user if they have not yet selected a group
+				//code needs to die here so that page is not refreshed b/c user will lose their message
+				echo '<script language="javascript">';
+				echo 'alert("Please enter a subject and message")';
+				echo '</script>';
 		}
 	}
 	$conn->close();
