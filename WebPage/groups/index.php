@@ -21,6 +21,7 @@
 					button.value="Add Group";
 				}
 			}
+			
 			function newContactFunc() {
 				var y = document.getElementById('glist').value;
 				if(y == 'all' || y == 0){
@@ -137,7 +138,7 @@
             	<input style="width: 100%;"type=submit class="button" id="exit" name="delGroup" value="Delete Group">
 						</form>
 
-						<div id="newGroup">
+						<div id="newGroup" style="display: none;">
 							<form class="newGroup" action = "" method = "post">
 								<label>Group name:</label>
 								<input type="text" name="newGName" placeholder="Group Name">
@@ -146,7 +147,7 @@
 							</form>
 						</div>
 
-						<div id="newContact">
+						<div id="newContact" style="display: none;">
 							<form name="newContact" class="newContact" action = "" method = "post" onsubmit="return(validate());">
 								<label>First name:</label>
 								<input type="text" name="newFname" placeholder="First Name">
