@@ -1,4 +1,260 @@
-<?php session_start();
+<!-- CHANGE 5.0 -->
+<?php
+	session_start();
+	//Variables created to access the database on Wi2017_436_kbledsoe3
+	include ('../PHP/Database.php');
+	// Create connection
+	$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+
+
+	//SignUp Variables
+	$newGroupName = str_replace(";", "", $_POST['newGName']);
+	$UserEmail = $_SESSION['currentUserEmail'];
+
+	//Get user ID from Session
+	$sql = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail' AND ownerId IS NULL limit 1";
+	$result = $conn->query($sql);
+	$id = mysqli_fetch_object($result);
+	$UserId = $id->uniqueId;
+
+	//-------------------------
+	// CODE FOR NEW GROUP
+	//-------------------------
+	if(isset($_POST['addGtoDB']))
+	{
+		//Test to see if the groupname entered already exists in the table
+		$query = mysqli_query($conn, "SELECT * FROM Groups WHERE groupName = '$newGroupName' AND ownerId = '$UserId';");
+
+		if ($query->num_rows != 0)
+		{
+				echo '<script language="javascript">';
+				echo 'alert("Group already Exists.")';
+				echo '</script>';
+		}
+		else
+		{
+			//Inserts new record into table from sql statement
+			mysqli_query($conn, "INSERT INTO Groups(groupName, ownerId) VALUES ('$newGroupName','$UserId')");
+
+			//Check the status of the query
+			if (mysqli_affected_rows($conn) > 0)
+			{
+				$query = mysqli_query($conn, "SELECT * FROM Groups WHERE groupName = '$newGroupName' AND ownerId = '$UserId';");
+				$newGroup = mysqli_fetch_array($query);
+				$_SESSION['currentGroup']=$newGroup[0];
+
+				// Re-route
+				echo '<script language="javascript">';
+				echo 'window.location.href ="../groups/"' ;
+				echo '</script>';
+			}
+			else
+			{
+				echo '<script language="javascript">';
+				echo 'alert("Group not added.")';
+				echo '</script>';
+			}
+		}
+	}
+
+	//-------------------------
+	// CODE FOR NEW CONTACT
+	//-------------------------
+	$fname = str_replace(";", "", $_POST['newFname']);
+	$lname = str_replace(";", "", $_POST['newLname']);
+	$phone = str_replace(";", "", $_POST['newCphone']);
+	$email = str_replace(";", "", $_POST['newCemail']);
+	$carrier = $_POST['carrier'];
+
+
+	if(isset($_POST['addCtoDB']))
+	{
+		$selectedGroup=$_SESSION['currentGroup'];
+
+			//Test to see if the email entered already exists in the table
+			$query2 = mysqli_query($conn, "SELECT * FROM Person WHERE firstName = '$fname' AND lastName = '$lname' AND emailAddress = '$email' AND ownerId = '$UserId';");
+
+			if ($query2->num_rows != 0) //if username exists
+			{
+					echo '<script language="javascript">';
+					echo 'alert("Contact already Exists.")';
+					echo '</script>';
+			}
+			else //if email does not exist
+			{
+				//Inserts new record into table from sql statement
+				mysqli_query($conn, "INSERT INTO Person (firstName, lastName, emailAddress, phoneNumber, ownerId, carrierID)
+					VALUES ('$fname','$lname','$email','$phone','$UserId', '$carrier')");
+
+				$query3 = mysqli_query($conn, "SELECT uniqueId FROM Person
+					WHERE firstName = '$fname' AND lastName = '$lname' AND ownerId = '$UserId';");
+
+				$contactId = mysqli_fetch_array($query3);
+
+				mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId)
+					VALUES ('$contactId[0]','$UserId', '$selectedGroup')");
+
+
+				//Check the status of the query
+				if (mysqli_affected_rows($conn) > 0)
+				{
+					// Re-route
+					echo '<script language="javascript">';
+					echo 'window.location.href ="../groups/"' ;
+					echo '</script>';
+				}
+				else
+				{
+					echo '<script language="javascript">';
+					echo "alert(\"User not added.\")";
+					echo '</script>';
+				}
+			}
+	//	}
+
+	}
+
+	//-------------------------
+	// CODE FOR DELETE CONTACT
+	//-------------------------
+	$deleteID = $_POST['delID'];
+
+
+	if(isset($_POST['deleteContact']))
+	{
+		$selectedGroup=$_SESSION['currentGroup'];
+		if($selectedGroup == 'all'){
+			mysqli_query($conn, "DELETE FROM Group_JT WHERE contactId = '$deleteID';");
+			mysqli_query($conn, "DELETE FROM Person WHERE uniqueId = '$deleteID';");
+		} else {
+			//Deletes slelected  record into table from sql statement
+			mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup' AND contactId = '$deleteID';");
+		}
+
+		//Check the status of the query
+		if (mysqli_affected_rows($conn) > 0)
+		{
+			// Re-route
+			echo '<script language="javascript">';
+			echo 'window.location.href ="../groups/"' ;
+			echo '</script>';
+		}
+		else
+		{
+			echo '<script language="javascript">';
+			echo "alert(\"User not deleted.\")";
+			echo '</script>';
+		}
+
+	}
+
+	//-------------------------
+	// CODE FOR DELETE GROUP
+	//-------------------------
+	if(isset($_POST['delGroup'])){
+		$selectedGroup=$_SESSION['currentGroup'];
+		if($selectedGroup == 0 || $selectedGroup == 'all'){
+			echo '<script language="javascript">';
+			echo 'alert("Please select a group before deleting.")';
+			echo '</script>';
+			// Re-route
+			echo '<script language="javascript">';
+			echo 'window.location.href ="../groups/"' ;
+			echo '</script>';
+		}else{
+
+		//Deletes all records from group
+			mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup';");
+			// deleetes group
+			mysqli_query($conn, "DELETE FROM Groups WHERE groupId = '$selectedGroup';");
+
+			//Check the status of the query
+			if (mysqli_affected_rows($conn) > 0)
+			{
+				// Re-route
+				echo '<script language="javascript">';
+				echo 'window.location.href ="../groups/"' ;
+				echo '</script>';
+			}
+			else
+			{
+				echo '<script language="javascript">';
+				echo 'alert("Group not deleted.")';
+				echo '</script>';
+			}
+		}
+	}
+
+	//----------------------
+	// CODE TO EDIT CONTACTS
+	//----------------------
+	$fname = str_replace(";", "", $_POST['editFname']);
+	$lname = str_replace(";", "", $_POST['editLname']);
+	$phone = str_replace(";", "", $_POST['editCphone']);
+	$email = str_replace(";", "", $_POST['editCemail']);
+	$carrier = $_POST['editCarrier'];
+	$editId = $_POST['editID'];
+	$updateGroup = $_POST['updateGroups'];
+
+
+	if(isset($_POST['editCinDB']))
+	{
+		//We need to make sure that the email/Phone number being changed doesn't already exist in the Database.
+		$sql = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE NOT uniqueId = $editId AND phoneNumber = '$phone' AND ownerId = $UserId;");
+		if ($sql->num_rows != 0 && $phone) {
+			echo '<script language="javascript">';
+			echo 'alert("Contact already exists with that Phone Number.")';
+			echo '</script>';
+		} else {
+			$sql = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE NOT uniqueId = $editId AND emailAddress = '$email' AND ownerId = $UserId;");
+		  if ($sql->num_rows != 0 && $email){
+				echo '<script language="javascript">';
+				echo 'alert("Contact already exists with that email.")';
+				echo '</script>';
+			} else {
+				//Updates record into table from sql statement
+				mysqli_query($conn, "UPDATE Person SET firstName = '$fname', lastName = '$lname', emailAddress = '$email',
+					phoneNumber = '$phone', carrierID = '$carrier' WHERE uniqueId = $editId;");
+
+
+				//Check the status of the query
+				if (mysqli_affected_rows($conn) > 0)
+				{
+					echo '<script language="javascript">';
+					echo 'window.location.href ="../groups/"' ;
+					echo '</script>';
+				}
+
+				if($updateGroup != '0'){
+					// Check to see if contact is already in this group
+					$query2 = mysqli_query($conn, "SELECT * FROM Group_JT WHERE groupId = $updateGroup AND contactId = $editId;");
+
+					if ($query2->num_rows != 0) {
+						echo '<script language="javascript">';
+						echo 'alert("Contact already exists in Group.")';
+						echo '</script>';
+					} else {
+						mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId) VALUES ('$editId','$UserId', '$updateGroup')");
+						if (mysqli_affected_rows($conn) > 0){
+							echo '<script language="javascript">';
+							echo 'alert("User Added to New Group successfully!")';
+							echo '</script>';
+
+							echo '<script language="javascript">';
+							echo 'window.location.href ="../groups/"' ;
+							echo '</script>';
+						} else {
+							echo '<script language="javascript">';
+							echo 'alert("User not added to Group.")';
+							echo '</script>';
+						}
+					}
+				}
+			}
+		}
+	}
+	//Close connection
+	$conn->close();
 ?>
 <!doctype html>
 <!Group Page>
@@ -307,265 +563,3 @@
 	</body>
 
 </html>
-
-<!-- CHANGE 5.0 -->
-<?php
-	session_start();
-	//Variables created to access the database on Wi2017_436_kbledsoe3
-	include ('../PHP/Database.php');
-	// Create connection
-	$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DBNAME);
-
-
-	//SignUp Variables
-	$newGroupName = str_replace(";", "", $_POST['newGName']);
-	$UserEmail = $_SESSION['currentUserEmail'];
-
-	//Get user ID from Session
-	$sql = "SELECT uniqueId FROM Person WHERE emailAddress = '$UserEmail' AND ownerId IS NULL limit 1";
-	$result = $conn->query($sql);
-	$id = mysqli_fetch_object($result);
-	$UserId = $id->uniqueId;
-
-	//-------------------------
-	// CODE FOR NEW GROUP
-	//-------------------------
-	if(isset($_POST['addGtoDB']))
-	{
-		//Test to see if the groupname entered already exists in the table
-		$query = mysqli_query($conn, "SELECT * FROM Groups WHERE groupName = '$newGroupName' AND ownerId = '$UserId';");
-
-		if ($query->num_rows != 0)
-		{
-				echo '<script language="javascript">';
-				echo 'alert("Group already Exists.")';
-				echo '</script>';
-		}
-		else
-		{
-			//Inserts new record into table from sql statement
-			mysqli_query($conn, "INSERT INTO Groups(groupName, ownerId) VALUES ('$newGroupName','$UserId')");
-
-			//Check the status of the query
-			if (mysqli_affected_rows($conn) > 0)
-			{
-				$query = mysqli_query($conn, "SELECT * FROM Groups WHERE groupName = '$newGroupName' AND ownerId = '$UserId';");
-				$newGroup = mysqli_fetch_array($query);
-				$_SESSION['currentGroup']=$newGroup[0];
-
-				// Re-route
-				echo '<script language="javascript">';
-				echo 'window.location.href ="../groups/"' ;
-				echo '</script>';
-			}
-			else
-			{
-				echo '<script language="javascript">';
-				echo 'alert("Group not added.")';
-				echo '</script>';
-			}
-		}
-	}
-
-	//-------------------------
-	// CODE FOR NEW CONTACT
-	//-------------------------
-	$fname = str_replace(";", "", $_POST['newFname']);
-	$lname = str_replace(";", "", $_POST['newLname']);
-	$phone = str_replace(";", "", $_POST['newCphone']);
-	$email = str_replace(";", "", $_POST['newCemail']);
-	$carrier = $_POST['carrier'];
-
-
-	if(isset($_POST['addCtoDB']))
-	{
-		$selectedGroup=$_SESSION['currentGroup'];
-
-			//Test to see if the email entered already exists in the table
-			$query2 = mysqli_query($conn, "SELECT * FROM Person WHERE firstName = '$fname' AND lastName = '$lname' AND emailAddress = '$email' AND ownerId = '$UserId';");
-
-			if ($query2->num_rows != 0) //if username exists
-			{
-					echo '<script language="javascript">';
-					echo 'alert("Contact already Exists.")';
-					echo '</script>';
-			}
-			else //if email does not exist
-			{
-				//Inserts new record into table from sql statement
-				mysqli_query($conn, "INSERT INTO Person (firstName, lastName, emailAddress, phoneNumber, ownerId, carrierID)
-					VALUES ('$fname','$lname','$email','$phone','$UserId', '$carrier')");
-
-				$query3 = mysqli_query($conn, "SELECT uniqueId FROM Person
-					WHERE firstName = '$fname' AND lastName = '$lname' AND ownerId = '$UserId';");
-
-				$contactId = mysqli_fetch_array($query3);
-
-				mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId)
-					VALUES ('$contactId[0]','$UserId', '$selectedGroup')");
-
-
-				//Check the status of the query
-				if (mysqli_affected_rows($conn) > 0)
-				{
-					// Re-route
-					echo '<script language="javascript">';
-					echo 'window.location.href ="../groups/"' ;
-					echo '</script>';
-				}
-				else
-				{
-					echo '<script language="javascript">';
-					echo "alert(\"User not added.\")";
-					echo '</script>';
-				}
-			}
-	//	}
-
-	}
-
-	//-------------------------
-	// CODE FOR DELETE CONTACT
-	//-------------------------
-	$deleteID = $_POST['delID'];
-
-
-	if(isset($_POST['deleteContact']))
-	{
-		$selectedGroup=$_SESSION['currentGroup'];
-		if($selectedGroup == 'all'){
-			mysqli_query($conn, "DELETE FROM Group_JT WHERE contactId = '$deleteID';");
-			mysqli_query($conn, "DELETE FROM Person WHERE uniqueId = '$deleteID';");
-		} else {
-			//Deletes slelected  record into table from sql statement
-			mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup' AND contactId = '$deleteID';");
-		}
-
-		//Check the status of the query
-		if (mysqli_affected_rows($conn) > 0)
-		{
-			// Re-route
-			echo '<script language="javascript">';
-			echo 'window.location.href ="../groups/"' ;
-			echo '</script>';
-		}
-		else
-		{
-			echo '<script language="javascript">';
-			echo "alert(\"User not deleted.\")";
-			echo '</script>';
-		}
-
-	}
-
-	//-------------------------
-	// CODE FOR DELETE GROUP
-	//-------------------------
-	if(isset($_POST['delGroup'])){
-		$selectedGroup=$_SESSION['currentGroup'];
-		if($selectedGroup == 0 || $selectedGroup == 'all'){
-			echo '<script language="javascript">';
-			echo 'alert("Please select a group before deleting.")';
-			echo '</script>';
-			// Re-route
-			echo '<script language="javascript">';
-			echo 'window.location.href ="../groups/"' ;
-			echo '</script>';
-		}else{
-
-		//Deletes all records from group
-			mysqli_query($conn, "DELETE FROM Group_JT WHERE groupId = '$selectedGroup';");
-			// deleetes group
-			mysqli_query($conn, "DELETE FROM Groups WHERE groupId = '$selectedGroup';");
-
-			//Check the status of the query
-			if (mysqli_affected_rows($conn) > 0)
-			{
-				// Re-route
-				echo '<script language="javascript">';
-				echo 'window.location.href ="../groups/"' ;
-				echo '</script>';
-			}
-			else
-			{
-				echo '<script language="javascript">';
-				echo 'alert("Group not deleted.")';
-				echo '</script>';
-			}
-		}
-	}
-
-	//----------------------
-	// CODE TO EDIT CONTACTS
-	//----------------------
-	$fname = str_replace(";", "", $_POST['editFname']);
-	$lname = str_replace(";", "", $_POST['editLname']);
-	$phone = str_replace(";", "", $_POST['editCphone']);
-	$email = str_replace(";", "", $_POST['editCemail']);
-	$carrier = $_POST['editCarrier'];
-	$editId = $_POST['editID'];
-	$updateGroup = $_POST['updateGroups'];
-
-
-	if(isset($_POST['editCinDB']))
-	{
-		//We need to make sure that the email/Phone number being changed doesn't already exist in the Database.
-		$sql = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE NOT uniqueId = $editId AND phoneNumber = '$phone' AND ownerId = $UserId;");
-		if ($sql->num_rows != 0 && $phone) {
-			echo '<script language="javascript">';
-			echo 'alert("Contact already exists with that Phone Number.")';
-			echo '</script>';
-		} else {
-			$sql = mysqli_query($conn, "SELECT uniqueId FROM Person WHERE NOT uniqueId = $editId AND emailAddress = '$email' AND ownerId = $UserId;");
-		  if ($sql->num_rows != 0 && $email){
-				echo '<script language="javascript">';
-				echo 'alert("Contact already exists with that email.")';
-				echo '</script>';
-			} else {
-				//Updates record into table from sql statement
-				mysqli_query($conn, "UPDATE Person SET firstName = '$fname', lastName = '$lname', emailAddress = '$email',
-					phoneNumber = '$phone', carrierID = '$carrier' WHERE uniqueId = $editId;");
-
-
-				//Check the status of the query
-				if (mysqli_affected_rows($conn) > 0)
-				{
-					echo '<script language="javascript">';
-					echo 'window.location.href ="../groups/"' ;
-					echo '</script>';
-				}
-
-				if($updateGroup != '0'){
-					// Check to see if contact is already in this group
-					$query2 = mysqli_query($conn, "SELECT * FROM Group_JT WHERE groupId = $updateGroup AND contactId = $editId;");
-
-					if ($query2->num_rows != 0) {
-						echo '<script language="javascript">';
-						echo 'alert("Contact already exists in Group.")';
-						echo '</script>';
-					} else {
-						mysqli_query($conn, "INSERT INTO Group_JT(contactId, groupOwnerId, groupId) VALUES ('$editId','$UserId', '$updateGroup')");
-						if (mysqli_affected_rows($conn) > 0){
-							echo '<script language="javascript">';
-							echo 'alert("User Added to New Group successfully!")';
-							echo '</script>';
-
-							echo '<script language="javascript">';
-							echo 'window.location.href ="../groups/"' ;
-							echo '</script>';
-						} else {
-							echo '<script language="javascript">';
-							echo 'alert("User not added to Group.")';
-							echo '</script>';
-						}
-					}
-				}
-			}
-		}
-	}
-
-
-
-	//Close connection
-	$conn->close();
-?>
